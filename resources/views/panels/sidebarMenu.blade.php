@@ -8,12 +8,12 @@
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
           Dashboard
-         
+
         </p>
       </a>
     </li>
-    
-   
+
+
 
     {{-- MODULE ADMINISTRATION --}}
     <li class="nav-item has-treeview">
@@ -22,7 +22,7 @@
         <p>
           ADMINISTRATION
           <i class="fas fa-angle-left right"></i>
-         
+
         </p>
       </a>
       <ul class="nav nav-treeview">
@@ -62,7 +62,7 @@
             <p>Clients</p>
           </a>
         </li>
-    
+
       </ul>
     </li>
  {{-- FIN MODULE ADMINISTRATION --}}
@@ -80,8 +80,8 @@
       </a>
       <ul class="nav nav-treeview">
         <li class="nav-item">
-          <a href="pages/layout/top-nav.html" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
+          <a href="{{ route('subscription.list') }}" class="nav-link">
+            <i class="f fa-circle nav-icon"></i>
             <p>Souscriptions</p>
           </a>
         </li>
@@ -100,7 +100,7 @@
       </ul>
     </li>
  {{-- FIN MODULE OPERATION --}}
-    
+
   </ul>
 </nav>
 <!-- /.sidebar-menu -->
