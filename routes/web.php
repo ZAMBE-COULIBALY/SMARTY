@@ -87,3 +87,40 @@ Route::get('/customers/{id}', [
     ]);
 
 // fin Liens Customers
+
+Route::group(['prefix' => '/partner', 'as' => 'partners.'], function () {
+    Route::get('/', [
+        'as'=> 'list',
+        'uses' => 'PartnerController@index'
+        ]);
+    Route::get('/new', [
+        'as'=> 'create',
+        'uses' => 'PartnerController@create'
+        ]);
+
+    Route::post('/add', [
+        'as'=> 'add',
+        'uses' => 'PartnerController@store'
+        ]);
+
+    Route::get('/details/{id}', [
+        'as'=> 'one',
+        'uses' => 'PartnerController@show'
+        ]);
+
+    Route::post('/update/{id}', [
+        'as'=> 'update',
+        'uses' => 'PartnerController@update'
+        ]);
+
+    Route::get('/edit/{id}', [
+        'as'=> 'edit',
+        'uses' => 'PartnerController@edit'
+        ]);
+
+    Route::get('/delete/{id}', [
+        'as'=> 'delete',
+        'uses' => 'PartnerController@destroy'
+        ]);
+
+});

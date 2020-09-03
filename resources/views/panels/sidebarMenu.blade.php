@@ -33,7 +33,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+          <a href="{{ route('partners.list') }}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Partenaires</p>
           </a>
@@ -81,7 +81,7 @@
       <ul class="nav nav-treeview">
         <li class="nav-item">
           <a href="{{ route('subscription.list') }}" class="nav-link">
-            <i class="f fa-circle nav-icon"></i>
+            <i class="far fa-circle nav-icon"></i>
             <p>Souscriptions</p>
           </a>
         </li>
