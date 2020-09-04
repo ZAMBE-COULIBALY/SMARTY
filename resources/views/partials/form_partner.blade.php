@@ -11,7 +11,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($partner) ? $partner->code : '' }}" placeholder="Saisir le code du partenaire" required autocomplete="code" autofocus>
+                <input {{ isset($partner) ? "disabled" : ""}} type="text" class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($partner) ? $partner->code : '' }}" placeholder="Saisir le code du partenaire" required autocomplete="code" autofocus>
 
             </div>
             @error('Code')
@@ -32,10 +32,10 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control @error('libelle') is-invalid @enderror" name="label" id="label" value="{{ isset($partner) ? $partner->label : '' }}" placeholder="Saisir le libelle du partenaire" required autocomplete="label" >
+                <input type="text" class="form-control @error('label') is-invalid @enderror" name="label" id="label" value="{{ isset($partner) ? $partner->label : '' }}" placeholder="Saisir le libelle du partenaire" required autocomplete="label" >
 
             </div>
-            @error('Libelle')
+            @error('label')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
