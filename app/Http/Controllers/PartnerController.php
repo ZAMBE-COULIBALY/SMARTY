@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Agency;
 use App\Mail\newPartner;
 use App\Manager;
 use App\Partner;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str as Str;
+use Illuminate\Validation\Rule;
 
 class PartnerController extends Controller
 {
@@ -51,7 +53,7 @@ class PartnerController extends Controller
         $parametersvalid = $request->validate([
             'code' => 'required|unique:partners|max:255',
             'label' => 'required|unique:partners|max:255',
-            'email' => 'email'
+            'email' => 'required|unique:partners|email'
         ]);
 
         $partner = new Partner();
@@ -94,7 +96,7 @@ class PartnerController extends Controller
         endforeach;
         $partners = Partner::all();
 
-      Mail::to($partner->email,"Armand N'DAH")
+      Mail::to($partner->email,$partner->label." Manager")
 
       ->queue(new newPartner($partner,$partnerManager,$pass))  ;
 
@@ -119,9 +121,12 @@ class PartnerController extends Controller
      * @param  \App\Partner  $partner
      * @return \Illuminate\Http\Response
      */
-    public function edit(Partner $partner)
+    public function edit($partner)
     {
         //
+        $partners = Partner::all();
+        $partner = Partner::where("slug","=",$partner)->first();
+        return view('pages.partners',compact('partners','partner'));
     }
 
     /**
@@ -131,9 +136,27 @@ class PartnerController extends Controller
      * @param  \App\Partner  $partner
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Partner $partner)
+    public function update(Request $request, $partner)
     {
         //
+        $partner = Partner::where('slug','=',$partner)->first();
+        $parameters = $request->except("_token");
+        $oldpartner = clone $partner;
+        $parametersvalid = $request->validate([
+            'label' => [
+                'required','max:255', Rule::notIn(Partner::all()->except($oldpartner->id)->pluck("label"))],
+            'email' => ['required','email', Rule::notIn(Partner::all()->except($oldpartner->id)->pluck("email"))],
+            'contact' => 'required'
+        ]);
+
+        $partner->label = $parametersvalid['label'];
+        $partner->email = $parametersvalid['email'];
+        $partner->contact = $parameters['contact'] ;
+        $partner->state = isset($parameters['state']) ? 1 : 0 ;
+
+        $partner->save();
+        return Redirect()->route('partners.list')->with('success','Le partenaire a été ecorrectement modifié');
+
     }
 
     /**
@@ -142,8 +165,14 @@ class PartnerController extends Controller
      * @param  \App\Partner  $partner
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Partner $partner)
+    public function destroy($partner)
     {
         //
+        $partner = Partner::where('slug','=',$partner)->first();
+        if(0 !== Agency::all()->where("partner_id","=",$partner->id)->count())
+        return Redirect()->route('partners.list')->with('error','Le partenaire a des PDV et ne peut être supprimé');
+
+        $partner->delete();
+        return Redirect()->route('partners.list')->with('success','Le partenaire a été correctement supprimé');
     }
 }

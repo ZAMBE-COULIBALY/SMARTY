@@ -24,4 +24,9 @@ class Manager extends Model
         # code...
         return $this->hasMany("App\Agency","manager_id");
     }
+
+    public function user()
+    {
+        return $this->hasOne('App\User','username','username');
+    }
 }

@@ -45,7 +45,7 @@ class newPartner extends Mailable
                     ->cc("armandpersie@gmail.com","Bboss")
                     ->bcc("docteurstrange225@gmail.com","Boss")
                     ->replyTo(config('mail.from.address', 'smarty@gmail.com'), config('mail.from.name', 'SUPPORT smarty'))
-                    ->subject('Nouveau Partenariat')
+                    ->subject('Nouveau Partenariat!')
                     ->priority(2);
     }
 }
