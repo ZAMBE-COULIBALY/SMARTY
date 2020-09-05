@@ -57,8 +57,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="pages/layout/fixed-footer.html" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
+          <a href="{{ route('customers.list') }}" class="nav-link">
+            <i class="nav-icon fas fa-copy"></i>
             <p>Clients</p>
           </a>
         </li>
@@ -80,8 +80,8 @@
       </a>
       <ul class="nav nav-treeview">
         <li class="nav-item">
-          <a href="{{ route('subscription.list') }}" class="nav-link">
-            <i class="f fa-circle nav-icon"></i>
+          <a href="{{ route('subscription.customer') }}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
             <p>Souscriptions</p>
           </a>
         </li>

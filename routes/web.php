@@ -27,16 +27,53 @@ Route::get('/home', [
 
 //Liens Subscritpion
 Route::group(['prefix' => '/subscription'], function () {
-    Route::get('/', [
-        'as'=> 'subscription.list',
-        'uses' => 'SubscriptionController@index'
+
+    Route::get('/getcustomers', [
+        'as'=> 'subscription.customer',
+        'uses' => 'SubscriptionController@getcustomers'
         ]);
+
+        Route::post('/postcustomer', [
+            'as'=> 'subscription.postcustomer',
+            'uses' => 'SubscriptionController@postcustomers'
+            ]);
+
+            Route::get('/getequipment', [
+                'as'=> 'subscription.getequipment',
+                'uses' => 'SubscriptionController@getequipment'
+                ]);
+
+            Route::post('/postequipment', [
+                'as'=> 'subscription.postequipment',
+                'uses' => 'SubscriptionController@postequipment'
+                ]);
+
+                Route::get('/recapitulatif', [
+                    'as'=> 'subscription.recapitulatif',
+                    'uses' => 'SubscriptionController@getrecapitulatif'
+                    ]);
+
+
+        Route::post('/storecustomer', [
+            'as'=> 'subscription.storecustomer',
+            'uses' => 'SubscriptionController@storecustomers'
+            ]);
+
+            Route::get('/recu', [
+                'as'=> 'subscription.recu',
+                'uses' => 'SubscriptionController@getrecu'
+                ]);
+
+
+
+
+
     Route::get('/new', [
         'as'=> 'subscription.create',
         'uses' => 'SubscriptionController@create'
         ]);
 
-    Route::get('/add', [
+    Route::post('/add', [
         'as'=> 'subscription.add',
         'uses' => 'SubscriptionController@store'
         ]);
@@ -66,24 +103,42 @@ Route::group(['prefix' => '/subscription'], function () {
         //fin Liens Subscritpion
 
 //Liens Customers
-Route::get('/customers', [
-    'as'=> 'customers',
+
+Route::group(['prefix' => '/customers'], function () {
+    Route::get('/', [
+    'as'=> 'customers.list',
+    'uses' => 'CustomerController@index'
+    ]);
+
+ Route::get('/create', [
+    'as'=> 'customers.create',
     'uses' => 'CustomerController@create'
     ]);
 
-Route::get('/customers/{id}', [
-    'as'=> 'showCustomers',
+Route::post('/add', [
+    'as'=> 'customers.add',
+    'uses' => 'CustomerController@store'
+    ]);
+
+Route::get('/details/{id}', [
+    'as'=> 'customers.one',
     'uses' => 'CustomerController@show'
     ]);
 
-Route::get('/customers/{id}', [
-    'as'=> 'updateCustomers',
+Route::get('/update/{id}', [
+    'as'=> 'customers.update',
     'uses' => 'CustomerController@update'
     ]);
 
-Route::get('/customers/{id}', [
-    'as'=> 'editCustomers',
+Route::get('/edit/{id}', [
+    'as'=> 'customers.edit',
     'uses' => 'CustomerController@edit'
     ]);
+
+Route::get('/delete/{id}', [
+    'as'=> 'customers.delete',
+    'uses' => 'CustomerController@destroy'
+    ]);
+});
 
 // fin Liens Customers

@@ -15,6 +15,11 @@ class CustomerController extends Controller
     public function index()
     {
         //
+
+
+        return view('pages.listecustomers');
+
+
     }
 
     /**
@@ -25,6 +30,8 @@ class CustomerController extends Controller
     public function create()
     {
         //
+        return view('pages.Customers');
+
     }
 
     /**
@@ -36,17 +43,16 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         //
-        $parameters = $request->all();
+        $parameters=$request->except(['_token','numerodossier']);
 
-        var_dump($parameters); die;
-        
-        Response::create();
+        //var_dump($parameters); die;
+        Customer::create($parameters);
 
-return redirect()->route('home')->with('success', 'client créé !!');
+        return redirect()->route('customers.list')->with('Client enregistré avec succès!!');
 
     }
 
-    
+
 
     /**
      * Display the specified resource.
