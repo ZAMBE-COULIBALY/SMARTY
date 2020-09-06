@@ -220,5 +220,6 @@ legend {
 </div>
 <!-- ./wrapper -->
 @include('panels.scripts')
+@yield('script')
 </body>
 </html>

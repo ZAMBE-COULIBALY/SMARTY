@@ -1,6 +1,5 @@
 @extends('shared.layout')
 
-
 @section('content')
 
 <section class="content">
@@ -122,8 +121,12 @@
                             <div class="form-group col-md-12">
                                 <hr>
                                 <div class="form-group">
+
+
                                     <label style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">Prime à payer  :  </label>
-                                    <label name="price" id="price" style="color: red"> 1200{{--   <input type="button" value="send HU code" onclick="getprice();" />  --}} </label>
+
+                                    <label name="price" id="output" style="color: red">   </label> <label for="FCFA">FCFA</label>
+
                                 </div>
                             </div>
                         </div>
@@ -150,5 +153,14 @@
 </div>
 </section>
 
+@endsection
+@section('script')
+<script>
+    $(document).ready(function(){
+      $("#price").on("input", function(){
+        $("#output").text($(this).val()*0.10);
+      });
+    });
+  </script>
 
 @endsection

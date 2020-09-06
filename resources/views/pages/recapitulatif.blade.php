@@ -31,7 +31,7 @@
                                                 <tr>
                                                     <td style="text-align: center">
 
-                                                            <P style="font-size: 14; "><stong> MONTNAT PRIME :<?php echo $Subscription['price']*0.10 .' FCFA' ;?> Francs CFA</strong></P> </div>
+                                                            <P style="font-size: 14; "><stong> MONTNAT PRIME :<?php echo $Subscription['price']*0.10 ;?> Francs CFA</strong></P> </div>
                                                     </td>
                                                 <tr>
                                                 <td style="text-align: center">
@@ -49,6 +49,7 @@
 
                                                     <button type="submit" class="btn btn-success">PAYER LA PRIME</button>
                                                     <a class="btn btn-danger" href="{{ route('subscription.customer') }}">ANNULE SOUSCRIPTION</a>
+                                                    <a class="btn btn-warning" href="{{ route('subscription.proforma') }}">IMPRIMER</a>
                                         </form>
                                                     </td>
                                                 </tr>

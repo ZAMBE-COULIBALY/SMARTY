@@ -6,6 +6,7 @@ use App\Subscription;
 use App\Customer;
 use App\payments;
 use App\Providers\AppServiceProvider;
+use App\transsubscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
@@ -31,17 +32,18 @@ class SubscriptionController extends Controller
     {
         //
         $validatedData = $request->validate([
-             'name' => 'required|unique:customers',
-             'first_name'=> 'required|unique:customers',
-             'birth_date'=> 'required|unique:customers',
-             'gender'=> 'required|unique:customers',
-             'place_birth'=> 'required|unique:customers',
-             'marital_status'=> 'required|unique:customers',
-             'place_birth'=> 'required|unique:customers',
-             'place_residence'=> 'required|unique:customers',
-             'phone1'=> 'required|unique:customers',
-             'phone2'=> 'required|unique:customers',
-             'mail'=> 'required|unique:customers',
+            'code' => ':customers',
+             'name' => 'required:customers',
+             'first_name'=> 'required:customers',
+             'birth_date'=> 'required:customers',
+             'gender'=> 'required:customers',
+             'place_birth'=> 'required:customers',
+             'marital_status'=> 'required:customers',
+             'place_birth'=> 'required:customers',
+             'place_residence'=> 'required:customers',
+             'phone1'=> 'required:customers',
+             'phone2'=> 'required:customers',
+             'mail'=> 'required:customers',
 
         ]);
  //var_dump($validatedData);exit();
@@ -83,13 +85,15 @@ class SubscriptionController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'equipment'=> 'required|unique:subscriptions',
-            'model'=> 'required|unique:subscriptions',
-            'mark'=> 'required|unique:subscriptions',
-            'numberIMEI'=> 'required|unique:subscriptions',
-            'picture'=> 'required|unique:subscriptions',
-            'price'=> 'required|unique:subscriptions',
-             'date_subscription'=> 'required|unique:subscriptions',
+            'code'=> ':subscriptions',
+            'equipment'=> 'required:subscriptions',
+            'model'=> 'required:subscriptions',
+            'mark'=> 'required:subscriptions',
+            'numberIMEI'=> 'required:subscriptions',
+            'picture'=> 'required:subscriptions',
+            'price'=> 'required:subscriptions',
+             'date_subscription'=> 'required:subscriptions',
+             'customer_id'=> ':subscriptions',
 
         ]);
        //var_dump($validatedData);exit();
@@ -144,25 +148,81 @@ class SubscriptionController extends Controller
 
     public function storecustomers(Request $request)
     {
-
-
         $Subscription = $request->session()->get('Subscription');
+//var_dump($Subscription);exit();
+$code =$Subscription['first_name'];
+$digits =strtoupper(substr($code,0, 3));
+
+$ma=1;
+$ma += Customer::max('id');
+$customers_id=$ma;
+$digits =$ma.''.$digits;
+$codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
+//var_dump($codeok);exit();
+        Customer::create([
+            'code' =>$codeok,
+            'name' =>$Subscription['name'],
+           'first_name' =>$Subscription['first_name'],
+           'birth_date' =>$Subscription['birth_date'],
+           'gender' =>$Subscription['gender'],
+           'place_birth' =>$Subscription['place_birth'],
+            'marital_status'=>$Subscription['marital_status'],
+           'place_residence' =>$Subscription['place_residence'],
+           'phone1' =>$Subscription['phone1'],
+           'phone2' =>$Subscription['phone2'],
+           'mail' =>$Subscription['mail'],
+
+        ]);
+
+        Subscription::create([
+            'code'=>$codeok,
+            'equipment' =>$Subscription['equipment'],
+            'model' =>$Subscription['model'],
+            'mark' =>$Subscription['mark'],
+            'picture' =>$Subscription['picture'],
+            'numberIMEI' =>$Subscription['numberIMEI'],
+            'price' =>$Subscription['price'],
+            'date_subscription' =>$Subscription['date_subscription'],
+            'customer_id'=>$customers_id,
+        ]);
+
 
         $pdf =  App::make('dompdf.wrapper');
 
         $pdf-> loadView("models.document", compact('Subscription'));
 
-        $pdf-> save(storage_path().'/app/public/invoices/'.$Subscription['phone1'].'.pdf');
+        $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
 
 
-        return redirect(route('subscription.recu'))->with('Souscription effectuée !!');
+        return redirect(route('subscription.recu'))->with('success', 'souscription effectuée avec succès.');
     }
 
 
-    public function getrecu()
+    public function getrecu(Request $request )
     {
         //
-        return view('pages.recu');
+        $Subscription = $request->session()->get('Subscription');
+        return view('pages.recu',compact('Subscription'));
+    }
+
+    public function exportToPDF(Request $request){
+        $Subscription = $request->session()->get('Subscription');
+        $pdf =  App::make('dompdf.wrapper');
+
+        $pdf-> loadView("models.document", compact('Subscription'));
+
+        return $pdf->download($Subscription['first_name'].$Subscription['phone1'].'.pdf');
+
+    }
+
+    public function proforma(Request $request){
+        $Subscription = $request->session()->get('Subscription');
+        $pdf =  App::make('dompdf.wrapper');
+
+        $pdf-> loadView("models.model_souscription_summary", compact('Subscription'));
+
+        return $pdf->download('proforma/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
+
     }
 
     /**

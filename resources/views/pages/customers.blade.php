@@ -31,8 +31,8 @@
                                         </div>
                                             <div class="form-group col-md-12">
                                                 <div class="form-group">
-                                                    <label>N° Dossier</label>
-                                                    <label style="color: red">0000000010000</label>
+                                                    <label>N° Dossier : </label>
+                                                    <label style="color: red"> </label>
 
                                                 </div>
                                             </div>

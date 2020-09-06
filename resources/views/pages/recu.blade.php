@@ -23,19 +23,21 @@
 
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <object data="{{ asset('storage/invoices/'.'09269572.pdf') }}"  type="application/pdf" width="100%" height="875">
+                                                <object  data="{{ asset('storage/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf') }}"  type="application/pdf" width="100%" height="875">
                                                 </object>
                                             </div>
                                             <div class="col-md-4">
+
+
                                                 <center>
-                                                <button type="submit" class="btn btn-success">IMPRIMER</button>
+
+                                                <a class="btn btn-warning" href="{{ route('subscription.exportToPDF') }}">IMPRIMER</a>
                                                 <a class="btn btn-danger" href="{{ route('subscription.customer') }}">QUITTER</a>
                                                </center>
                                                <P style="margin-top: 50%">
                                                     <center> <span style="font-family: Arial, Helvetica, sans-serif; color: #120d74;; font-size:16px"><b>  <H1> NSIA SMARTY VOUS REMERCIE !</H1></b></span></center>
                                                 </P>
                                             </div>
-
                                         </div>
                                      </div>
                                 </div>
@@ -45,5 +47,7 @@
         </div>
 
 </section>
+
+
 
 @endsection

@@ -64,9 +64,15 @@ Route::group(['prefix' => '/subscription'], function () {
                 'uses' => 'SubscriptionController@getrecu'
                 ]);
 
+                Route::get('/exportToPDF', [
+                    'as'=> 'subscription.exportToPDF',
+                    'uses' => 'SubscriptionController@exportToPDF'
+                    ]);
 
-
-
+                    Route::get('/proforma', [
+                        'as'=> 'subscription.proforma',
+                        'uses' => 'SubscriptionController@proforma'
+                        ]);
 
     Route::get('/new', [
         'as'=> 'subscription.create',
