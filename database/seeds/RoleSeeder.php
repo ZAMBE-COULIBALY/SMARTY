@@ -38,10 +38,10 @@ class RoleSeeder extends Seeder
        ]);
 
        DB::table('roles')->insert([
-        'label' => 'Chef Agent',
+        'label' => 'Agent Chief',
         'description' => 'Agent en charge des chargements et souscriptions',
         'level' => 4,
-        'slug' => Str::slug('Chef Agent','_')
+        'slug' => Str::slug('Agent Chief','_')
     ]);
 
        DB::table('roles')->insert([

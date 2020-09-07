@@ -90,9 +90,9 @@ class PartnerController extends Controller
         $partnerManagerUser->password = Hash::make($pass);
         $partnerManagerUser->slug = $partnerManager->slug;
         $partnerManagerUser->save();
-        $roles = ["Manager"];
+        $roles = ["manager"];
         foreach ($roles as $role):
-            $partnerManagerUser->roles()->attach(Role::where('label',$role)->first());
+            $partnerManagerUser->roles()->attach(Role::where('slug',$role)->first());
         endforeach;
         $partners = Partner::all();
 
@@ -151,7 +151,7 @@ class PartnerController extends Controller
 
         $partner->label = $parametersvalid['label'];
         $partner->email = $parametersvalid['email'];
-        $partner->contact = $parameters['contact'] ;
+        $partner->contact = $parametersvalid['contact'] ;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
 
         $partner->save();
@@ -173,6 +173,14 @@ class PartnerController extends Controller
         return Redirect()->route('partners.list')->with('error','Le partenaire a des PDV et ne peut être supprimé');
 
         $partner->delete();
+
+        $partnerManagers = Manager::all()->where("patner_id",1);
+        foreach ($partnerManagers as $manager) {
+            # code...
+            $managerUser = User::where("username","=",$manager->username);
+            $manager->delete();
+            $managerUser->delete();
+        }
         return Redirect()->route('partners.list')->with('success','Le partenaire a été correctement supprimé');
     }
 }

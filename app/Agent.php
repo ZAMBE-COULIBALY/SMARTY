@@ -16,7 +16,7 @@ class Agent extends Model
     public function agency()
     {
         # code...
-        return $this->hasOne("App\Agency");
+        return $this->belongsTo("App\Agency");
     }
 
     public function user()

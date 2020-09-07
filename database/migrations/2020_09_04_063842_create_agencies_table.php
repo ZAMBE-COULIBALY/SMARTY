@@ -26,6 +26,8 @@ class CreateAgenciesTable extends Migration
             $table->string('slug');
 
 
+            $table->unsignedBigInteger('chief_id')->default(0);
+            $table->foreign('chief_id')->references('id')->on('agents');
             $table->timestamps();
         });
     }

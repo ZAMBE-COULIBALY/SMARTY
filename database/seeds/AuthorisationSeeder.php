@@ -15,7 +15,7 @@ class AuthorisationSeeder extends Seeder
     {
         //
         $adminuser = User::where('username','adminsmarty')->first();
-        $adminuser->roles()->attach(Role::where('slug','Super_Administrator')->first());
+        $adminuser->roles()->attach(Role::where('slug','super_administrator')->first());
 
 
     }

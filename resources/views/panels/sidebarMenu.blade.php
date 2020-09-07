@@ -26,12 +26,12 @@
         </p>
       </a>
       <ul class="nav nav-treeview">
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a href="pages/layout/top-nav.html" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Rôles</p>
           </a>
-        </li>
+        </li> --}}
         <li class="nav-item">
           <a href="{{ route('partners.list') }}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
@@ -39,13 +39,13 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="pages/layout/boxed.html" class="nav-link">
+          <a href="{{ route('agencies.list') }}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>PDV</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="pages/layout/fixed-sidebar.html" class="nav-link">
+          <a href="{{ route('agents.list') }}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Agents</p>
           </a>

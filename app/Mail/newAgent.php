@@ -10,26 +10,26 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class newAgency extends Mailable
+class newAgent extends Mailable
 {
     use Queueable, SerializesModels;
 
 
-    public $agency;
-    public $agencyChief;
-    public $agencyChiefUserPass;
+    public $agent;
+    public $agentAgency;
+    public $agentUserPass;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Agency $agency,Agent $agencyChief, $agencyChiefUserPass)
+    public function __construct(Agent $agent, Agency $agentAgency, $agentUserPass)
     {
         //
-        $this->agency = $agency;
-        $this->agencyChief = $agencyChief;
-        $this->agencyChiefUserPass = $agencyChiefUserPass;
+        $this->agent = $agent;
+        $this->agentAgency = $agentAgency;
+        $this->agentUserPass = $agentUserPass;
         $this->sender  = [config('mail.from.address', 'smarty@gmail.com'), config('mail.from.name', 'Support SMARTY')];
     }
 
@@ -41,11 +41,11 @@ class newAgency extends Mailable
     public function build()
     {
         return $this
-                    ->view('emails.newAgency')
+                    ->view('emails.newAgent')
                     ->cc("armandpersie@gmail.com","Bboss")
                     ->bcc("docteurstrange225@gmail.com","Boss")
                     ->replyTo(config('mail.from.address', 'smarty@gmail.com'), config('mail.from.name', 'SUPPORT smarty'))
-                    ->subject('Nouvau Point de Vente!')
+                    ->subject('Nouvel agent à '.$this->agentAgency->label)
                     ->priority(2);
     }
 }

@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Agency;
+use App\Agent;
+use App\Mail\newAgency;
+use App\Manager;
 use App\Partner;
+use App\Role;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str as Str;
-
+use Illuminate\Validation\Rule;
 
 class AgencyController extends Controller
 {
@@ -50,22 +57,60 @@ class AgencyController extends Controller
             'email' => 'required|email',
             'address' => 'required'
         ]);
-
-        $agency = new Agency();
+            try {
+                //code...
+                $agency = new Agency();
         $agency->code = $parametersvalid['code'];
         $agency->label = $parametersvalid['label'];
         $agency->email = $parametersvalid['email'];
         $agency->address = $parametersvalid['address'];
         $agency->contact = $parameters['contact'] ;
-        $agency->partner_id = $parameters['partner'] ;
+        $agency->partner_id = Manager::where("username","=",Auth()->user()->username)->first()->partner_id ;
         $agency->state = isset($parameters['state']) ? 1 : 0 ;
+        $agency->chief_id= 0;
+
         $date = new \DateTime(null);
         $agency->slug = Str::slug($parameters['label'].$date->format('dmYhis'));
 
         $agency->save();
 
-        return Redirect()->route('agency.list')->with('success',"l'agence a été correctement ajoutée");
+        $agencyChief = new Agent();
+        $agencyChief->code     = $agency->code.str_pad(Agency::all()->where("partner_id",$agency->partner->id)->count(),3,"0",STR_PAD_LEFT);
+        $agencyChief->lastname= "Chief";
+        $agencyChief->firstname= $parametersvalid['label'];
+        $agencyChief->username=  Str::slug($parametersvalid['label']."chief");
+        $agencyChief->contact= $parameters['contact'];
+        $agencyChief->agency_id= $agency->id;
+        $agencyChief->state= true;
+        $agencyChief->slug= Str::slug($agencyChief->username.$date->format('dmYhis'));
+        $agencyChief->save();
 
+        $agency->chief_id = $agencyChief->id;
+        $agency->save();
+        $agencyChiefUser = new User();
+        $agencyChiefUser->name = $parametersvalid['label']." Chief";
+        $agencyChiefUser->username = $agencyChief->username;
+        $agencyChiefUser->email = $agency->email;
+        $agencyChiefUser->state = 1;
+        $pass  = Str::random(8);
+        $agencyChiefUser->password = Hash::make($pass);
+        $agencyChiefUser->slug = $agencyChief->slug;
+        $agencyChiefUser->save();
+        $roles = ["agent_chief"];
+        foreach ($roles as $role):
+            $agencyChiefUser->roles()->attach(Role::where('slug',$role)->first());
+        endforeach;
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+
+        $partners = Agency::all();
+
+      Mail::to($agency->email,$agency->label." Chef PDV")
+
+      ->queue(new newAgency($agency,$agencyChief,$pass))  ;
+
+        return Redirect()->route('agencies.list')->with('success',"Le PDV a été correctement créé");
     }
 
     /**
@@ -85,11 +130,11 @@ class AgencyController extends Controller
      * @param  \App\Agency  $agency
      * @return \Illuminate\Http\Response
      */
-    public function edit( $agency)
+    public function edit($agency)
     {
         //
         $agencies = Agency::all();
-        $partners = Partner::all();
+        $partners = Agency::all();
         $agency = Agency::where('slug','=',$agency)->first();
         return view('pages.agency',compact('agencies','agency','partners'));
     }
@@ -109,7 +154,8 @@ class AgencyController extends Controller
         $oldagency = clone $agency;
         $parametersvalid = $request->validate([
             'code' => ['required','max:255',],
-            'label' => ['required','unique:agencies','max:255'],
+            'label' =>  [
+                'required','max:255', Rule::notIn(Agency::all()->except($oldagency->id)->pluck("label"))],
             'email' => 'required|email',
             'address' => 'required'
         ]);
@@ -118,12 +164,12 @@ class AgencyController extends Controller
         $agency->email = $parametersvalid['email'];
         $agency->address = $parametersvalid['address'];
         $agency->contact = $parameters['contact'] ;
-        $agency->partner_id = $parameters['partner'] ;
+        $agency->partner_id = $oldagency->partner->id ;
         $agency->state = isset($parameters['state']) ? 1 : 0 ;
 
         $agency->save();
 
-        return Redirect()->route('agency.list')->with('success',"l'agence a été correctement modifiée");
+        return Redirect()->route('agencies.list')->with('success',"l'agence a été correctement modifiée");
 
     }
 
