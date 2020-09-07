@@ -16,8 +16,9 @@ class CreateVocabularyTypesTable extends Migration
         Schema::create('vocabularytypes', function (Blueprint $table) {
             $table->id();
 
-            $table->string("label");
-            $table->unsignedBigInteger('parent')->default(0);
+            $table->string("code")->unique();
+            $table->string("label")->unique();
+            $table->unsignedBigInteger('parent')->nullable();
             $table->foreign('parent')->references('id')->on('vocabularytypes');
 
             $table->timestamps();
