@@ -50,7 +50,7 @@
             <p>Agents</p>
           </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a href="pages/layout/fixed-topnav.html" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Equipements</p>
@@ -61,7 +61,7 @@
             <i class="far fa-circle nav-icon"></i>
             <p>Clients</p>
           </a>
-        </li>
+        </li> --}}
 
       </ul>
     </li>
@@ -85,7 +85,7 @@
             <p>Souscriptions</p>
           </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Sinistres</p>
@@ -96,7 +96,7 @@
             <i class="far fa-circle nav-icon"></i>
             <p>Statistiques</p>
           </a>
-        </li>
+        </li> --}}
       </ul>
     </li>
  {{-- FIN MODULE OPERATION --}}
