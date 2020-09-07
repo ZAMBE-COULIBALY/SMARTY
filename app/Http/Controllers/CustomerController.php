@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\customer;
 use Illuminate\Http\Request;
+use League\CommonMark\Inline\Element\Code;
 
 class CustomerController extends Controller
 {
@@ -15,9 +16,11 @@ class CustomerController extends Controller
     public function index()
     {
         //
+        $customer = customer::all();
+        //var_dump($customer);exit();
+        return view('pages.listecustomers')->with('customer',$customer) ;
 
 
-        return view('pages.listecustomers');
 
 
     }
