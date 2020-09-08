@@ -1,40 +1,47 @@
 
-   <!-- Navbar -->
-   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-     <!-- Left navbar links -->
-     <ul class="navbar-nav">
-       <li class="nav-item">
-         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-       </li>
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="index3.html" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="#" class="nav-link">Contact</a>
+      </li>
+    </ul>
 
-     </ul>
+    <!-- SEARCH FORM -->
+    <form class="form-inline ml-3">
 
-     <!-- SEARCH FORM -->
-     <form class="form-inline ml-3">
+    </form>
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Messages Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-user"></i>
+           <span>Bonjour  {{ Auth::user()->name }}</span>
 
-     </form>
-
-     <!-- Right navbar links -->
-     <ul class="navbar-nav ml-auto">
-       <!-- Messages Dropdown Menu -->
-       <li class="nav-item dropdown">
-         <a class="nav-link" data-toggle="dropdown" href="#">
-             <i class="far fa-user"></i>
-            <span> Bonjour ZAMBE </span>
-
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <a class="dropdown-item" href="{{ route('logout') }}"
+               onclick="event.preventDefault();
+                          document.getElementById('logout-form').submit();">
+             {{ __('Déconnexion') }}
          </a>
-         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-             <a class="dropdown-item" href="">
-              Déconnexion
-          </a>
+         <a href={{ route('password.change') }} class="dropdown-item" > {{ __('Changer mot de passe') }}</a>
+          <div class="dropdown-divider"></div>
 
-           <div class="dropdown-divider"></div>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+        </div>
+      </li>
 
-           <form id="logout-form" action=" " method="POST" style="display: none;">
-             <input type="hidden" name="_token" value="qCHkEXZynxHulDiJgNkc22ZgrSWOE9OPC1UOmO9k">        </form>
-         </div>
-       </li>
-
-     </ul>
-   </nav>
-   <!-- /.navbar -->
+    </ul>
+  </nav>
+  <!-- /.navbar -->
