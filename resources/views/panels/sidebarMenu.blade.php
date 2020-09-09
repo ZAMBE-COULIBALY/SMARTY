@@ -26,31 +26,31 @@
         </p>
       </a>
       <ul class="nav nav-treeview">
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a href="pages/layout/top-nav.html" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Rôles</p>
           </a>
-        </li>
+        </li> --}}
         <li class="nav-item">
-          <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+          <a href="{{ route('partners.list') }}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Partenaires</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="pages/layout/boxed.html" class="nav-link">
+          <a href="{{ route('agencies.list') }}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>PDV</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="pages/layout/fixed-sidebar.html" class="nav-link">
+          <a href="{{ route('agents.list') }}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Agents</p>
           </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a href="pages/layout/fixed-topnav.html" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Equipements</p>
@@ -61,7 +61,7 @@
             <i class="nav-icon fas fa-copy"></i>
             <p>Clients</p>
           </a>
-        </li>
+        </li> --}}
 
       </ul>
     </li>
@@ -85,7 +85,7 @@
             <p>Souscriptions</p>
           </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Sinistres</p>
@@ -96,7 +96,7 @@
             <i class="far fa-circle nav-icon"></i>
             <p>Statistiques</p>
           </a>
-        </li>
+        </li> --}}
       </ul>
     </li>
  {{-- FIN MODULE OPERATION --}}
