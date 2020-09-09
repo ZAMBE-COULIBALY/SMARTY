@@ -24,7 +24,7 @@ class SubscriptionController extends Controller
         //
         $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.Customers',compact('Subscription'));
+        return view('pages.customers',compact('Subscription'));
 
     }
 
@@ -67,7 +67,7 @@ class SubscriptionController extends Controller
         //
         $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.Subscriptions',compact('Subscription'));
+        return view('pages.subscriptions',compact('Subscription'));
 
     }
 
@@ -76,7 +76,7 @@ class SubscriptionController extends Controller
         //
         $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.Subscriptions',compact('Subscription'));
+        return view('pages.subscriptions',compact('Subscription'));
 
     }
 
