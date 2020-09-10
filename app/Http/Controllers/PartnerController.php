@@ -53,7 +53,7 @@ class PartnerController extends Controller
         $parametersvalid = $request->validate([
             'code' => 'required|unique:partners|max:255',
             'label' => 'required|unique:partners|max:255',
-            'email' => 'required|unique:partners|email'
+            'email' => 'required|email'
         ]);
 
         $partner = new Partner();

@@ -9,6 +9,7 @@
 
 <!-- Tell the browser to be responsive to screen width -->
   @include('panels.styles')
+  @yield('style')
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
