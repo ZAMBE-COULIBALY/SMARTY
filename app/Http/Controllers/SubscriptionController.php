@@ -24,7 +24,7 @@ class SubscriptionController extends Controller
         //
         $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.Customers',compact('Subscription'));
+        return view('pages.customers',compact('Subscription'));
 
     }
 
@@ -67,7 +67,7 @@ class SubscriptionController extends Controller
         //
         $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.Subscriptions',compact('Subscription'));
+        return view('pages.subscriptions',compact('Subscription'));
 
     }
 
@@ -76,7 +76,7 @@ class SubscriptionController extends Controller
         //
         $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.Subscriptions',compact('Subscription'));
+        return view('pages.subscriptions',compact('Subscription'));
 
     }
 
@@ -194,7 +194,7 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
         $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
 
 
-        return redirect(route('subscription.recu'))->with('success', 'souscription effectuée avec succès.');
+        return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$codeok. ') effectuée avec succès.');
     }
 
 
@@ -239,22 +239,10 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
      */
 
 
-    public function postcreate(Request $request)
+    public function precedent()
     {
-        //
-        $validatedData = $request->validate([
-            'numberIMEI' => 'required|unique:subscriptions',
-        ]);
-        if(empty($request->session()->get('subscription'))){
-            $parameters = new \App\Subscription();
-            $parameters->fill($validatedData);
-            $request->session()->put('subscription', $parameters);
-        }else{
-            $parameters = $request->session()->get('subscription');
-            $parameters->fill($validatedData);
-            $request->session()->put('subscription', $parameters);
-        }
-        return redirect()->route('subscription.add');
+
+        return redirect()->back();
 
     }
 

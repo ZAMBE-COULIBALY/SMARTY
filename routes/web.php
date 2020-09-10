@@ -281,6 +281,13 @@ Route::group(['prefix' => '/subscription'], function () {
                         'uses' => 'SubscriptionController@proforma'
                         ]);
 
+                        Route::get('/back', [
+                            'as'=> 'subscription.precedent',
+                            'uses' => 'SubscriptionController@precedent'
+                            ]);
+
+
+
     Route::get('/new', [
         'as'=> 'subscription.create',
         'uses' => 'SubscriptionController@create'

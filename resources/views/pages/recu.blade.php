@@ -13,6 +13,12 @@
                                     </li>
                             </ul>
                         </div>
+
+
+                            @if (Session::has('success'))
+                                <div class="alert alert-success">{{ Session::get('success')}}</div>
+                            @endif
+
                         <div class="card-body">
                                 <div class="tab-content" id="custom-content-above-tabContent">
                                     <div class="tab-pane fade show active" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">

@@ -1,16 +1,6 @@
 @extends('shared.layout')
 @section('content')
-<script type="text/javascript">
 
-    $(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#departement tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-});
-</script>
 
 <section class="content">
     <div class="container-fluid">
@@ -32,7 +22,7 @@
                                 <div class="tab-custom-content">
                                     <p class="lead mb-0">Liste des clients |
 
-                                        <a href="{{ route('customers.create') }}"  class="btn btn-success btn-sm">
+                                        <a href="{{ route('subscription.customer') }}"  class="btn btn-success btn-sm">
                                             NOUVEAU
                                             <i class=" fa fa-edit"></i>
                                         </a>
@@ -58,24 +48,26 @@
 
                                     </tr>
                                     </thead>
+                                    @foreach($customer as $customers)
                                     <tbody>
 
-                                        <td>COULIBALY Zambé</td>
-                                        <td>Abobo</td>
-                                        <td>z@gmail.com</td>
-                                        <td>224455</td>
-                                        <td>478845</td>
-                                        <td>M</td>
-                                        <td>1552244</td>
+                                        <td>{{ $customers->name }}  {{ $customers->first_name }} </td>
+                                        <td>{{ $customers->place_residence }}</td>
+                                        <td>{{ $customers->mail }}</td>
+                                        <td>{{ $customers->phone1 }}</td>
+                                        <td>{{ $customers->phone2 }}</td>
+                                        <td>{{ $customers->gender }}</td>
+                                        <td>{{ $customers->created_at }}</td>
                                         <td>
-<center>
+                            <center>
                                             <a href="{{ route('customers.create') }}"  class="btn btn-info btn-sm ">
                                                 <i class="fa fa-pencil-alt"></i>
                                             </a>
-</center>
+                            </center>
                                         </td>
 
                                     </tbody>
+                                     @endforeach
                                 </table>
                             </div>
                         </div>
