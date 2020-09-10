@@ -24,8 +24,7 @@ class CreateVocabulariesTable extends Migration
             $table->unsignedBigInteger('type_id');
             $table->foreign('type_id')->references('id')->on('vocabularytypes');
 
-            $table->unsignedBigInteger('parent');
-            $table->foreign('parent')->references('id')->on('vocabularies');
+            $table->integer('parent')->nullable();
 
             $table->timestamps();
 

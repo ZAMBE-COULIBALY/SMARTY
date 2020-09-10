@@ -355,3 +355,41 @@ Route::group(['prefix' => '/customers'], function () {
 });
 
 // fin Liens Customers
+
+
+Route::group(['prefix' => '/product', 'as' => 'products.', 'middleware' => ["auth","roles"], "roles" => ["manager","administrator"]], function () {
+    Route::get('/', [
+        'as'=> 'list',
+        'uses' => 'ProductController@index'
+        ]);
+    Route::get('/new', [
+        'as'=> 'create',
+        'uses' => 'ProductController@create'
+        ]);
+
+    Route::post('/add', [
+        'as'=> 'add',
+        'uses' => 'ProductController@store'
+        ]);
+
+    Route::get('/details/{id}', [
+        'as'=> 'one',
+        'uses' => 'ProductController@show'
+        ]);
+
+    Route::post('/update/{id}', [
+        'as'=> 'update',
+        'uses' => 'ProductController@update'
+        ]);
+
+    Route::get('/edit/{id}', [
+        'as'=> 'edit',
+        'uses' => 'ProductController@edit'
+        ]);
+
+    Route::get('/delete/{id}', [
+        'as'=> 'delete',
+        'uses' => 'ProductController@destroy'
+        ]);
+
+});

@@ -41,6 +41,6 @@ class VocabularyTypeSeeder extends Seeder
                     'label' => 'MODELE',
                     'parent' => VocabularyType::all()->where("code","PDT-LBL")->first()->id,
                     "created_at" => now()
-                    ]);
+                ]);
     }
 }

@@ -18,6 +18,15 @@ class CreateVocabularyTypesTable extends Migration
 
             $table->string("code")->unique();
             $table->string("label")->unique();
+
+            $table->enum('valueType',
+            [
+                "int" ,
+                "txt" ,
+                "date" ,
+
+            ]);
+
             $table->unsignedBigInteger('parent')->nullable();
             $table->foreign('parent')->references('id')->on('vocabularytypes');
 

@@ -87,7 +87,7 @@
                     <span class="fas fa-envelope"></span>
                 </div>
                 </div>
-                <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ isset($agent) ? $agent->email : '' }}" placeholder="Saisir le l'email de l'agent" autocomplete="email" >
+                <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ isset($agent) ? $agent->user->email : '' }}" placeholder="Saisir le l'email de l'agent" autocomplete="email" >
 
             </div>
             @error('email')
@@ -115,16 +115,6 @@
             @enderror
         </div>
 
-        <div class="form-group col-md-6">
-            <div class="form-group">
-                <label>Agences</label>
-                <select name="agency" class="form-control select2bs4" style="width: 100%;">
-                  @foreach ($agencies as $item)
-                    <option value="{{$item->id}}" {{ (isset($agent) && $agent->agency->id == $item->id)? 'selected' : '' }}>{{$item->label}}</option>
-                  @endforeach
-                </select>
-            </div>
-        </div>
 
         <div class="form-group col-md-6">
             <label for="state" >Actif</label>
