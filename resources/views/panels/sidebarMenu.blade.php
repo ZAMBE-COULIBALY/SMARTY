@@ -50,8 +50,8 @@
             <p>Agents</p>
           </a>
         </li>
-       {{--   <li class="nav-item">
-          <a href="pages/layout/fixed-topnav.html" class="nav-link">
+       <li class="nav-item">
+          <a href="{{ route('products.list') }}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Equipements</p>
           </a>
