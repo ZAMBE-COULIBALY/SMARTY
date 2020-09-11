@@ -23,8 +23,7 @@ class CreatePartnersTable extends Migration
             $table->string('state');
             $table->string('slug');
 
-            $table->unsignedBigInteger('admin_id')->default(1);
-            $table->foreign('admin_id')->references('id')->on('users');
+            $table->integer('admin_id')->default(1);
 
             $table->timestamps();
         });

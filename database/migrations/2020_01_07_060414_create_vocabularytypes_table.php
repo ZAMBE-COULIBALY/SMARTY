@@ -27,8 +27,7 @@ class CreateVocabularyTypesTable extends Migration
 
             ]);
 
-            $table->unsignedBigInteger('parent')->nullable();
-            $table->foreign('parent')->references('id')->on('vocabularytypes');
+            $table->integer('parent')->nullable();
 
             $table->timestamps();
         });
