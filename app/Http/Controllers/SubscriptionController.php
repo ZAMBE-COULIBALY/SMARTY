@@ -22,9 +22,10 @@ class SubscriptionController extends Controller
     public function getcustomers(Request $request)
     {
         //
-        $Subscription = $request->session()->get('Subscription');
+       $Subscription = $request->session()->get('Subscription');
+        $hsubscriptions= Subscription::all();
 
-        return view('pages.customers',compact('Subscription'));
+        return view('pages.customers',compact('Subscription'))->with('hsubscription',$hsubscriptions) ;
 
     }
 
@@ -253,6 +254,7 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
         $parameters->save();
 
     }
+
 
     /**
      * Display the specified resource.

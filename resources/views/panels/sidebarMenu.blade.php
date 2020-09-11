@@ -50,18 +50,18 @@
             <p>Agents</p>
           </a>
         </li>
-        {{-- <li class="nav-item">
+       {{--   <li class="nav-item">
           <a href="pages/layout/fixed-topnav.html" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Equipements</p>
           </a>
-        </li>
+        </li>  --}}
         <li class="nav-item">
           <a href="{{ route('customers.list') }}" class="nav-link">
-            <i class="nav-icon fas fa-copy"></i>
+            <i class="far fa-circle nav-icon"></i>
             <p>Clients</p>
           </a>
-        </li> --}}
+        </li>
 
       </ul>
     </li>
@@ -85,6 +85,12 @@
             <p>Souscriptions</p>
           </a>
         </li>
+        <li class="nav-item">
+            <a href="{{ route('subscription.customer') }}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Statistiques</p>
+            </a>
+          </li>
         {{-- <li class="nav-item">
           <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
             <i class="far fa-circle nav-icon"></i>

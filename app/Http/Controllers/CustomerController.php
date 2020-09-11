@@ -16,7 +16,7 @@ class CustomerController extends Controller
     public function index()
     {
         //
-        $customer = customer::all();
+        $customer = Customer::all();
         //var_dump($customer);exit();
         return view('pages.listecustomers')->with('customer',$customer) ;
 
@@ -74,10 +74,7 @@ class CustomerController extends Controller
      * @param  \App\customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function edit(customer $customer)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.

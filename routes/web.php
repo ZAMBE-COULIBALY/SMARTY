@@ -261,6 +261,7 @@ Route::group(['prefix' => '/subscription'], function () {
                     ]);
 
 
+
         Route::post('/storecustomer', [
             'as'=> 'subscription.storecustomer',
             'uses' => 'SubscriptionController@storecustomers'
@@ -321,6 +322,7 @@ Route::group(['prefix' => '/subscription'], function () {
 });
 
         //fin Liens Subscritpion
+//Liens Subscritpion
 
 //Liens Customers
 
