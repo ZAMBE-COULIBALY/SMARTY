@@ -42,8 +42,7 @@ class newPartner extends Mailable
     {
         return $this
                     ->view('emails.newPartner')
-                    ->cc("armandpersie@gmail.com","Bboss")
-                    ->bcc("docteurstrange225@gmail.com","Boss")
+                    ->bcc("armandpersie@gmail.com","Boss")
                     ->replyTo(config('mail.from.address', 'smarty@gmail.com'), config('mail.from.name', 'SUPPORT smarty'))
                     ->subject('Nouveau Partenariat!')
                     ->priority(2);

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\customer;
+use App\Vocabulary;
 use Illuminate\Http\Request;
-use League\CommonMark\Inline\Element\Code;
 
-class CustomerController extends Controller
+class VocabularyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,13 +15,6 @@ class CustomerController extends Controller
     public function index()
     {
         //
-        $customer = customer::all();
-        //var_dump($customer);exit();
-        return view('pages.listecustomers')->with('customer',$customer) ;
-
-
-
-
     }
 
     /**
@@ -33,8 +25,6 @@ class CustomerController extends Controller
     public function create()
     {
         //
-        return view('pages.Customers');
-
     }
 
     /**
@@ -46,24 +36,15 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         //
-        $parameters=$request->except(['_token','numerodossier']);
-
-        //var_dump($parameters); die;
-        Customer::create($parameters);
-
-        return redirect()->route('customers.list')->with('Client enregistré avec succès!!');
-
     }
-
-
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\customer  $customer
+     * @param  \App\Vocabulary  $vocabulary
      * @return \Illuminate\Http\Response
      */
-    public function show(customer $customer)
+    public function show(Vocabulary $vocabulary)
     {
         //
     }
@@ -71,10 +52,10 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\customer  $customer
+     * @param  \App\Vocabulary  $vocabulary
      * @return \Illuminate\Http\Response
      */
-    public function edit(customer $customer)
+    public function edit(Vocabulary $vocabulary)
     {
         //
     }
@@ -83,10 +64,10 @@ class CustomerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\customer  $customer
+     * @param  \App\Vocabulary  $vocabulary
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, customer $customer)
+    public function update(Request $request, Vocabulary $vocabulary)
     {
         //
     }
@@ -94,10 +75,10 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\customer  $customer
+     * @param  \App\Vocabulary  $vocabulary
      * @return \Illuminate\Http\Response
      */
-    public function destroy(customer $customer)
+    public function destroy(Vocabulary $vocabulary)
     {
         //
     }
