@@ -58,20 +58,20 @@ class PartnerController extends Controller
 
         $partner = new Partner();
         $partner->code = $parametersvalid['code'];
-        $partner->label = $parametersvalid['label'];
+        $partner->label = Str::upper(Str::lower(Str::upper($parametersvalid['label']))) ;
         $partner->email = $parametersvalid['email'];
         $partner->contact = $parameters['contact'] ;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
 
         $date = new \DateTime(null);
-        $partner->slug = Str::slug($parametersvalid['label'].$date->format('dmYhis'));
+        $partner->slug = Str::slug($partner->label.$date->format('dmYhis'));
 
         $partner->admin_id = 0 ;
         $partner->save();
 
         $partnerManager = new Manager();
         $partnerManager->code = Str::random(5);
-        $partnerManager->username = Str::slug($parametersvalid['label']."manager");
+        $partnerManager->username = "manager@".Str::slug(Str::lower($partner->label),"_","fr");
         $partnerManager->partner_id = $partner->id;
         $partnerManager->state = 1;
         $partnerManager->slug = Str::slug($partnerManager->username.$date->format('dmYhis'));
@@ -82,13 +82,14 @@ class PartnerController extends Controller
         $partner->save();
 
         $partnerManagerUser = new User();
-        $partnerManagerUser->name = $parametersvalid['label']." Manager";
+        $partnerManagerUser->name = $partner->label." Manager";
         $partnerManagerUser->username = $partnerManager->username;
         $partnerManagerUser->email = $partner->email;
         $partnerManagerUser->state = 1;
         $pass  = Str::random(8);
         $partnerManagerUser->password = Hash::make($pass);
         $partnerManagerUser->slug = $partnerManager->slug;
+        $partnerManagerUser->partner_id = $partner->id;
         $partnerManagerUser->save();
         $roles = ["manager"];
         foreach ($roles as $role):
@@ -98,7 +99,7 @@ class PartnerController extends Controller
 
       Mail::to($partner->email,$partner->label." Manager")
 
-      ->queue(new newPartner($partner,$partnerManager,$pass))  ;
+      ->send(new newPartner($partner,$partnerManager,$pass))  ;
 
         return Redirect()->route('partners.list')->with('success',"Le partenaire a été correctement créé");
 
@@ -172,15 +173,16 @@ class PartnerController extends Controller
         if(0 !== Agency::all()->where("partner_id","=",$partner->id)->count())
         return Redirect()->route('partners.list')->with('error','Le partenaire a des PDV et ne peut être supprimé');
 
-        $partner->delete();
 
-        $partnerManagers = Manager::all()->where("patner_id",1);
+
+        $partnerManagers = Manager::all()->where("partner_id",$partner->id);
         foreach ($partnerManagers as $manager) {
             # code...
-            $managerUser = User::where("username","=",$manager->username);
-            $manager->delete();
+            $managerUser = User::where("username","=",$manager->username)->first();
             $managerUser->delete();
+            $manager->delete();
         }
+        $partner->delete();
         return Redirect()->route('partners.list')->with('success','Le partenaire a été correctement supprimé');
     }
 }

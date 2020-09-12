@@ -1,4 +1,7 @@
 @extends('shared.layout')
+@section('listcustomers')
+    active
+@endsection
 @section('content')
 
 

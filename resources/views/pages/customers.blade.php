@@ -1,4 +1,10 @@
 @extends('shared.layout')
+@section('subscription')
+    active
+@endsection
+@section('operation')
+    menu-open
+@endsection
 @section('content')
 
 <section class="content">

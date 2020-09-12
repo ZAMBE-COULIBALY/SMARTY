@@ -16,15 +16,16 @@ class CreateAgenciesTable extends Migration
         Schema::create('agencies', function (Blueprint $table) {
             $table->id();
 
-            $table->string('code')->unique();
-            $table->string('label')->unique();
+            $table->string('code');
+            $table->unique(["code","partner_id"]);
+            $table->string('label');
+            $table->unique(["label","partner_id"]);
             $table->string('email')->nullable();
             $table->string('contact');
             $table->string('address');
             $table->string('state');
             $table->integer('partner_id');
             $table->string('slug');
-
 
             $table->integer('chief_id')->nullable();
 
