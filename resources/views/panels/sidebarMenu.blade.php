@@ -17,7 +17,7 @@
 
     {{-- MODULE ADMINISTRATION --}}
     <li class="nav-item has-treeview @yield('administration')">
-      <a href="#" class="nav-link">
+      <a href="#" class="nav-link @yield('administration')">
         <i class="nav-icon fas fa-copy"></i>
         <p>
           ADMINISTRATION
@@ -71,7 +71,7 @@
 
 
     <li class="nav-item has-treeview @yield('operation')">
-      <a href="#" class="nav-link">
+      <a href="#" class="nav-link @yield('operation')">
         <i class="nav-icon fas fa-copy"></i>
         <p>
           OPERATIONS

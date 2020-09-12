@@ -3,7 +3,7 @@
     active
 @endsection
 @section('operation')
-    menu-open
+menu-open active
 @endsection
 @section('content')
     <section class="content">

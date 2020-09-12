@@ -1,6 +1,6 @@
 @extends('shared.layout')
 @section('dashboardm')
-    menu-open
+menu-open active
 @endsection
 @section('dashboard')
 active
