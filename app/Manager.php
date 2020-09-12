@@ -16,7 +16,7 @@ class Manager extends Model
     public function partner()
     {
         # code...
-        return $this->hasOne("App\Partner");
+        return $this->belongsTo("App\Partner");
     }
 
     public function agency()

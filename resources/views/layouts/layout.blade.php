@@ -1,4 +1,10 @@
 @extends('shared.layout')
+@section('dashboardm')
+menu-open active
+@endsection
+@section('dashboard')
+active
+@endsection
 @section('style')
 <style>
 

@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Partner;
 use App\Providers\RouteServiceProvider;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str as Str;
+use Illuminate\Validation\Rule;
 
 class LoginController extends Controller
 {
@@ -37,9 +42,57 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
     public function username()
     {
         # code...
         return 'username';
+    }
+
+
+     /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function attemptLogin(Request $request)
+    {
+
+        if ($request->get("username") != "adminsmarty") {
+            # code...
+            $this->validatePartner($request);
+
+            $partner = Partner::all()->where("label",Str::upper($request->get("partner")))->first()->id;
+
+            return $this->guard()->attempt(
+                $this->credentials($request) + ["partner_id" => $partner],
+                $request->filled('remember')
+            );
+         }
+
+         return $this->guard()->attempt(
+            $this->credentials($request) ,
+            $request->filled('remember')
+        );
+
+
+    }
+
+    public function authentication(Request $request)
+    {
+        # code...
+        $this->validatePartner($request);
+
+
+    }
+
+    protected function validatePartner(Request $request)
+    {
+        $request->validate([
+            "partner" => ['required','string',
+            Rule::exists("partners","label"),
+            ]
+        ]);
     }
 }

@@ -1,5 +1,10 @@
 @extends('shared.layout')
-
+@section('agency')
+    active
+@endsection
+@section('administration')
+    menu-open active
+@endsection
 @section('content')
     <section class="content-header">
         <div class="container-fluid">

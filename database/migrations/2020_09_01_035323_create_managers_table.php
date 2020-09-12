@@ -16,7 +16,8 @@ class CreateManagersTable extends Migration
         Schema::create('managers', function (Blueprint $table) {
             $table->id();
 
-            $table->string('code')->unique();
+            $table->string('code');
+            $table->unique(["code","partner_id"]);
             $table->string('username')->unique();
             $table->integer('partner_id');
             $table->boolean('state');
