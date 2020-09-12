@@ -150,7 +150,7 @@ class PartnerController extends Controller
             'contact' => 'required'
         ]);
 
-        $partner->label = $parametersvalid['label'];
+        $partner->label = Str::upper(Str::lower(Str::upper($parametersvalid['label']))) ;
         $partner->email = $parametersvalid['email'];
         $partner->contact = $parametersvalid['contact'] ;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;

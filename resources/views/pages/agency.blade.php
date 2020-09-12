@@ -3,7 +3,7 @@
     active
 @endsection
 @section('administration')
-    menu-open
+    menu-open active
 @endsection
 @section('content')
     <section class="content-header">
