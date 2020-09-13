@@ -55,7 +55,7 @@
             <i class="far fa-circle nav-icon"></i>
             <p>Equipements</p>
           </a>
-        </li>  --}}
+        </li>
         <li class="nav-item">
           <a href="{{ route('customers.list') }}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
@@ -86,7 +86,7 @@
           </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('subscription.customer') }}" class="nav-link">
+            <a href="{{ route('statistics.etatpartenaire') }}" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Statistiques</p>
             </a>

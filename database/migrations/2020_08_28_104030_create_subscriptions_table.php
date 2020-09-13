@@ -19,9 +19,9 @@ class CreateSubscriptionsTable extends Migration
             $table->string('equipment');
             $table->string('model');
             $table->string('mark');
-            $table->string('picture');
+            $table->string('picture')->nullable();
             $table->string('numberIMEI');
-            $table->decimal('price', 10, 2);
+            $table->decimal('price', 20, 2);
             $table->date('date_subscription');
             $table->foreignId('customer_id')->references('id')->on('customers');
             $table->timestamps();

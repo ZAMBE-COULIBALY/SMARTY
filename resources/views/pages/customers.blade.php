@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <div class="tab-content" id="custom-content-above-tabContent">
 
-                          <div class="tab-pane fade show  {{ isset($histosubcription) ? '' : 'active'}}" id="custom-content-above-history-tab" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
+                          <div class="tab-pane fade show  {{ isset($histosubcription) ? '' : 'active'}}" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                 <div class="tab-custom-content">
                                     <p class="lead mb-0">Liste des souscriptions |
 
@@ -34,16 +34,16 @@
                                 </div>
 
                                 <table id="customerslist" class="table table-bordered ">
-                                <thead>
-                                    <tr>
-                                        <th >CODE</th>
-                                        <th >CLIENT</th>
-                                        <th >ENGIN</th>
-                                        <th >PERIODE D&#039EFFET</th>
-                                        <th >ACTION</th>
-                                    </tr>
-                                </thead>
-                                @foreach($hsubscription as $subscription)
+                                    <thead>
+                                        <tr>
+                                            <th >CODE</th>
+                                            <th >CLIENT</th>
+                                            <th >ENGIN</th>
+                                            <th >PERIODE D&#039EFFET</th>
+                                            <th >ACTION</th>
+                                        </tr>
+                                    </thead>
+                                    @foreach($hsubscription as $subscription)
                                     @php
                                     $date= date_format(date_create(now()),'d-m-Y');
                                     $jour= date_format(date_create($subscription->date_subscription),'d-m-Y') ;
@@ -52,18 +52,18 @@
                                     $resultat=$date1 - $date2;
                                     $nbJours = ($resultat/86400);
                                         if ($nbJours <= 90) {
-                                        $color ='#5cbd6c';
+                                        $color ="p-3 mb-2 bg-success text-white";
                                         }elseif ($nbJours >= 91 && $nbJours <=180) {
-                                                $color ='#fdba39';
-                                        }elseif ($nbJours >= 181 && $nbJours <=365) {
-                                                        $color= 'red';
+                                                $color ="p-3 mb-2 bg-warning text-dark";
+                                        }elseif ($nbJours >= 181 && $nbJours <365) {
+                                                        $color= "p-3 mb-2 bg-danger text-white";
                                         }else {
-                                                            $color = '#878787';
+                                                            $color = "p-3 mb-2 bg-secondary text-white";
                                           };
 
                                     @endphp
 
-                                    <tbody style="background-color:{{$color}};">
+                                    <tbody class="{{$color}}";>
                                         <td> {{ $subscription->code }} </td>
                                         <td>{{ $subscription->customer_id }} </td>
                                         <td>{{ $subscription->numberIMEI }} </td>
@@ -73,7 +73,7 @@
                                                 <a href="#"  class="btn btn-info btn-sm ">
                                                     <i class="fa fa-pencil-alt"> VOIR</i>
                                                 </a>
-                                </center>
+                                 </center>
                                         </td>
                                     </tbody>
                                     @endforeach
@@ -83,7 +83,7 @@
 
                             </div>
 
-                            <div class="tab-pane fade show active" id="custom-content-above-other-tab" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
+                            <div class="tab-pane fade  " id="custom-content-above-other" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
                                 <div class="tab-custom-content">
                                     <p class="lead mb-0">INFORMATION CLIENT
                                     </p>

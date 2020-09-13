@@ -114,6 +114,27 @@ Route::get('/customers/{id}', [
     ]);
 
 // fin Liens Customers
+Route::group(['prefix' => '/statistics'], function () {
+    Route::get('/', [
+        'as'=> 'statistics.show',
+        'uses' => 'SubscriptionController@getstatistics'
+        ]);
+        Route::get('/PDF', [
+            'as'=> 'statistics.etat',
+            'uses' => 'SubscriptionController@statisticsPDF'
+            ]);
+
+        Route::get('/EXCEL', [
+            'as'=> 'statistics.excel',
+            'uses' => 'SubscriptionController@statisticsExcel'
+            ]);
+
+            Route::get('/etat', [
+                'as'=> 'statistics.etatpartenaire',
+                'uses' => 'SubscriptionController@etat'
+                ]);
+
+    });
 
 Route::group(['prefix' => '/partner', 'as' => 'partners.', 'middleware' => ["auth","roles"], "roles" => ["super_administrator"]], function () {
     Route::get('/', [

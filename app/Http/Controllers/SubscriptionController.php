@@ -5,10 +5,21 @@ namespace App\Http\Controllers;
 use App\Subscription;
 use App\Customer;
 use App\payments;
+use App\Manager;
+use App\Partner;
+use App\Product;
+use App\Role;
+use App\User;
+use App\Vocabulary;
+use App\VocabularyType;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Providers\AppServiceProvider;
-use App\transsubscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\View\View;
+
+use function GuzzleHttp\Promise\all;
 
 class SubscriptionController extends Controller
 {
@@ -24,6 +35,8 @@ class SubscriptionController extends Controller
         //
        $Subscription = $request->session()->get('Subscription');
         $hsubscriptions= Subscription::all();
+
+
 
         return view('pages.customers',compact('Subscription'))->with('hsubscription',$hsubscriptions) ;
 
@@ -43,8 +56,10 @@ class SubscriptionController extends Controller
              'place_birth'=> 'required:customers',
              'place_residence'=> 'required:customers',
              'phone1'=> 'required:customers',
-             'phone2'=> 'required:customers',
-             'mail'=> 'required:customers',
+             'phone2'=> ':customers',
+             'mail'=> ':customers',
+             'folder'=> ':customers',
+             'mailing_address'=> ':customers',
 
         ]);
  //var_dump($validatedData);exit();
@@ -75,15 +90,27 @@ class SubscriptionController extends Controller
     public function getequipment(Request $request)
     {
         //
+        $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
+        $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
+        $labels = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id);
+        $models = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id);
+
         $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.subscriptions',compact('Subscription'));
+        return view('pages.subscriptions',compact("Subscription","categories","types","labels","models"));
 
     }
 
 
     public function postequipment(Request $request)
     {
+
+        $equipmentLibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->find($request->equipment);
+        $equipmentLibelle=$equipmentLibelle['label'];
+
+        $marquelibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id)->find($request->mark);
+        $marquelibelle=$marquelibelle['label'];
+
         //
         $validatedData = $request->validate([
             'code'=> ':subscriptions',
@@ -97,17 +124,21 @@ class SubscriptionController extends Controller
              'customer_id'=> ':subscriptions',
 
         ]);
+
+       // var_dump($validatedData);exit();
        //var_dump($validatedData);exit();
         if(empty($request->session()->get('Subscription'))){
             $Subscription = new \App\Subscription();
             $Subscription->fill($validatedData);
 
-            $request->session()->put('Subscription', $Subscription);
+            $request->session()->put('Subscription',$Subscription);
+
         }else{
             $Subscription = $request->session()->get('Subscription');
             $Subscription->fill($validatedData);
 
-            $request->session()->put('Subscription', $Subscription);
+            $request->session()->put('Subscription', $Subscription)  ;
+
         }
 
     //proforma document creation
@@ -115,7 +146,7 @@ class SubscriptionController extends Controller
 
         $pdf =  App::make('dompdf.wrapper');
 
-       $pdf-> loadView("models.model_souscription_summary", compact('Subscription'));
+       $pdf-> loadView("models.model_souscription_summary", compact('Subscription','equipmentLibelle','marquelibelle'));
 
        $pdf-> save(storage_path().'/app/public/invoices/'.$Subscription['first_name'].'.pdf');
 
@@ -149,6 +180,16 @@ class SubscriptionController extends Controller
 
     public function storecustomers(Request $request)
     {
+
+
+        $equipmentLibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->find($request->equipment);
+        $equipmentLibelle=$equipmentLibelle['label'];
+
+        $marquelibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id)->find($request->mark);
+        $marquelibelle=$marquelibelle['label'];
+
+        $modellibelle = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id)->find($request->model);
+        $modellibelle=$modellibelle['label'];
         $Subscription = $request->session()->get('Subscription');
 //var_dump($Subscription);exit();
 $code =$Subscription['first_name'];
@@ -172,6 +213,8 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
            'phone1' =>$Subscription['phone1'],
            'phone2' =>$Subscription['phone2'],
            'mail' =>$Subscription['mail'],
+           'folder' =>$Subscription['folder'],
+           'mailing_address' =>$Subscription['mailing_address'],
 
         ]);
 
@@ -190,7 +233,7 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
 
         $pdf =  App::make('dompdf.wrapper');
 
-        $pdf-> loadView("models.document", compact('Subscription'));
+        $pdf-> loadView("models.document", compact('Subscription','modellibelle','marquelibelle','equipmentLibelle'));
 
         $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
 
@@ -207,22 +250,58 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
     }
 
     public function exportToPDF(Request $request){
-        $Subscription = $request->session()->get('Subscription');
-        $pdf =  App::make('dompdf.wrapper');
 
-        $pdf-> loadView("models.document", compact('Subscription'));
+        $equipmentLibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->find($request->equipment);
+        $equipmentLibelle=$equipmentLibelle['label'];
+
+        $marquelibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id)->find($request->mark);
+        $marquelibelle=$marquelibelle['label'];
+        $pdf =  App::make('dompdf.wrapper');
+        $Subscription = $request->session()->get('Subscription');
+
+        $pdf-> loadView("models.document", compact('Subscription','equipmentLibelle','marquelibelle'));
 
         return $pdf->download($Subscription['first_name'].$Subscription['phone1'].'.pdf');
 
     }
 
     public function proforma(Request $request){
+
+
+        $equipmentLibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->find($request->equipment);
+        $equipmentLibelle=$equipmentLibelle['label'];
+
+        $marquelibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id)->find($request->mark);
+        $marquelibelle=$marquelibelle['label'];
+        $Subscription = $request->session()->get('Subscription');
+
+        $pdf =  App::make('dompdf.wrapper');
+
+        $pdf-> loadView("models.model_souscription_summary", compact('Subscription','equipmentLibelle','marquelibelle'));
+
+        return $pdf->download('proforma/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
+
+    }
+
+    public function statisticsPDF(Request $request){
+
         $Subscription = $request->session()->get('Subscription');
         $pdf =  App::make('dompdf.wrapper');
 
-        $pdf-> loadView("models.model_souscription_summary", compact('Subscription'));
+        $pdf-> loadView("models.modelstatistics", compact('Subscription'))->setPaper('a4', 'landscape');
 
-        return $pdf->download('proforma/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
+        return $pdf->download('statistics/0926558.pdf');
+
+    }
+
+    public function statisticsExcel(Request $request){
+
+        $Subscription = $request->session()->get('Subscription');
+        $xlsx =  App::make('dompdf.wrapper');
+
+        $xlsx-> loadView("models.modelstatistics", compact('Subscription'))->setPaper('a4', 'landscape');
+
+        return $xlsx->download('statistics/0926558.xlsx');
 
     }
 
@@ -255,7 +334,25 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
 
     }
 
+    public function etat(){
+        //
+        return view("pages.etat");
+    }
 
+public function getstatistics(Request $request){
+
+    $Subscription = $request->session()->get('Subscription');
+
+
+    $pdf =  App::make('dompdf.wrapper');
+
+    $pdf-> loadView("models.modelstatistics", compact('Subscription'))->setPaper('a4', 'landscape');
+
+    $pdf-> save(storage_path().'/app/public/statistics/statistics.pdf');
+
+
+    return view("pages.statistics", compact("Subscription"));
+}
     /**
      * Display the specified resource.
      *

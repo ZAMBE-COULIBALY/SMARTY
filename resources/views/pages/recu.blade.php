@@ -37,8 +37,8 @@
 
                                                 <center>
 
-                                                <a class="btn btn-warning" href="{{ route('subscription.exportToPDF') }}">IMPRIMER</a>
-                                                <a class="btn btn-danger" href="{{ route('subscription.customer') }}">QUITTER</a>
+                                                <a class="btn btn-warning" href="#">IMPRIMER</a>
+                                                <a class="btn btn-success" href="{{ route('subscription.customer') }}">TERMINER</a>
                                                </center>
                                                <P style="margin-top: 50%">
                                                     <center> <span style="font-family: Arial, Helvetica, sans-serif; color: #120d74;; font-size:16px"><b>  <H1> NSIA SMARTY VOUS REMERCIE !</H1></b></span></center>

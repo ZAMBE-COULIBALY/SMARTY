@@ -18,15 +18,15 @@
                 <div class="form-group">
                 <label>Civilité</label>
                 <select name="gender" class="form-control select2bs4" style="width: 100%;">
-                                    <option value="1" >Monsieur</option>
-                                    <option value="2" >Madame</option>
-                                    <option value="3" >Mademoiselle</option>
+                                    <option value="Monsieur" >Monsieur</option>
+                                    <option value="Madame" >Madame</option>
+                                    <option value="Mademoiselle" >Mademoiselle</option>
                                 </select>
             </div>
         </div>
 
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <label for="name">Nom</label>
             <div class="input-group">
                 <div class="input-group-append">
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="first_name">Prénoms</label>
             <div class="input-group">
                 <div class="input-group-append">
@@ -48,6 +48,18 @@
                     </div>
                 </div>
                 <input type="text" class="form-control " name="first_name" id="first_name" value="" placeholder="Saisir le libelle du client" required autocomplete="first_name" >
+
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="mailing_address">Adresse Postale</label>
+            <div class="input-group">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-user"></span>
+                    </div>
+                </div>
+                <input type="text" class="form-control " name="mailing_address" id="mailing_address" value="" placeholder="Adresse postale du client" >
 
             </div>
         </div>
@@ -92,10 +104,10 @@
             <div class="form-group">
                 <label>Situation matrimoniale</label>
                 <select name="marital_status" class="form-control select2bs4" style="width: 100%;">
-                    <option value="C"> Célibataire</option>
-                    <option value="M">Marié(e)</option>
-                    <option value="D">Divorcé(e)</option>
-                    <option value="V">Veuf(ve)</option>
+                    <option value="Celibataire"> Célibataire</option>
+                    <option value="Marie(e)">Marié(e)</option>
+                    <option value="Divorce(e)">Divorcé(e)</option>
+                    <option value="Veuf(ve)">Veuf(ve)</option>
 
                 </select>
             </div>

@@ -8,10 +8,9 @@
                                         <div class="form-group">
                                            <label>Selectionnez votre équipement</label>
                                            <select name="equipment" class="form-control select2bs4" style="width: 100%;">
-                                                    <option value="SMARTPHONE"> SMARTPHONE/TABLETTE</option>
-                                                    <option value="MODEM">MODEM WIFI</option>
-                                                    <option value="TELEVISSEUR">TELEVISSEUR</option>
-                                                    <option value="TELEVISSEUR">AUTRES</option>
+                                            @foreach ($categories as $item)
+                                            <option value={{$item->id}} {{ (isset($product) && $product->category->id == $item->id)? 'selected' : '' }}>{{$item->label}}</option>
+                                          @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -19,12 +18,9 @@
                                     <div class="form-group">
                                        <label>Marque</label>
                                        <select name="mark" class="form-control select2bs4" style="width: 100%;">
-                                                <option value="-1">..Choisir une marque..</option>
-                                                <option value="Huawei"> Huawei</option>
-                                                <option value="Samsung">Samsung</option>
-                                                <option value="Nokia">Nokia</option>
-                                                <option value="Motorola">Motorola</option>
-                                                <option value="Tecno">Tecno</option>
+                                        @foreach ($labels as $item)
+                                        <option value="{{$item->id}}" {{ (isset($product) && $product->label->id == $item->id)? 'selected' : '' }}>{{$item->label}}</option>
+                                      @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -33,13 +29,9 @@
                                 <div class="form-group">
                                    <label>Modèle</label>
                                    <select name="model" class="form-control select2bs4" style="width: 100%;">
-                                            <option value="-1">..Choisir un modèle..</option>
-                                            <option value="GalaxyZ"> Galaxy Z</option>
-                                            <option value="GalaxyS">Galaxy S</option>
-                                            <option value="GalaxyNote">Galaxy Note</option>
-                                            <option value="GalaxyA">Galaxy A</option>
-                                            <option value="GalaxyZFold25G">Galaxy Z Fold2 5G</option>
-                                            <option value="GalaxyS20Ultra5G">Galaxy S20 Ultra 5G</option>
+                                    @foreach ($models as $item)
+                                    <option value="{{$item->id}}" {{ (isset($product) && $product->model->id == $item->id)? 'selected' : '' }}>{{$item->label}}</option>
+                                  @endforeach
 
                                     </select>
                                 </div>
@@ -86,7 +78,7 @@
                                             <span class="fas fa-edit"></span>
                                         </div>
                                     </div>
-                                    <input type="file" class="form-control " name="picture" id="picture"  required autocomplete="picture" >
+                                    <input type="file" class="form-control " name="picture" id="picture"  >
                                 </div>
                             </div>
                             <div class="form-group col-md-3">
