@@ -1,4 +1,10 @@
 @extends('shared.layout')
+@section('listcustomers')
+    active
+@endsection
+@section('administration')
+    menu-open active
+@endsection
 @section('content')
 
 
