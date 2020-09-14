@@ -1,0 +1,16 @@
+
+*** These modified files were found in JOE when it aborted on Fri Sep 11 10:50:37 2020
+*** JOE was aborted by UNIX signal 1
+
+*** File '(Unnamed)'
+/var/www/nsiasmarty.com/.git/MERGE_MSG
+/var/www/nsiasmarty.com/.git/MERGE_MSG
+/var/www/nsiasmarty.com/.git/MERGE_MSG
+/var/www/nsiasmarty.com/.git/MERGE_MSG
+/var/www/nsiasmarty.com/.git/MERGE_MSG
+
+*** File '* Startup Log *'
+Processing '/etc/joe/editorrc'...
+Processing '/etc/joe/ftyperc'...
+Finished processing /etc/joe/ftyperc
+Finished processing /etc/joe/editorrc
