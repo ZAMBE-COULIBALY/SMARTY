@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Agency;
+use App\Agent;
 use App\Subscription;
 use App\Customer;
 use App\payments;
@@ -33,12 +35,37 @@ class SubscriptionController extends Controller
     public function getcustomers(Request $request)
     {
         //
-       $Subscription = $request->session()->get('Subscription');
+
         $hsubscriptions= Subscription::all();
 
+        $code = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->partner_id;
+        $codepart=Partner::where("id",$code)->first()->code;
+        $date= date_format(date_create(now()),'d-m-Y');
+        list($jour,$mois,$annee)=sscanf($date,"%d-%d-%d");
+        if (strlen($mois)===1 ) {
+            $mois ='0'.$mois;
+        }else {
+            $mois =$mois;
+        }
+        if (strlen($jour)===1){
+            $jour ='0'.$jour;
+        }else {
+            $jour =$jour;
+        }
 
+        $madate=$jour.$mois.$annee;
 
-        return view('pages.customers',compact('Subscription'))->with('hsubscription',$hsubscriptions) ;
+        $ma=1;
+        $ma += Customer::max('id');
+        $numdossier =str_pad($codepart.$madate.$ma, 16, "0", STR_PAD_LEFT);
+
+        $Subscription = new \App\Subscription();
+        $Subscription->fill(['folder' =>$numdossier]);
+
+        $request->session()->put('Subscription', $Subscription);
+
+       // dd($Subscription);
+        return view('pages.customers',compact('Subscription','numdossier'))->with('hsubscription',$hsubscriptions) ;
 
     }
 
@@ -55,7 +82,7 @@ class SubscriptionController extends Controller
              'marital_status'=> 'required:customers',
              'place_birth'=> 'required:customers',
              'place_residence'=> 'required:customers',
-             'phone1'=> 'required:customers',
+             'phone1'=> 'required|unique:customers',
              'phone2'=> ':customers',
              'mail'=> ':customers',
              'folder'=> ':customers',
@@ -63,19 +90,20 @@ class SubscriptionController extends Controller
 
         ]);
  //var_dump($validatedData);exit();
- if(empty($request->session()->get('Subscription'))){
-    $Subscription = new \App\Subscription();
-    $Subscription->fill($validatedData);
+        if(empty($request->session()->get('Subscription'))){
+            $Subscription = new \App\Subscription();
+            $Subscription->fill($validatedData);
 
-    $request->session()->put('Subscription', $Subscription);
-}else{
-    $Subscription = $request->session()->get('Subscription');
-    $Subscription->fill($validatedData);
+            $request->session()->put('Subscription', $Subscription);
+        }else{
+            $Subscription = $request->session()->get('Subscription');
+            $Subscription->fill($validatedData);
 
-    $request->session()->put('Subscription', $Subscription);
+            $request->session()->put('Subscription', $Subscription);
+        }
+        //dd($Subscription);
+            return redirect(route('subscription.getequipment'));
 }
-       return redirect(route('subscription.getequipment'));
-    }
 
 
     public function index(Request $request)
@@ -110,6 +138,7 @@ class SubscriptionController extends Controller
 
         $marquelibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id)->find($request->mark);
         $marquelibelle=$marquelibelle['label'];
+        $codePDV = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
 
         //
         $validatedData = $request->validate([
@@ -117,7 +146,7 @@ class SubscriptionController extends Controller
             'equipment'=> 'required:subscriptions',
             'model'=> 'required:subscriptions',
             'mark'=> 'required:subscriptions',
-            'numberIMEI'=> 'required:subscriptions',
+            'numberIMEI'=> 'required|unique:subscriptions',
             'picture'=> 'required:subscriptions',
             'price'=> 'required:subscriptions',
              'date_subscription'=> 'required:subscriptions',
@@ -142,11 +171,11 @@ class SubscriptionController extends Controller
         }
 
     //proforma document creation
-       // dd($Subscription);
+     //dd($Subscription);
 
         $pdf =  App::make('dompdf.wrapper');
 
-       $pdf-> loadView("models.model_souscription_summary", compact('Subscription','equipmentLibelle','marquelibelle'));
+       $pdf-> loadView("models.model_souscription_summary", compact('Subscription','equipmentLibelle','marquelibelle','codePDV'));
 
        $pdf-> save(storage_path().'/app/public/invoices/'.$Subscription['first_name'].'.pdf');
 
@@ -334,9 +363,13 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
 
     }
 
-    public function etat(){
+    public function etat(Request $request){
         //
-        return view("pages.etat");
+        $Subscription = $request->session()->get("Statistics");
+
+        $codePDV = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
+
+        return view("pages.etat", compact('codePDV'));
     }
 
 public function getstatistics(Request $request){
