@@ -136,8 +136,13 @@ class SubscriptionController extends Controller
         $equipmentLibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->find($request->equipment);
         $equipmentLibelle=$equipmentLibelle['label'];
 
+
         $marquelibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id)->find($request->mark);
         $marquelibelle=$marquelibelle['label'];
+
+        $modellibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id)->find($request->model);
+        $modellibelle=$modellibelle['label'];
+       // var_dump($modellibelle);exit();
         $codePDV = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
 
         //
@@ -154,28 +159,35 @@ class SubscriptionController extends Controller
 
         ]);
 
-       // var_dump($validatedData);exit();
-       //var_dump($validatedData);exit();
         if(empty($request->session()->get('Subscription'))){
             $Subscription = new \App\Subscription();
             $Subscription->fill($validatedData);
+            $Subscription->fill([
+                'modellibelle' =>$modellibelle,
+                'marquelibelle' =>$marquelibelle,
+                'equipmentLibelle' =>$equipmentLibelle,
+                ]);
 
             $request->session()->put('Subscription',$Subscription);
 
         }else{
             $Subscription = $request->session()->get('Subscription');
             $Subscription->fill($validatedData);
-
+            $Subscription->fill([
+                'modellibelle' =>$modellibelle,
+                'marquelibelle' =>$marquelibelle,
+                'equipmentLibelle' =>$equipmentLibelle,
+                ]);
             $request->session()->put('Subscription', $Subscription)  ;
 
         }
 
     //proforma document creation
-     //dd($Subscription);
+
 
         $pdf =  App::make('dompdf.wrapper');
 
-       $pdf-> loadView("models.model_souscription_summary", compact('Subscription','equipmentLibelle','marquelibelle','codePDV'));
+       $pdf-> loadView("models.model_souscription_summary", compact('Subscription','codePDV'));
 
        $pdf-> save(storage_path().'/app/public/invoices/'.$Subscription['first_name'].'.pdf');
 
@@ -210,17 +222,8 @@ class SubscriptionController extends Controller
     public function storecustomers(Request $request)
     {
 
-
-        $equipmentLibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->find($request->equipment);
-        $equipmentLibelle=$equipmentLibelle['label'];
-
-        $marquelibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id)->find($request->mark);
-        $marquelibelle=$marquelibelle['label'];
-
-        $modellibelle = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id)->find($request->model);
-        $modellibelle=$modellibelle['label'];
         $Subscription = $request->session()->get('Subscription');
-//var_dump($Subscription);exit();
+
 $code =$Subscription['first_name'];
 $digits =strtoupper(substr($code,0, 3));
 
@@ -260,9 +263,10 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
         ]);
 
 
+
         $pdf =  App::make('dompdf.wrapper');
 
-        $pdf-> loadView("models.document", compact('Subscription','modellibelle','marquelibelle','equipmentLibelle'));
+        $pdf-> loadView("models.document", compact('Subscription'));
 
         $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
 

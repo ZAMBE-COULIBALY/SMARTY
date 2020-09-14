@@ -61,10 +61,10 @@
     </tr>
     <tr>
     <td>Nature : </td>
-    <td> <?php echo $equipmentLibelle ?></td>
+    <td> <?php echo $Subscription['equipmentLibelle'] ?></td>
     <tr>
         <td>Marque :</td>
-        <td><?php echo $marquelibelle?></td>
+        <td><?php echo $Subscription['marquelibelle']?></td>
     </tr>
     <tr>
         <td>Numéro identifiant (IMEI) :</td>

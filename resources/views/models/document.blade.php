@@ -59,9 +59,9 @@
         </thead>
     <tbody>
             <tr>
-                <td> {{ $Subscription['equipment'] }}</td>
-                <td> {{ $Subscription['mark'] }}</td>
-                <td> {{ $Subscription['model'] }}</td>
+                <td> {{ $Subscription['equipmentLibelle'] }}</td>
+                <td> {{ $Subscription['marquelibelle'] }}</td>
+                <td> {{ $Subscription['modellibelle'] }}</td>
                 <td> {{ $Subscription['numberIMEI'] }}</td>
                 <td> {{ $Subscription['price'] }}</td>
                 <td> {{ $Subscription['price'] }}</td>
