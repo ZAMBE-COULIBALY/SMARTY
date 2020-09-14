@@ -7,9 +7,9 @@
 
 <p style="border: 5px; margin-top:8%; font-size:14px; font-family: Arial, Helvetica, sans-serif;margin-left:3%; ">
    <b> RESERVE A NSIA ASSRANCES </b><br>
-Numéro de police  ________________________ Numéro du client _________________________________<br>
+   <b>Numéro de police</b>  {{$Subscription['folder']}}  <b>Numéro du client</b> _________________________________<br>
 
-Nom du conseiller __________________________ Code  ____________ Revendeur  __________________ <br>
+   <b>Nom du conseiller</b> __________________________ <b>Code</b>  ____________ <b>Revendeur</b>  __________________ <br>
 </p>
 
 <p style="margin-top:-3%">
@@ -29,19 +29,20 @@ Nom du conseiller __________________________ Code  ____________ Revendeur  _____
 <p style="border: 5px; margin-top:8%; font-size:14px; font-family: Arial, Helvetica, sans-serif; line-height:25px; margin-left:3%; ">
  <b>  2. ASSURE      </b>               {{ $Subscription['gender'] }} <br>
 
-Nom {{ $Subscription['name'] }} Prénoms {{ $Subscription['first_name'] }} <br>
+ <b> Nom </b>{{ $Subscription['name'] }} <b>Prénoms</b> {{ $Subscription['first_name'] }} <br>
 
-Date de Naissance {{ $Subscription['birth_date'] }}  Lieu de Naissance  {{ $Subscription['place_birth'] }} <br>
+ <b>Date de Naissance</b> {{ $Subscription['birth_date'] }}  <b>Lieu de Naissance</b>  {{ $Subscription['place_birth'] }} <br>
 
-Situation Matrimoniale:		{{  $Subscription['marital_status'] }}<br>
+ <b>Situation Matrimoniale:</b>		{{  $Subscription['marital_status'] }}<br>
 
-Lieu de Résidence :    {{ $Subscription['place_residence'] }} <br>
+ <b>Lieu de Résidence :</b>    {{ $Subscription['place_residence'] }} <br>
 
-Adresse Postale Personnelle __________________________Cellulaire {{ $Subscription['phone1']}} / {{ $Subscription['phone2'] }}<br>
+ <b>Adresse Postale Personnelle</b>   {{ $Subscription['mailing_address'] }}  <b>Cellulaire</b> {{ $Subscription['phone1']}} / {{ $Subscription['phone2'] }}<br>
 
-Email {{ $Subscription['mail'] }}<br>
+ <b>Email</b> {{ $Subscription['mail'] }}<br>
 
 </p></p>
+</b>
 
 <p style="margin-top:1%; font-size:14px; font-family: Arial, Helvetica, sans-serif;">
   <b>  3. CARACTERISTIQUES </b> <br>

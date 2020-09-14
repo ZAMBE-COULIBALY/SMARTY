@@ -9,7 +9,7 @@
                     <div class="form-group col-md-12">
                         <div class="form-group">
                             <label>N° Dossier : </label>
-                            <label style="color: red"> </label>
+                            <label style="color: red">{{$numdossier}} </label>
 
                         </div>
                     </div>

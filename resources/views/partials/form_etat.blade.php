@@ -9,7 +9,8 @@
                     <div class="form-group">
                     <label>PDV</label>
                     <select name="PDV" class="form-control select2bs4" style="width: 100%;">
-                        <option value="">PDV ORANGE</option>
+
+                        <option value={{$codePDV}}>{{$codePDV}}</option>
                         </select>
                     </div>
                 </div>

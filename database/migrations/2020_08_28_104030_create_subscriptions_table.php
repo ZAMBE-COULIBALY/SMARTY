@@ -15,12 +15,12 @@ class CreateSubscriptionsTable extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
+            $table->string('code')->unique();
             $table->string('equipment');
             $table->string('model');
             $table->string('mark');
             $table->string('picture')->nullable();
-            $table->string('numberIMEI');
+            $table->string('numberIMEI')->unique();
             $table->decimal('price', 20, 2);
             $table->date('date_subscription');
             $table->foreignId('customer_id')->references('id')->on('customers');
