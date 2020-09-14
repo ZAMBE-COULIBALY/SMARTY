@@ -9,6 +9,7 @@
 <span ><strong>Contact : </strong> </span> {{ $agentAgency->contact }} <br>
 
 <p>Trouvez ci après les accès concernant le compte utilisateur. </p>
+<span > Partenaire : </span> {{ $agentAgency->partner->label }} <br>
 <span > Login : </span> {{ $agent->username }} <br>
 <span > Mot de passe : </span> {{ $agentUserPass }}
 <p>N.B.: Le mot de passe pourra être modifié dès la première connexion</p>

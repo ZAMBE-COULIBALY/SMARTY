@@ -8,6 +8,7 @@
 <span ><strong>Contact : </strong> </span> {{ $partner->contact }} <br>
 
 <p>Trouvez ci après les accès concernant le compte utilisateur pour la gestion de vos PDV. </p>
+<span > Partenaire : </span> {{ $partner->label }} <br>
 <span > Login : </span> {{ $partnerManager->username }} <br>
 <span > Mot de passe : </span> {{ $partnerManagerUserPass }}
 <p>N.B.: Le mot de passe pourra être modifié dès la première connexion</p>
