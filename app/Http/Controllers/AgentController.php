@@ -145,7 +145,7 @@ class AgentController extends Controller
         $oldagent = clone $agent;
         $agent->firstname = $parameters['firstname'];
         $agent->lastname = $parameters['lastname'];
-        $agent->agency_id = Agent::where("username","=",Auth()->user()->username)->first()->agency_id ;;
+        $agent->agency_id = Agent::where("username","=",Auth()->user()->username)->first()->agency_id ;
         $agentuser = $agent->user;
         $agentuser->email = $parameters['email'];
         $agentuser->save();

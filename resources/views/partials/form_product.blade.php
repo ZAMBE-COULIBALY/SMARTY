@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <label for="code">Code</label>
             <div class="input-group">
                 <div class="input-group-append">
@@ -55,7 +55,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input {{ isset($product) ? "disabled" : ""}} type="text" class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($product) ? $product->code : '' }}" placeholder="Saisir le code du partenaire" required autocomplete="code" autofocus>
+                <input {{ isset($product) ? "disabled" : ""}} type="text" class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($product) ? $product->code : '' }}" placeholder="Saisir le code du produit" required autocomplete="code" autofocus>
 
             </div>
             @error('Code')
@@ -68,15 +68,15 @@
 
 
 
-        <div class="form-group col-md-3">
-            <label for="label">libelle</label>
+        <div class="form-group col-md-6">
+            <label for="label">Nom</label>
             <div class="input-group">
                 <div class="input-group-append">
                     <div class="input-group-text">
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ isset($product) ? $product->label : '' }}" placeholder="Saisir le libelle du partenaire" required autocomplete="name" >
+                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ isset($product) ? $product->label : '' }}" placeholder="Saisir le nom du produit" required autocomplete="name" >
 
             </div>
             @error('name')
