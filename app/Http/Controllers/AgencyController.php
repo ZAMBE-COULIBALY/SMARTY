@@ -116,7 +116,7 @@ class AgencyController extends Controller
             }
 
         $partners = Agency::all();
-
+        //dd($pass);
       Mail::to($agency->email,$agency->label." Chef PDV")
 
       ->send(new newAgency($agency,$agencyChief,$pass))  ;

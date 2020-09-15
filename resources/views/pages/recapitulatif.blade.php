@@ -54,7 +54,7 @@ menu-open active
 
                                                     <button type="submit" class="btn btn-success">PAYER LA PRIME</button>
                                                     <a class="btn btn-danger" href="{{ route('subscription.customer') }}">ANNULE SOUSCRIPTION</a>
-                                                    <a class="btn btn-warning" href="{{ route('subscription.proforma') }}">IMPRIMER</a>
+                                                    <a class="btn btn-warning" href="#">IMPRIMER</a>
                                         </form>
                                                     </td>
                                                 </tr>

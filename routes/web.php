@@ -114,6 +114,27 @@ Route::get('/customers/{id}', [
     ]);
 
 // fin Liens Customers
+Route::group(['prefix' => '/statistics'], function () {
+    Route::get('/', [
+        'as'=> 'statistics.show',
+        'uses' => 'CustomerController@getstatistics'
+        ]);
+        Route::get('/PDF', [
+            'as'=> 'statistics.etat',
+            'uses' => 'CustomerController@statisticsPDF'
+            ]);
+
+        Route::get('/EXCEL', [
+            'as'=> 'statistics.excel',
+            'uses' => 'CustomerController@statisticsExcel'
+            ]);
+
+            Route::get('/etat', [
+                'as'=> 'statistics.etatpartenaire',
+                'uses' => 'CustomerController@etat'
+                ]);
+
+    });
 
 Route::group(['prefix' => '/partner', 'as' => 'partners.', 'middleware' => ["auth","roles"], "roles" => ["super_administrator"]], function () {
     Route::get('/', [
@@ -261,6 +282,7 @@ Route::group(['prefix' => '/subscription'], function () {
                     ]);
 
 
+
         Route::post('/storecustomer', [
             'as'=> 'subscription.storecustomer',
             'uses' => 'SubscriptionController@storecustomers'
@@ -321,6 +343,7 @@ Route::group(['prefix' => '/subscription'], function () {
 });
 
         //fin Liens Subscritpion
+//Liens Subscritpion
 
 //Liens Customers
 

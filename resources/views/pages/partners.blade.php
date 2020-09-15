@@ -94,7 +94,8 @@
                                     </table>
 
                                 </div>
-                                    <div class="tab-pane fade {{ isset($partner) ? 'show active' : ''}}" id="custom-content-above-other" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
+
+                                <div class="tab-pane fade {{ isset($partner) ? 'show active' : ''}}" id="custom-content-above-other" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
                                        @include('partials.form_partner')
 
                                 </div>

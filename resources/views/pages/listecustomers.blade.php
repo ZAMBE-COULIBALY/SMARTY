@@ -33,9 +33,6 @@
                                             <i class=" fa fa-edit"></i>
                                         </a>
 
-                                        <div class="col-lg-2 col-md-2 col-xs-2" style="margin-left: 50% ; margin-top:-3%">
-                                               <input type="text" Name="NOMPRENOM" id="myInput" class="form-control" placeholder="Rechecher un client !">
-                                        </div>
                                     </p>
 
                                     <hr>
