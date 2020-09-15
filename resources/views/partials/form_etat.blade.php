@@ -8,14 +8,14 @@
                 <div class="form-group col-md-3">
                     <div class="form-group">
                     <label>PDV</label>
-                    <select name="PDV" class="form-control select2bs4" style="width: 100%;">
+                    <select name="libellepdv" class="form-control select2bs4" style="width: 100%;">
 
-                        <option value={{$codePDV}}>{{$codePDV}}</option>
+                        <option value={{$Subscription['libellepdv']}}>{{$Subscription['libellepdv']}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="date_subscription">DATE DEBUT</label>
+                    <label for="date_deb">DATE DEBUT</label>
                     <div class="input-group">
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="date_subscription">DATE FIN</label>
+                    <label for="date_fin">DATE FIN</label>
                     <div class="input-group">
                         <div class="input-group-append">
                             <div class="input-group-text">

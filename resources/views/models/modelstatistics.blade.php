@@ -19,9 +19,9 @@
     </div>
 <div class="row">
     <div class="col-md-12">
-    <table  style="width: 1200px; margin-left:15%; font-size:10px; font-family: Arial, Helvetica, sans-serif;" >
+    <table  style="width: 1050px; font-size:10px; font-family: Arial, Helvetica, sans-serif;" >
         <thead>
-            <tr>
+            <tr >
                 <th>Contrat N°</th>
                 <th>Civilité</th>
                 <th>Noms & Prénoms</th>
@@ -30,29 +30,38 @@
                 <th>Contact 2</th>
                 <th>Lieu résidence</th>
                 <th>Equipement</th>
-                <th>Marque IMEI</th>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>IMEI</th>
                 <th>Date d&#039effet</th>
                 <th>Date de fin</th>
                 <th>Prix d&#039achat</th>
                 <th>SMARTY</th>
             </tr>
         </thead>
-        <tbody>
-            <td>0000444 </td>
-            <td></td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td></td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td></td>
-            <td> </td>
+        @foreach ($users as $item)
 
-        </tbody>
+
+            <tr>
+            <td> {{ $item->folder }}</td>
+            <td> {{ $item->gender }} </td>
+            <td> {{ $item->name }} {{ $item->first_name }} </td>
+            <td> {{ $item->birth_date }} </td>
+            <td> {{ $item->phone1 }} </td>
+            <td> {{ $item->phone2 }} </td>
+            <td> {{ $item->place_residence }}</td>
+            <td> {{ $item->equipment }} </td>
+            <td> {{ $item->mark }} </td>
+            <td> {{ $item->model}} </td>
+            <td> {{ $item->numberIMEI }} </td>
+            <td> {{ $item->date_subscription }}</td>
+            <td> </td>
+            <td> {{ $item->price }} </td>
+            <td> {{ $item->price* 0.10}} </td>
+
+        </tr>
+
+        @endforeach
     </table>
 </div>
 </div>

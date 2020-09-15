@@ -24,6 +24,7 @@ class CreateSubscriptionsTable extends Migration
             $table->decimal('price', 20, 2);
             $table->date('date_subscription');
             $table->foreignId('customer_id')->references('id')->on('customers');
+            $table->foreignId('codepdv')->references('code')->on('agencies');
             $table->timestamps();
 
 

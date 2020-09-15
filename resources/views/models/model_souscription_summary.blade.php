@@ -10,7 +10,7 @@
     <td> </td>
     <td style="text-align: center">
         CONTRAT N°:{{$Subscription['folder']}} <br>
-        PDV :{{$codePDV}}
+        PDV :{{$Subscription['libellepdv']}}
     </td>
 </tr>
     <tr>

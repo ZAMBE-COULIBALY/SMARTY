@@ -117,21 +117,21 @@ Route::get('/customers/{id}', [
 Route::group(['prefix' => '/statistics'], function () {
     Route::get('/', [
         'as'=> 'statistics.show',
-        'uses' => 'SubscriptionController@getstatistics'
+        'uses' => 'CustomerController@getstatistics'
         ]);
         Route::get('/PDF', [
             'as'=> 'statistics.etat',
-            'uses' => 'SubscriptionController@statisticsPDF'
+            'uses' => 'CustomerController@statisticsPDF'
             ]);
 
         Route::get('/EXCEL', [
             'as'=> 'statistics.excel',
-            'uses' => 'SubscriptionController@statisticsExcel'
+            'uses' => 'CustomerController@statisticsExcel'
             ]);
 
             Route::get('/etat', [
                 'as'=> 'statistics.etatpartenaire',
-                'uses' => 'SubscriptionController@etat'
+                'uses' => 'CustomerController@etat'
                 ]);
 
     });

@@ -142,10 +142,10 @@ class SubscriptionController extends Controller
 
         $modellibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id)->find($request->model);
         $modellibelle=$modellibelle['label'];
-       // var_dump($modellibelle);exit();
-        $codePDV = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
 
-        //
+        $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
+        $codepdv = Agency::Where("label",$libellepdv)->first()->code;
+//dd($codepdv);
         $validatedData = $request->validate([
             'code'=> ':subscriptions',
             'equipment'=> 'required:subscriptions',
@@ -166,6 +166,8 @@ class SubscriptionController extends Controller
                 'modellibelle' =>$modellibelle,
                 'marquelibelle' =>$marquelibelle,
                 'equipmentLibelle' =>$equipmentLibelle,
+                'libellepdv' =>$libellepdv,
+                'codepdv' =>$codepdv,
                 ]);
 
             $request->session()->put('Subscription',$Subscription);
@@ -177,7 +179,10 @@ class SubscriptionController extends Controller
                 'modellibelle' =>$modellibelle,
                 'marquelibelle' =>$marquelibelle,
                 'equipmentLibelle' =>$equipmentLibelle,
+                'libellepdv' =>$libellepdv,
+                'codepdv' =>$codepdv,
                 ]);
+
             $request->session()->put('Subscription', $Subscription)  ;
 
         }
@@ -224,14 +229,14 @@ class SubscriptionController extends Controller
 
         $Subscription = $request->session()->get('Subscription');
 
-$code =$Subscription['first_name'];
-$digits =strtoupper(substr($code,0, 3));
+        $code =$Subscription['first_name'];
+        $digits =strtoupper(substr($code,0, 3));
 
-$ma=1;
-$ma += Customer::max('id');
-$customers_id=$ma;
-$digits =$ma.''.$digits;
-$codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
+        $ma=1;
+        $ma += Customer::max('id');
+        $customers_id=$ma;
+        $digits =$ma.''.$digits;
+        $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
 //var_dump($codeok);exit();
         Customer::create([
             'code' =>$codeok,
@@ -260,6 +265,7 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
             'price' =>$Subscription['price'],
             'date_subscription' =>$Subscription['date_subscription'],
             'customer_id'=>$customers_id,
+            'codepdv' =>$Subscription['codepdv'],
         ]);
 
 
@@ -316,27 +322,6 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
 
     }
 
-    public function statisticsPDF(Request $request){
-
-        $Subscription = $request->session()->get('Subscription');
-        $pdf =  App::make('dompdf.wrapper');
-
-        $pdf-> loadView("models.modelstatistics", compact('Subscription'))->setPaper('a4', 'landscape');
-
-        return $pdf->download('statistics/0926558.pdf');
-
-    }
-
-    public function statisticsExcel(Request $request){
-
-        $Subscription = $request->session()->get('Subscription');
-        $xlsx =  App::make('dompdf.wrapper');
-
-        $xlsx-> loadView("models.modelstatistics", compact('Subscription'))->setPaper('a4', 'landscape');
-
-        return $xlsx->download('statistics/0926558.xlsx');
-
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -367,39 +352,16 @@ $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
 
     }
 
-    public function etat(Request $request){
-        //
-        $Subscription = $request->session()->get("Statistics");
-
-        $codePDV = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
-
-        return view("pages.etat", compact('codePDV'));
-    }
-
-public function getstatistics(Request $request){
-
-    $Subscription = $request->session()->get('Subscription');
-
-
-    $pdf =  App::make('dompdf.wrapper');
-
-    $pdf-> loadView("models.modelstatistics", compact('Subscription'))->setPaper('a4', 'landscape');
-
-    $pdf-> save(storage_path().'/app/public/statistics/statistics.pdf');
-
-
-    return view("pages.statistics", compact("Subscription"));
-}
     /**
      * Display the specified resource.
      *
      * @param  \App\Subscription  $subscription
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
         //
-        $subscription = Subscription::find($id);
+
 
         //return
     }
