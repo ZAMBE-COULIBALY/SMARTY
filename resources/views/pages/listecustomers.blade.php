@@ -47,7 +47,7 @@
                                         <th >TELEPHONE 2 </th>
                                         <th >GENRE</th>
                                         <th >DATE CREATION</th>
-                                        <th >Actions</th>
+                                        {{--  <th >Actions</th>  --}}
 
                                     </tr>
                                     </thead>
@@ -63,9 +63,9 @@
                                         <td>{{ $customers->created_at }}</td>
                                         <td>
                             <center>
-                                            <a href="{{ route('customers.create') }}"  class="btn btn-info btn-sm ">
+                                            {{--  <a href="{{ route('customers.create') }}"  class="btn btn-info btn-sm ">
                                                 <i class="fa fa-pencil-alt"></i>
-                                            </a>
+                                            </a>  --}}
                             </center>
                                         </td>
 
