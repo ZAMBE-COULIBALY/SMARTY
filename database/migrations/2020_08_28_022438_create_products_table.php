@@ -25,8 +25,8 @@ class CreateProductsTable extends Migration
             $table->integer('model_id');
             $table->json('props', 500);
             $table->integer("partner_id");
-
-            $table->timestamps();
+            $table->boolean("state");
+            $table->timeststate);
         });
     }
 
