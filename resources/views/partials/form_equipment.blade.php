@@ -62,12 +62,19 @@
                             <div class="form-group col-md-3">
                                 <label for="date_subscription">Date effet de la garantie</label>
                                 <div class="input-group">
+
                                     <div class="input-group-append">
                                         <div class="input-group-text">
                                             <span class="fas fa-user"></span>
                                         </div>
                                     </div>
-                                    <input type="date" class="form-control" name="date_subscription" id="date_subscription"  required autocomplete="date_subscription" >
+                                    <?php
+                                    $date= date_format(date_create(now()),'Y-m-d');
+
+                                    echo     "<input type='text' class='form-control' name='date_subscription' id='date_subscription' value=$date style='color: red'  readonly/>" ;
+
+                                    ?>
+
                                 </div>
                             </div>
                             <div class="form-group col-md-4">

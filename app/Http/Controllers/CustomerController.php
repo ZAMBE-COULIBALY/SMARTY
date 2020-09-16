@@ -81,7 +81,7 @@ public function getstatistics(Request $request){
 
     $pdf =  App::make('dompdf.wrapper');
 
-    $pdf-> loadView("models.modelstatistics", compact('Subscription','users','equipmentLibelle','marquelibelle','modellibelle'))->setPaper('a4', 'landscape');
+    $pdf-> loadView("models.modelstatistics", compact('Subscription','users'))->setPaper('a4', 'landscape');
 
     $pdf-> save(storage_path().'/app/public/statistics/statistics.pdf');
 

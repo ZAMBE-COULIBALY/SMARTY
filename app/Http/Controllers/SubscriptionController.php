@@ -19,6 +19,8 @@ use Illuminate\Support\Str;
 use App\Providers\AppServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\database\Query\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 use function GuzzleHttp\Promise\all;
@@ -36,7 +38,11 @@ class SubscriptionController extends Controller
     {
         //
 
-        $hsubscriptions= Subscription::all();
+        //$hsubscriptions= Subscription::all();
+        $hsubscriptions = DB::table('customers')
+        ->join('subscriptions', 'subscriptions.customer_id', '=', 'customers.id')
+        ->select('*')
+        ->get();
 
         $code = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->partner_id;
         $codepart=Partner::where("id",$code)->first()->code;
@@ -145,6 +151,7 @@ class SubscriptionController extends Controller
 
         $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
         $pdv_id = Agency::Where("label",$libellepdv)->first()->id;
+        $date_subscription= date_format(date_create(now()),'Y-m-d');
 //dd($codepdv);
         $validatedData = $request->validate([
                 'code'=> ':subscriptions',
@@ -155,7 +162,7 @@ class SubscriptionController extends Controller
                 'picture'=> 'required:subscriptions',
                 'price'=> 'required:subscriptions',
                 'premium'=> ':subscriptions',
-                'date_subscription'=> 'required:subscriptions',
+                'date_subscription'=> ':subscriptions',
                 'subscription_enddate'=> ':subscriptions',
                 'pdv_id'=> ':subscriptions',
                 'customer_id'=> ':subscriptions',
@@ -171,6 +178,7 @@ class SubscriptionController extends Controller
                 'equipmentLibelle' =>$equipmentLibelle,
                 'libellepdv' =>$libellepdv,
                 'pdv_id' =>$pdv_id,
+                'date_subscription' =>$date_subscription,
                 ]);
 
             $request->session()->put('Subscription',$Subscription);
@@ -184,6 +192,7 @@ class SubscriptionController extends Controller
                 'equipmentLibelle' =>$equipmentLibelle,
                 'libellepdv' =>$libellepdv,
                 'pdv_id' =>$pdv_id,
+                'date_subscription' =>$date_subscription,
                 ]);
 
             $request->session()->put('Subscription', $Subscription)  ;
@@ -255,17 +264,17 @@ class SubscriptionController extends Controller
 
         $Subscription = $request->session()->get('Subscription');
         //dd($Subscription);
-        $code =$Subscription['first_name'];
-        $digits =strtoupper(substr($code,0, 3));
+       /*  $code =$Subscription['first_name'];
+        $digits =strtoupper(substr($code,0, 3)); */
 
         $ma=1;
         $ma += Customer::max('id');
         $customers_id=$ma;
-        $digits =$ma.''.$digits;
-        $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
+       /*  $digits =$ma.''.$digits;
+        $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH); */
 //var_dump($codeok);exit();
         Customer::create([
-            'code' =>$codeok,
+            'code' =>$Subscription['folder'],
             'name' =>$Subscription['name'],
            'first_name' =>$Subscription['first_name'],
            'birth_date' =>$Subscription['birth_date'],
@@ -282,7 +291,7 @@ class SubscriptionController extends Controller
         ]);
 
         Subscription::create([
-            'code'=>$codeok,
+            'code'=>$Subscription['folder'],
             'equipment' =>$Subscription['equipment'],
             'model' =>$Subscription['model'],
             'mark' =>$Subscription['mark'],
@@ -305,7 +314,7 @@ class SubscriptionController extends Controller
         $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
 
 
-        return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$codeok. ') effectuée avec succès.');
+        return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$Subscription['folder']. ') effectuée avec succès.');
     }
 
 
