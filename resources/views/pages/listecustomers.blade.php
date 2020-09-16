@@ -28,10 +28,10 @@
                                 <div class="tab-custom-content">
                                     <p class="lead mb-0">Liste des clients |
 
-                                        <a href="{{ route('subscription.customer') }}"  class="btn btn-success btn-sm">
+                                        {{--  <a href="{{ route('subscription.customer') }}"  class="btn btn-success btn-sm">
                                             NOUVEAU
                                             <i class=" fa fa-edit"></i>
-                                        </a>
+                                        </a>  --}}
 
                                     </p>
 
@@ -61,13 +61,13 @@
                                         <td>{{ $customers->phone2 }}</td>
                                         <td>{{ $customers->gender }}</td>
                                         <td>{{ $customers->created_at }}</td>
-                                        <td>
+                                       {{--   <td>
                             <center>
-                                            {{--  <a href="{{ route('customers.create') }}"  class="btn btn-info btn-sm ">
+                                            <a href="{{ route('customers.create') }}"  class="btn btn-info btn-sm ">
                                                 <i class="fa fa-pencil-alt"></i>
-                                            </a>  --}}
+                                            </a>
                             </center>
-                                        </td>
+                                        </td> --}}
 
                                     </tbody>
                                      @endforeach
