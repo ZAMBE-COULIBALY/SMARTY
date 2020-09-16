@@ -76,9 +76,9 @@ menu-open active
                                             <tr>
                                                 <td>{{ $item->code }}</td>
                                                 <td>{{$item->name}}</td>
-                                                <td>{{$item->type}}</td>
-                                                <td>{{$item->label}}</td>
-                                                <td>{{$item->model}}</td>
+                                                <td>{{$item->type->label}}</td>
+                                                <td>{{$item->label->label}}</td>
+                                                <td>{{$item->model->label}}</td>
                                                 <td>{{  ($item->state == 1) ? 'Actif' : 'Inactif'}}</td>
                                                 <td>
                                                     <a href="{{route('products.delete',$item->id) }}"  class="btn btn-danger btn-sm">

@@ -19,11 +19,11 @@ class CreateProductsTable extends Migration
 
             $table->string('code', 100);
             $table->string('name', 100);
-            $table->string('type', 100);
-            $table->string('category', 100);
-            $table->string('label', 100);
-            $table->string('model', 100);
-            $table->json('props', 100);
+            $table->integer('type_id');
+            $table->integer('category_id');
+            $table->integer('label_id');
+            $table->integer('model_id');
+            $table->json('props', 500);
             $table->integer("partner_id");
 
             $table->timestamps();
