@@ -49,51 +49,43 @@ class CustomerController extends Controller
 
         $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
         $codepdv = Agency::Where("label",$libellepdv)->first()->code;
+        $pdv_id = Agency::Where("label",$libellepdv)->first()->id;
+
         $Subscription = new \App\Customer();
         $Subscription->fill([
             'libellepdv' =>$libellepdv,
             'codepdv' =>$codepdv,
+            'pdv_id' =>$pdv_id,
             'date_deb' =>'date_deb',
             'date_fin' =>'date_fin',
             ]);
 //dd($Subscription);
             $request->session()->put('Subscription', $Subscription);
 
-        return view("pages.etat", compact('Subscription',$codepdv));
+        return view("pages.etat", compact('Subscription'));
     }
 //
 public function getstatistics(Request $request){
     $Subscription = $request->session()->get('Subscription');
     $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
-    $codepdv = Agency::Where("label",$libellepdv)->first()->code;
+    $pdv_id = Agency::Where("label",$libellepdv)->first()->id;
+
+
     $users = DB::table('customers')
             ->join('subscriptions', 'subscriptions.customer_id', '=', 'customers.id')
-            ->where('subscriptions.codepdv','=',$codepdv)
+            ->where('subscriptions.pdv_id','=',$pdv_id)
             ->select('*')
             ->get();
-    //dd($users->name->fisrt());
-           /*  $equipmentLibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->find($users->equipment);
-            $equipmentLibelle=$equipmentLibelle['label'];
 
-    //dd($users);
-
-            $marquelibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id)->find($users->mark);
-            $marquelibelle=$marquelibelle['label'];
-
-            $modellibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id)->find($users->model);
-            $modellibelle=$modellibelle['label'];
-
-            $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
-            $codepdv = Agency::Where("label",$libellepdv)->first()->code; */
         $request->session()->put('Subscription', $users);
 
     $pdf =  App::make('dompdf.wrapper');
 
-    $pdf-> loadView("models.modelstatistics", compact('Subscription','users'))->setPaper('a4', 'landscape');
+    $pdf-> loadView("models.modelstatistics", compact('Subscription','users','equipmentLibelle','marquelibelle','modellibelle'))->setPaper('a4', 'landscape');
 
     $pdf-> save(storage_path().'/app/public/statistics/statistics.pdf');
 
-    return view("pages.statistics", compact("Subscription",'users'));
+    return view("pages.statistics", compact("Subscription",'users','equipmentLibelle','marquelibelle','modellibelle'));
 }
 
 //

@@ -144,18 +144,21 @@ class SubscriptionController extends Controller
         $modellibelle=$modellibelle['label'];
 
         $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
-        $codepdv = Agency::Where("label",$libellepdv)->first()->code;
+        $pdv_id = Agency::Where("label",$libellepdv)->first()->id;
 //dd($codepdv);
         $validatedData = $request->validate([
-            'code'=> ':subscriptions',
-            'equipment'=> 'required:subscriptions',
-            'model'=> 'required:subscriptions',
-            'mark'=> 'required:subscriptions',
-            'numberIMEI'=> 'required|unique:subscriptions',
-            'picture'=> 'required:subscriptions',
-            'price'=> 'required:subscriptions',
-             'date_subscription'=> 'required:subscriptions',
-             'customer_id'=> ':subscriptions',
+                'code'=> ':subscriptions',
+                'equipment'=> 'required:subscriptions',
+                'model'=> 'required:subscriptions',
+                'mark'=> 'required:subscriptions',
+                'numberIMEI'=> 'required|unique:subscriptions',
+                'picture'=> 'required:subscriptions',
+                'price'=> 'required:subscriptions',
+                'premium'=> ':subscriptions',
+                'date_subscription'=> 'required:subscriptions',
+                'subscription_enddate'=> ':subscriptions',
+                'pdv_id'=> ':subscriptions',
+                'customer_id'=> ':subscriptions',
 
         ]);
 
@@ -167,7 +170,7 @@ class SubscriptionController extends Controller
                 'marquelibelle' =>$marquelibelle,
                 'equipmentLibelle' =>$equipmentLibelle,
                 'libellepdv' =>$libellepdv,
-                'codepdv' =>$codepdv,
+                'pdv_id' =>$pdv_id,
                 ]);
 
             $request->session()->put('Subscription',$Subscription);
@@ -180,19 +183,42 @@ class SubscriptionController extends Controller
                 'marquelibelle' =>$marquelibelle,
                 'equipmentLibelle' =>$equipmentLibelle,
                 'libellepdv' =>$libellepdv,
-                'codepdv' =>$codepdv,
+                'pdv_id' =>$pdv_id,
                 ]);
 
             $request->session()->put('Subscription', $Subscription)  ;
 
         }
 
+        $madate= $Subscription['date_subscription'];
+        $premium = $Subscription['price']*0.10;
+        list($annee,$mois,$jour)=sscanf($madate,"%d-%d-%d");
+        $annee+=1;
+
+        if (strlen($mois)===1) {
+            $mois ='0'.$mois;
+        }else {
+            $mois =$mois;
+        }
+        if (strlen($jour)===1){
+            $jour ='0'.$jour;
+        }else {
+            $jour =$jour;
+        }
+        $subscription_enddate=$annee.'-'.$mois.'-'.$jour;
+
+        $Subscription->fill([
+            'subscription_enddate' =>$subscription_enddate,
+            'premium' =>$premium,
+            ]);
+
+        $request->session()->put('Subscription', $Subscription)  ;
     //proforma document creation
 
 
         $pdf =  App::make('dompdf.wrapper');
 
-       $pdf-> loadView("models.model_souscription_summary", compact('Subscription','codePDV'));
+       $pdf-> loadView("models.model_souscription_summary", compact('Subscription'));
 
        $pdf-> save(storage_path().'/app/public/invoices/'.$Subscription['first_name'].'.pdf');
 
@@ -228,7 +254,7 @@ class SubscriptionController extends Controller
     {
 
         $Subscription = $request->session()->get('Subscription');
-
+        //dd($Subscription);
         $code =$Subscription['first_name'];
         $digits =strtoupper(substr($code,0, 3));
 
@@ -263,9 +289,11 @@ class SubscriptionController extends Controller
             'picture' =>$Subscription['picture'],
             'numberIMEI' =>$Subscription['numberIMEI'],
             'price' =>$Subscription['price'],
+            'premium' =>$Subscription['premium'],
             'date_subscription' =>$Subscription['date_subscription'],
+            'subscription_enddate' =>$Subscription['subscription_enddate'],
             'customer_id'=>$customers_id,
-            'codepdv' =>$Subscription['codepdv'],
+            'pdv_id' =>$Subscription['pdv_id'],
         ]);
 
 
