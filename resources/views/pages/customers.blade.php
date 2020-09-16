@@ -44,7 +44,7 @@
                                         <tr>
                                             <th >CODE</th>
                                             <th >CLIENT</th>
-                                            <th >ENGIN</th>
+                                            <th >IDENTIFIANT EQUIPEMENT</th>
                                             <th >PERIODE D&#039EFFET</th>
                                             <th >ACTION</th>
                                         </tr>
@@ -71,9 +71,9 @@
 
                                     <tbody class="{{$color}}";>
                                         <td> {{ $subscription->code }} </td>
-                                        <td>{{ $subscription->customer_id }} </td>
+                                        <td>{{ $subscription->name }} {{ $subscription->first_name }} </td>
                                         <td>{{ $subscription->numberIMEI }} </td>
-                                        <td>{{ $subscription->date_subscription }} </td>
+                                        <td>{{ $subscription->date_subscription }} / {{ $subscription->subscription_enddate }} </td>
                                         <td>
                                             <center>
                                                 <a href="#"  class="btn btn-info btn-sm ">

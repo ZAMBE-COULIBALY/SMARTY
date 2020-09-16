@@ -98,7 +98,7 @@ $new_date=$annee.'-'.$mois.'-'.$jour;
 ?>
     <tr>
         <td>Date fin de garantie :</td>
-        <td><?php echo $new_date; ?></td>
+        <td><?php echo $Subscription['subscription_enddate'] ;?></td>
     </tr>
     <tr>
         <td>Valeur Achat :</td>
@@ -131,7 +131,7 @@ du Code CIMA, la prise d&#039effet de la police est subordonn√©e au paiement pr√
        <td> <b>
     VOTRE PRIME :</b>
         </td>
-        <td><b> <?php echo $Subscription['price']*0.10 .' FCFA' ;?> </b></td>
+        <td><b> <?php echo $Subscription['premium'].' FCFA' ;?> </b></td>
 
     </tr>
 

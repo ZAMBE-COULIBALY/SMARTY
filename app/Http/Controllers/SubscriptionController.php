@@ -19,6 +19,8 @@ use Illuminate\Support\Str;
 use App\Providers\AppServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\database\Query\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 use function GuzzleHttp\Promise\all;
@@ -36,7 +38,11 @@ class SubscriptionController extends Controller
     {
         //
 
-        $hsubscriptions= Subscription::all();
+        //$hsubscriptions= Subscription::all();
+        $hsubscriptions = DB::table('customers')
+        ->join('subscriptions', 'subscriptions.customer_id', '=', 'customers.id')
+        ->select('*')
+        ->get();
 
         $code = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->partner_id;
         $codepart=Partner::where("id",$code)->first()->code;
@@ -144,18 +150,22 @@ class SubscriptionController extends Controller
         $modellibelle=$modellibelle['label'];
 
         $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
-        $codepdv = Agency::Where("label",$libellepdv)->first()->code;
+        $pdv_id = Agency::Where("label",$libellepdv)->first()->id;
+        $date_subscription= date_format(date_create(now()),'Y-m-d');
 //dd($codepdv);
         $validatedData = $request->validate([
-            'code'=> ':subscriptions',
-            'equipment'=> 'required:subscriptions',
-            'model'=> 'required:subscriptions',
-            'mark'=> 'required:subscriptions',
-            'numberIMEI'=> 'required|unique:subscriptions',
-            'picture'=> 'required:subscriptions',
-            'price'=> 'required:subscriptions',
-             'date_subscription'=> 'required:subscriptions',
-             'customer_id'=> ':subscriptions',
+                'code'=> ':subscriptions',
+                'equipment'=> 'required:subscriptions',
+                'model'=> 'required:subscriptions',
+                'mark'=> 'required:subscriptions',
+                'numberIMEI'=> 'required|unique:subscriptions',
+                'picture'=> 'required:subscriptions',
+                'price'=> 'required:subscriptions',
+                'premium'=> ':subscriptions',
+                'date_subscription'=> ':subscriptions',
+                'subscription_enddate'=> ':subscriptions',
+                'pdv_id'=> ':subscriptions',
+                'customer_id'=> ':subscriptions',
 
         ]);
 
@@ -167,7 +177,8 @@ class SubscriptionController extends Controller
                 'marquelibelle' =>$marquelibelle,
                 'equipmentLibelle' =>$equipmentLibelle,
                 'libellepdv' =>$libellepdv,
-                'codepdv' =>$codepdv,
+                'pdv_id' =>$pdv_id,
+                'date_subscription' =>$date_subscription,
                 ]);
 
             $request->session()->put('Subscription',$Subscription);
@@ -180,19 +191,43 @@ class SubscriptionController extends Controller
                 'marquelibelle' =>$marquelibelle,
                 'equipmentLibelle' =>$equipmentLibelle,
                 'libellepdv' =>$libellepdv,
-                'codepdv' =>$codepdv,
+                'pdv_id' =>$pdv_id,
+                'date_subscription' =>$date_subscription,
                 ]);
 
             $request->session()->put('Subscription', $Subscription)  ;
 
         }
 
+        $madate= $Subscription['date_subscription'];
+        $premium = $Subscription['price']*0.10;
+        list($annee,$mois,$jour)=sscanf($madate,"%d-%d-%d");
+        $annee+=1;
+
+        if (strlen($mois)===1) {
+            $mois ='0'.$mois;
+        }else {
+            $mois =$mois;
+        }
+        if (strlen($jour)===1){
+            $jour ='0'.$jour;
+        }else {
+            $jour =$jour;
+        }
+        $subscription_enddate=$annee.'-'.$mois.'-'.$jour;
+
+        $Subscription->fill([
+            'subscription_enddate' =>$subscription_enddate,
+            'premium' =>$premium,
+            ]);
+
+        $request->session()->put('Subscription', $Subscription)  ;
     //proforma document creation
 
 
         $pdf =  App::make('dompdf.wrapper');
 
-       $pdf-> loadView("models.model_souscription_summary", compact('Subscription','codePDV'));
+       $pdf-> loadView("models.model_souscription_summary", compact('Subscription'));
 
        $pdf-> save(storage_path().'/app/public/invoices/'.$Subscription['first_name'].'.pdf');
 
@@ -228,18 +263,18 @@ class SubscriptionController extends Controller
     {
 
         $Subscription = $request->session()->get('Subscription');
-
-        $code =$Subscription['first_name'];
-        $digits =strtoupper(substr($code,0, 3));
+        //dd($Subscription);
+       /*  $code =$Subscription['first_name'];
+        $digits =strtoupper(substr($code,0, 3)); */
 
         $ma=1;
         $ma += Customer::max('id');
         $customers_id=$ma;
-        $digits =$ma.''.$digits;
-        $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH);
+       /*  $digits =$ma.''.$digits;
+        $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH); */
 //var_dump($codeok);exit();
         Customer::create([
-            'code' =>$codeok,
+            'code' =>$Subscription['folder'],
             'name' =>$Subscription['name'],
            'first_name' =>$Subscription['first_name'],
            'birth_date' =>$Subscription['birth_date'],
@@ -256,16 +291,18 @@ class SubscriptionController extends Controller
         ]);
 
         Subscription::create([
-            'code'=>$codeok,
+            'code'=>$Subscription['folder'],
             'equipment' =>$Subscription['equipment'],
             'model' =>$Subscription['model'],
             'mark' =>$Subscription['mark'],
             'picture' =>$Subscription['picture'],
             'numberIMEI' =>$Subscription['numberIMEI'],
             'price' =>$Subscription['price'],
+            'premium' =>$Subscription['premium'],
             'date_subscription' =>$Subscription['date_subscription'],
+            'subscription_enddate' =>$Subscription['subscription_enddate'],
             'customer_id'=>$customers_id,
-            'codepdv' =>$Subscription['codepdv'],
+            'pdv_id' =>$Subscription['pdv_id'],
         ]);
 
 
@@ -277,7 +314,7 @@ class SubscriptionController extends Controller
         $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
 
 
-        return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$codeok. ') effectuée avec succès.');
+        return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$Subscription['folder']. ') effectuée avec succès.');
     }
 
 

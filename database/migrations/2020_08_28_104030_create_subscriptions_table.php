@@ -22,9 +22,11 @@ class CreateSubscriptionsTable extends Migration
             $table->string('picture')->nullable();
             $table->string('numberIMEI')->unique();
             $table->decimal('price', 20, 2);
+            $table->decimal('premium', 20, 2);
             $table->date('date_subscription');
+            $table->date('subscription_enddate');
             $table->foreignId('customer_id')->references('id')->on('customers');
-            // $table->foreignId('codepdv')->references('code')->on('agencies');
+            $table->foreignId('pdv_id')->references('id')->on('agencies');
             $table->timestamps();
 
 

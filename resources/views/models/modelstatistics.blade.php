@@ -55,9 +55,9 @@
             <td> {{ $item->model}} </td>
             <td> {{ $item->numberIMEI }} </td>
             <td> {{ $item->date_subscription }}</td>
-            <td> </td>
+            <td> {{ $item->subscription_enddate }}</td>
             <td> {{ $item->price }} </td>
-            <td> {{ $item->price* 0.10}} </td>
+            <td> {{ $item->premium}} </td>
 
         </tr>
 
