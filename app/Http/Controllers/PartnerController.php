@@ -146,7 +146,8 @@ class PartnerController extends Controller
         $parametersvalid = $request->validate([
             'label' => [
                 'required','max:255', Rule::notIn(Partner::all()->except($oldpartner->id)->pluck("label"))],
-            'email' => ['required','email', Rule::notIn(Partner::all()->except($oldpartner->id)->pluck("email"))],
+                'email' => 'required|email',
+            // 'email' => ['required','email', Rule::notIn(Partner::all()->except($oldpartner->id)->pluck("email"))],
             'contact' => 'required'
         ]);
 

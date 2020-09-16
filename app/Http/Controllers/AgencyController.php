@@ -106,6 +106,8 @@ class AgencyController extends Controller
 
         $agencyChiefUser->password = Hash::make($pass);
         $agencyChiefUser->slug = $agencyChief->slug;
+        $agencyChiefUser->partner_id = $agency->partner_id;
+
         $agencyChiefUser->save();
         $roles = ["agent_chief"];
         foreach ($roles as $role):
