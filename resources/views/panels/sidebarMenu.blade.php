@@ -69,7 +69,7 @@
 
   {{-- MODULE OPERATION --}}
 
-
+  @if (Auth::user()->hasAnyRole(['agent','agent_chief']))
     <li class="nav-item has-treeview @yield('operation')">
       <a href="#" class="nav-link @yield('operation')">
         <i class="nav-icon fas fa-copy"></i>
@@ -106,7 +106,7 @@
       </ul>
     </li>
  {{-- FIN MODULE OPERATION --}}
-
+@endif
   </ul>
 </nav>
 <!-- /.sidebar-menu -->
