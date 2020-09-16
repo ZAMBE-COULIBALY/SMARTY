@@ -38,6 +38,8 @@ class ProductController extends Controller
 
         }
 
+        // dd($products->first()->category);
+
         $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
         $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
         $labels = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id);
@@ -75,7 +77,7 @@ class ProductController extends Controller
 
         if (null !== Vocabulary::all()->where("id",$parameters["category"])->first())  {
             # code...
-             $product->category = $parameters["category"] ;
+             $product->category_id = $parameters["category"] ;
         } else {
             # code...
             $category = new Vocabulary();
@@ -84,49 +86,49 @@ class ProductController extends Controller
             $category->type_id = VocabularyType::where("code","PDT-TYP")->first()->id;
             $category->parent = 0;
             $category->save();
-            $product->category = $category->id;
+            $product->category_id = $category->id;
         }
 
         if (null !== Vocabulary::all()->where("id",$parameters["type"])->first())  {
             # code...
-             $product->type = $parameters["type"] ;
+             $product->type_id = $parameters["type"] ;
         } else {
             # code...
             $type = new Vocabulary();
             $type->code = Str::random(5);
             $type->label = $parameters["type"];
             $type->type_id = VocabularyType::where("code","PDT-KIND")->first()->id;
-            $type->parent = $product->category;
+            $type->parent = $product->category_id;
             $type->save();
-            $product->type = $type->id;
+            $product->type_id = $type->id;
         }
 
         if (null !== Vocabulary::all()->where("id",$parameters["label"])->first())  {
             # code...
-             $product->label = $parameters["label"] ;
+             $product->label_id = $parameters["label"] ;
         } else {
             # code...
             $label = new Vocabulary();
             $label->code = Str::random(5);
             $label->label = $parameters["label"];
             $label->type_id = VocabularyType::where("code","PDT-LBL")->first()->id;
-            $label->parent = $product->type;
+            $label->parent = $product->type_id;
             $label->save();
-            $product->label = $label->id;
+            $product->label_id = $label->id;
         }
 
         if (null !== Vocabulary::all()->where("id",$parameters["model"])->first())  {
             # code...
-             $product->model = $parameters["model"] ;
+             $product->model_id = $parameters["model"] ;
         } else {
             # code...
             $model = new Vocabulary();
             $model->code = Str::random(5);
             $model->label = $parameters["model"];
             $model->type_id = VocabularyType::where("code","PDT-MDL")->first()->id;
-            $model->parent = $product->label;
+            $model->parent = $product->label_id;
             $model->save();
-            $product->model = $model->id;
+            $product->model_id = $model->id;
         }
 
         $usr = User::find(Auth::user()->id);
@@ -139,6 +141,8 @@ class ProductController extends Controller
 
         }
         $product->props = \json_encode([]);
+        $product->state = isset($parameters['state']) ? 1 : 0 ;
+
         $product->save();
 
         return  redirect()->route('products.list');

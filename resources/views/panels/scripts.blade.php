@@ -266,7 +266,10 @@ jQuery(document).ready(function(){
                 "responsive": true,
               "autoWidth": false,
             })
-
+            $('#productlist').DataTable({
+                "responsive": true,
+              "autoWidth": false,
+            })
 
         })
         </script>
