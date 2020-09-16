@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\customer;
+use App\Customer;
 use Illuminate\Http\Request;
 use League\CommonMark\Inline\Element\Code;
 use Illuminate\Support\Facades\DB;
