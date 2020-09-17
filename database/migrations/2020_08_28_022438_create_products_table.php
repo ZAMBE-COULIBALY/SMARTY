@@ -26,7 +26,8 @@ class CreateProductsTable extends Migration
             $table->json('props', 500);
             $table->integer("partner_id");
             $table->boolean("state");
-            $table->timeststate);
+
+            $table->timeststate();
         });
     }
 
