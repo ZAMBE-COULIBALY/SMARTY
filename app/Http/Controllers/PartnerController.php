@@ -96,7 +96,7 @@ class PartnerController extends Controller
             $partnerManagerUser->roles()->attach(Role::where('slug',$role)->first());
         endforeach;
         $partners = Partner::all();
-
+//dd($pass);
       Mail::to($partner->email,$partner->label." Manager")
 
       ->send(new newPartner($partner,$partnerManager,$pass))  ;

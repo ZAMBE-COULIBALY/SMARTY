@@ -23,5 +23,12 @@ class Agent extends Model
     {
         return $this->hasOne('App\User','username','username');
     }
+
+    public function subscriptions()
+    {
+        # code...
+
+        return $this->hasMany('App\Subscription');
+    }
 }
 
