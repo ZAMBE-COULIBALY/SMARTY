@@ -37,7 +37,7 @@ menu-open active
                                                             <td> </td>
                                                             <td style="text-align: center">
                                                                 CONTRAT N°:{{$item->folder}} <br>
-                                                                PDV :{{$item->pdv_id}}
+                                                                PDV :{{$libellepdv}}
                                                             </td>
                                                         </tr>
                                                         <tr >

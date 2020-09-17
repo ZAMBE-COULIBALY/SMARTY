@@ -46,9 +46,9 @@ class CustomerController extends Controller
 
     public function etat(Request $request){
         //
-
         $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
         $codepdv = Agency::Where("label",$libellepdv)->first()->code;
+        $agent_id =Agent::where("username","=",Auth()->user()->username)->first()->id;
         $pdv_id = Agency::Where("label",$libellepdv)->first()->id;
 
         $Subscription = new \App\Customer();
@@ -56,6 +56,7 @@ class CustomerController extends Controller
             'libellepdv' =>$libellepdv,
             'codepdv' =>$codepdv,
             'pdv_id' =>$pdv_id,
+            'agent_id' =>$agent_id,
             'date_deb' =>'date_deb',
             'date_fin' =>'date_fin',
             ]);
@@ -69,11 +70,12 @@ public function getstatistics(Request $request){
     $Subscription = $request->session()->get('Subscription');
     $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
     $pdv_id = Agency::Where("label",$libellepdv)->first()->id;
+    $agent_id =Agent::where("username","=",Auth()->user()->username)->first()->id;
 
 
     $users = DB::table('customers')
             ->join('subscriptions', 'subscriptions.customer_id', '=', 'customers.id')
-            ->where('subscriptions.pdv_id','=',$pdv_id)
+            ->where('subscriptions.agent_id','=',$agent_id)
             ->select('*')
             ->get();
 

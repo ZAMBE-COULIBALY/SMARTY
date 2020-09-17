@@ -3,12 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Sinister;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\database\Query\Builder;
 use App\User;
 use App\Customer;
 use App\Subscription;
+use App\Agency;
+use App\Agent;
+use App\payments;
+use App\Manager;
+use App\Partner;
+use App\Product;
+use App\Role;
+use App\Vocabulary;
+use App\VocabularyType;
 use Illuminate\Support\Facades\Input;
 
 class SinisterController extends Controller
@@ -35,30 +45,34 @@ class SinisterController extends Controller
     public function statment(Request $request)
     {
         //
+        $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
+
         $validatedData = $request->validate([
             'folder'=> ':sinisters',
+
         ]);
 
         $Subscription = new \App\Sinister();
         $Subscription->fill( $validatedData);
 
-        $request->session()->put('Subscription', $Subscription);
+        $request->session()->put('Subscription', $Subscription,$libellepdv);
         $folder=$Subscription['folder'];
         $phone1=$Subscription['folder'];
         $numberIMEI=$Subscription['folder'];
-//dd($phone1);
-         //$resultat = Subscription::where('code','=',$folder)->get();
+
          $resultat = DB::table('customers')
          ->join('subscriptions', 'subscriptions.customer_id', '=', 'customers.id')
          ->where('subscriptions.code','=',$folder)->orWhere('subscriptions.numberIMEI','=',$numberIMEI)
          ->orWhere('customers.phone1','=',$phone1)
          ->select('*')
          ->get();
-        //dd($resultat);
+         $usr = User::find(Auth::user()->id);
+
+         $product =Product::all()->where("partner_id",$usr->partner_id);
 
         $request->session()->put('Subscription', $resultat);
         if(count($resultat) > 0)
-            return view('pages.detailSearch',compact('Subscription',"resultat"));
+            return view('pages.detailSearch',compact('Subscription',"resultat", 'libellepdv','product'));
         else
 
             return view ('pages.detailSearch',compact('Subscription',"resultat"))->withMessage('error','Numéro introuvable. Recherchez un autre dossier !');

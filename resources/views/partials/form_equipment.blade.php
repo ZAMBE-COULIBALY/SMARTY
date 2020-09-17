@@ -77,6 +77,39 @@
 
                                 </div>
                             </div>
+                            <div class="form-group col-md-3">
+                                <label for="subscription_enddate">Date fin de la garantie</label>
+                                <div class="input-group">
+
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fas fa-user"></span>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    $date= date_format(date_create(now()),'Y-m-d');
+                                    $madate=  $date;
+
+                                    list($annee,$mois,$jour)=sscanf($madate,"%d-%d-%d");
+                                    $annee+=1;
+                                    if (strlen($mois)===1) {
+                                        $mois ='0'.$mois;
+                                    }else {
+                                        $mois =$mois;
+                                    }
+                                    if (strlen($jour)===1){
+                                        $jour ='0'.$jour;
+                                    }else {
+                                        $jour =$jour;
+                                    }
+                                    $subscription_enddate=$annee.'-'.$mois.'-'.$jour;
+
+                                    echo     "<input type='text' class='form-control' name='subscription_enddate' id='subscription_enddate' value=$subscription_enddate style='color: red'  readonly/>" ;
+
+                                    ?>
+
+                                </div>
+                            </div>
                             <div class="form-group col-md-4">
                                 <label for="picture">Photo équipement</label>
                                 <div class="input-group">
@@ -85,12 +118,10 @@
                                             <span class="fas fa-edit"></span>
                                         </div>
                                     </div>
-                                    <input type="file" class="form-control " name="picture" id="picture"  >
+                                    <input type="file" class="form-control " name="picture" id="picture">
                                 </div>
                             </div>
-                            <div class="form-group col-md-3">
-                                <a class="btn btn-success" href="{{ route('subscription.getequipment') }}">Ajouter un autre équipement</a>
-                            </div>
+
                             <div class="form-group col-md-9"></div>
                             <div class="form-group col-md-12">
                                 <hr>
