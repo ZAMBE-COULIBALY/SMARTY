@@ -27,7 +27,7 @@ class CreateProductsTable extends Migration
             $table->integer("partner_id");
             $table->boolean("state");
 
-            $table->timestamp();
+            $table->timestamps();
         });
     }
 
