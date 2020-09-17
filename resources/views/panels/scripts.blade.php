@@ -129,17 +129,17 @@ jQuery(document).ready(function(){
 
 
 
-      if(''){
-        toastr.success('');
-        ;
+      if('{{Session::has("success")}}'){
+        toastr.success('{{Session::get("success")}}');
+        {{Session::forget("success")}};
       }
-      if(''){
-        toastr.warning('');
-        ;
+      if('{{Session::has("warning")}}'){
+        toastr.warning('{{Session::get("warning")}}');
+        {{Session::forget("warning")}};
       }
-      if(''){
-        toastr.error('');
-        ;
+      if('{{Session::has("error")}}'){
+        toastr.error('{{Session::get("error")}}');
+        {{Session::forget("error")}};
       }
 
 
