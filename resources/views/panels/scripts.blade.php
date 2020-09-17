@@ -54,6 +54,7 @@
 <script src={{ asset('plugins/toastr/toastr.min.js') }}></script>
 <!-- bs-custom-file-input -->
 <script src="../../plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 {{--  <!-- editor -->
 <link href="summernote.css" rel="stylesheet">
 <script src="summernote.js"></script>  --}}

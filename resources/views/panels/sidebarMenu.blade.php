@@ -91,18 +91,13 @@
               <p>Statistiques</p>
             </a>
           </li>
-        {{-- <li class="nav-item">
-          <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+        <li class="nav-item">
+          <a href="{{ route('sinister.search') }}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Sinistres</p>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="pages/layout/boxed.html" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Statistiques</p>
-          </a>
-        </li> --}}
+
       </ul>
     </li>
  {{-- FIN MODULE OPERATION --}}
