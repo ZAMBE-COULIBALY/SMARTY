@@ -60,10 +60,10 @@ class SubscriptionController extends Controller
         }
 
         $madate=$jour.$mois.$annee;
-
-        $ma=1;
-        $ma += Customer::max('id');
-        $numdossier =str_pad($codepart.$madate.$ma, 16, "0", STR_PAD_LEFT);
+        $dat= date_format(date_create(now()),'Y-m-d');
+        $partner = Agent::where("username","=",Auth()->user()->username)->first()->agency->partner;
+        $subscription = Subscription::all()->whereIn('agent_id',Agent::all()->whereIn('agency_id',Agency::all()->where('partner_id', '=',$partner->id)->pluck('id'))->pluck('id'))->where('date_subscription','=',$dat)->count();
+        $numdossier =$codepart.$madate.str_pad($subscription+1, 5, "0", STR_PAD_LEFT);
 
         $Subscription = new \App\Subscription();
         $Subscription->fill(['folder' =>$numdossier]);
@@ -149,6 +149,7 @@ class SubscriptionController extends Controller
         $modellibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id)->find($request->model);
         $modellibelle=$modellibelle['label'];
 
+        $agent_id = Agent::where("username","=",Auth()->user()->username)->first()->id;
         $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
         $pdv_id = Agency::Where("label",$libellepdv)->first()->id;
         $date_subscription= date_format(date_create(now()),'Y-m-d');
@@ -159,12 +160,12 @@ class SubscriptionController extends Controller
                 'model'=> 'required:subscriptions',
                 'mark'=> 'required:subscriptions',
                 'numberIMEI'=> 'required|unique:subscriptions',
-                'picture'=> 'required:subscriptions',
+                'picture'=> ':subscriptions',
                 'price'=> 'required:subscriptions',
                 'premium'=> ':subscriptions',
                 'date_subscription'=> ':subscriptions',
                 'subscription_enddate'=> ':subscriptions',
-                'pdv_id'=> ':subscriptions',
+                'agent_id'=> ':subscriptions',
                 'customer_id'=> ':subscriptions',
 
         ]);
@@ -178,6 +179,7 @@ class SubscriptionController extends Controller
                 'equipmentLibelle' =>$equipmentLibelle,
                 'libellepdv' =>$libellepdv,
                 'pdv_id' =>$pdv_id,
+                'agent_id' =>$agent_id,
                 'date_subscription' =>$date_subscription,
                 ]);
 
@@ -191,6 +193,7 @@ class SubscriptionController extends Controller
                 'marquelibelle' =>$marquelibelle,
                 'equipmentLibelle' =>$equipmentLibelle,
                 'libellepdv' =>$libellepdv,
+                'agent_id' =>$agent_id,
                 'pdv_id' =>$pdv_id,
                 'date_subscription' =>$date_subscription,
                 ]);
@@ -302,7 +305,7 @@ class SubscriptionController extends Controller
             'date_subscription' =>$Subscription['date_subscription'],
             'subscription_enddate' =>$Subscription['subscription_enddate'],
             'customer_id'=>$customers_id,
-            'pdv_id' =>$Subscription['pdv_id'],
+            'agent_id' =>$Subscription['agent_id'],
         ]);
 
 

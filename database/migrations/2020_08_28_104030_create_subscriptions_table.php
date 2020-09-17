@@ -26,7 +26,7 @@ class CreateSubscriptionsTable extends Migration
             $table->date('date_subscription');
             $table->date('subscription_enddate');
             $table->foreignId('customer_id')->references('id')->on('customers');
-            $table->foreignId('pdv_id')->references('id')->on('agencies');
+            $table->foreignId('agent_id')->references('id')->on('agents');
             $table->timestamps();
 
 

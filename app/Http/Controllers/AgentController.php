@@ -89,7 +89,7 @@ class AgentController extends Controller
         $agentuser->save();
         $agentuser->roles()->attach(Role::where('slug','agent')->first());
         $agent->save();
-
+        dd($pass);
         Mail::to($agentuser->email,"Agent ".$agent->lastname." ".$agent->firstname)
 
         ->queue(new newAgent($agent,$agent->agency,$pass))  ;

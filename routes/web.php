@@ -136,6 +136,29 @@ Route::group(['prefix' => '/statistics'], function () {
 
     });
 
+    // sinister
+    Route::group(['prefix' => '/sinister'], function () {
+        Route::get('/', [
+            'as'=> 'sinister.search',
+            'uses' => 'SinisterController@index'
+            ]);
+            Route::get('/etat', [
+                'as'=> 'sinister.index',
+                'uses' => 'SinisterController@index'
+                ]);
+
+            Route::POST('/statment', [
+                'as'=> 'sinister.statment',
+                'uses' => 'SinisterController@statment'
+                ]);
+
+
+
+        });
+
+        //end sinister
+
+
 Route::group(['prefix' => '/partner', 'as' => 'partners.', 'middleware' => ["auth","roles"], "roles" => ["super_administrator"]], function () {
     Route::get('/', [
         'as'=> 'list',
