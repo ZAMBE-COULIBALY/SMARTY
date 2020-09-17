@@ -34,3 +34,4 @@
   <link rel="stylesheet" href={{ asset('plugins/toastr/toastr.min.css') }}>
   <!-- File Uploader -->
   <link rel="stylesheet" href={{ asset('plugins/file-uploaders/dropzone.min.css') }} >
+

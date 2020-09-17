@@ -36,4 +36,11 @@ class Product extends Model
         # code...
         return $this->hasOne("App\Vocabulary","id","model_id");
     }
+
+    public function subscription()
+    {
+        # code...
+        return $this->hasMany("App\Subscription");
+    }
+
 }
