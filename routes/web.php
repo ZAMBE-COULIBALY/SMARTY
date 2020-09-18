@@ -52,46 +52,6 @@ Route::get('/dashboard', [
 ]
 )->middleware('auth');
 
-//Liens Subscritpion
-Route::group(['prefix' => '/subscription'], function () {
-    Route::get('/', [
-        'as'=> 'subscription.list',
-        'uses' => 'SubscriptionController@index'
-        ]);
-    Route::get('/new', [
-        'as'=> 'subscription.create',
-        'uses' => 'SubscriptionController@create'
-        ]);
-
-    Route::get('/add', [
-        'as'=> 'subscription.add',
-        'uses' => 'SubscriptionController@store'
-        ]);
-
-    Route::get('/details/{id}', [
-        'as'=> 'showSubscription.one',
-        'uses' => 'SubscriptionController@show'
-        ]);
-
-    Route::get('/update/{id}', [
-        'as'=> 'subscription.update',
-        'uses' => 'SubscriptionController@update'
-        ]);
-
-    Route::get('/edit/{id}', [
-        'as'=> 'subscription.edit',
-        'uses' => 'SubscriptionController@edit'
-        ]);
-
-    Route::get('/delete/{id}', [
-        'as'=> 'subscription.delete',
-        'uses' => 'SubscriptionController@destroy'
-        ]);
-
-});
-
-        //fin Liens Subscritpion
-
 //Liens Customers
 Route::get('/customers', [
     'as'=> 'customers',
@@ -114,7 +74,7 @@ Route::get('/customers/{id}', [
     ]);
 
 // fin Liens Customers
-Route::group(['prefix' => '/statistics'], function () {
+Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], function () {
     Route::get('/', [
         'as'=> 'statistics.show',
         'uses' => 'CustomerController@getstatistics'
@@ -277,7 +237,7 @@ Route::group(['prefix' => '/Agent','middleware' => ['auth','roles']], function (
     );
 });
 //Liens Subscritpion
-Route::group(['prefix' => '/subscription'], function () {
+Route::group(['prefix' => '/subscription', 'middleware' => ["auth","roles"],], function () {
 
     Route::get('/getcustomers', [
         'as'=> 'subscription.customer',
@@ -366,11 +326,10 @@ Route::group(['prefix' => '/subscription'], function () {
 });
 
         //fin Liens Subscritpion
-//Liens Subscritpion
 
 //Liens Customers
 
-Route::group(['prefix' => '/customers'], function () {
+Route::group(['prefix' => '/customers', 'middleware' => ["auth","roles"], "roles" => ["manager","administrator","super_administrator"]], function () {
     Route::get('/', [
     'as'=> 'customers.list',
     'uses' => 'CustomerController@index'
