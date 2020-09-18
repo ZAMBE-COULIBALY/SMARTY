@@ -61,8 +61,10 @@ class SubscriptionController extends Controller
 
         $madate=$jour.$mois.$annee;
         $dat= date_format(date_create(now()),'Y-m-d');
+        $yest = now()->addDay(-1);
+        $tmr = now()->addDay(1);
         $partner = Agent::where("username","=",Auth()->user()->username)->first()->agency->partner;
-        $subscription = Subscription::all()->whereIn('agent_id',Agent::all()->whereIn('agency_id',Agency::all()->where('partner_id', '=',$partner->id)->pluck('id'))->pluck('id'))->where('date_subscription','=',$dat)->count();
+        $subscription = Subscription::all()->whereIn('agent_id',Agent::all()->whereIn('agency_id',Agency::all()->where('partner_id', '=',$partner->id)->pluck('id'))->pluck('id'))->whereBetween('date_subscription',[$yest,$tmr])->count();
         $numdossier =$codepart.$madate.str_pad($subscription+1, 5, "0", STR_PAD_LEFT);
 
         $Subscription = new \App\Subscription();
