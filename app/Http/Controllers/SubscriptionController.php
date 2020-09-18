@@ -38,10 +38,11 @@ class SubscriptionController extends Controller
     {
         //
 
-        //$hsubscriptions= Subscription::all();
+        $agent_id = Agent::where("username","=",Auth()->user()->username)->first()->id;
         $hsubscriptions = DB::table('customers')
         ->join('subscriptions', 'subscriptions.customer_id', '=', 'customers.id')
         ->select('*')
+        ->where('subscriptions.agent_id', '=', $agent_id )
         ->get();
 
         $code = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->partner_id;
@@ -60,18 +61,26 @@ class SubscriptionController extends Controller
         }
 
         $madate=$jour.$mois.$annee;
-        $dat= date_format(date_create(now()),'Y-m-d');
+        $datv=$annee.'-'.$mois.'-'.$jour;
+        $annee=$annee-18;
+        $dat=$annee.'-'.$mois.'-'.$jour;
+        //dd($datv);
+
+
         $partner = Agent::where("username","=",Auth()->user()->username)->first()->agency->partner;
-        $subscription = Subscription::all()->whereIn('agent_id',Agent::all()->whereIn('agency_id',Agency::all()->where('partner_id', '=',$partner->id)->pluck('id'))->pluck('id'))->where('date_subscription','=',$dat)->count();
+        $subscription = Subscription::all()->whereIn('agent_id',Agent::all()->whereIn('agency_id',Agency::all()->where('partner_id', '=',$partner->id)->pluck('id'))->pluck('id'))->where('date_subscription','=',$datv)->count();
+       //dd($subscription);
+
         $numdossier =$codepart.$madate.str_pad($subscription+1, 5, "0", STR_PAD_LEFT);
 
         $Subscription = new \App\Subscription();
-        $Subscription->fill(['folder' =>$numdossier]);
+        $Subscription->fill(['folder' =>$numdossier,
+        'dat'=>$dat,]);
 
         $request->session()->put('Subscription', $Subscription);
 
        // dd($Subscription);
-        return view('pages.customers',compact('Subscription','numdossier'))->with('hsubscription',$hsubscriptions) ;
+        return view('pages.customers',compact('Subscription','numdossier','dat'))->with('hsubscription',$hsubscriptions) ;
 
     }
 
@@ -124,31 +133,33 @@ class SubscriptionController extends Controller
     public function getequipment(Request $request)
     {
         //
+        $usr = User::find(Auth::user()->id);
+        $code = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->partner_id;
+        if ($usr->hasRole("manager")) {
+            $products = Product::all()->where("partner_id",$usr->manager->partner_id);
+        }
+        elseif ($usr->hasRole("agent_chief") OR $usr->hasRole("agent")){
+            $products = Product::all()->where("partner_id",'=',$code);
+
+        }
+        else {
+            $products = Product::all()->whereIn("partner_id",Partner::where("admin_id",$usr->id));
+        }
         $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
         $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
         $labels = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id);
         $models = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id);
 
+
         $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.subscriptions',compact("Subscription","categories","types","labels","models"));
+        return view('pages.subscriptions',compact("Subscription","products","categories","types","labels","models"));
 
     }
 
 
     public function postequipment(Request $request)
     {
-
-        $equipmentLibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->find($request->equipment);
-        $equipmentLibelle=$equipmentLibelle['label'];
-
-
-        $marquelibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id)->find($request->mark);
-        $marquelibelle=$marquelibelle['label'];
-
-        $modellibelle = Vocabulary::where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id)->find($request->model);
-        $modellibelle=$modellibelle['label'];
-
         $agent_id = Agent::where("username","=",Auth()->user()->username)->first()->id;
         $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
         $pdv_id = Agency::Where("label",$libellepdv)->first()->id;
@@ -174,9 +185,6 @@ class SubscriptionController extends Controller
             $Subscription = new \App\Subscription();
             $Subscription->fill($validatedData);
             $Subscription->fill([
-                'modellibelle' =>$modellibelle,
-                'marquelibelle' =>$marquelibelle,
-                'equipmentLibelle' =>$equipmentLibelle,
                 'libellepdv' =>$libellepdv,
                 'pdv_id' =>$pdv_id,
                 'agent_id' =>$agent_id,
@@ -189,9 +197,6 @@ class SubscriptionController extends Controller
             $Subscription = $request->session()->get('Subscription');
             $Subscription->fill($validatedData);
             $Subscription->fill([
-                'modellibelle' =>$modellibelle,
-                'marquelibelle' =>$marquelibelle,
-                'equipmentLibelle' =>$equipmentLibelle,
                 'libellepdv' =>$libellepdv,
                 'agent_id' =>$agent_id,
                 'pdv_id' =>$pdv_id,
@@ -219,14 +224,41 @@ class SubscriptionController extends Controller
         }
         $subscription_enddate=$annee.'-'.$mois.'-'.$jour;
 
-        $Subscription->fill([
-            'subscription_enddate' =>$subscription_enddate,
-            'premium' =>$premium,
-            ]);
-
-        $request->session()->put('Subscription', $Subscription)  ;
     //proforma document creation
+    $usr = User::find(Auth::user()->id);
+    $code = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->partner_id;
+    if ($usr->hasRole("manager")) {
+        $products = Product::all()->where("partner_id",$usr->manager->partner_id);
+    }
+    elseif ($usr->hasRole("agent_chief") OR $usr->hasRole("agent")){
+        $products = Product::all()->where("partner_id",'=',$code);
 
+    }
+    else {
+        $products = Product::all()->whereIn("partner_id",Partner::where("admin_id",$usr->id));
+    }
+    foreach ($products as $item){
+    if ($item->type->id==$Subscription['equipment']){
+        $equipmentLibelle=$item->type->label;
+    }
+    if ($item->label->id==$Subscription['mark']){
+        $marquelibelle=$item->label->label;
+    }
+    if ($item->model->id==$Subscription['model']){
+        $modellibelle=$item->model->label;
+    }
+}
+//dd($equipmentLibelle);
+$Subscription->fill([
+    'subscription_enddate' =>$subscription_enddate,
+    'premium' =>$premium,
+    'equipmentLibelle' =>$equipmentLibelle,
+    'marquelibelle' =>$marquelibelle,
+    'modellibelle' =>$modellibelle,
+    ]);
+
+$request->session()->put('Subscription', $Subscription)  ;
+//dd($Subscription);
 
         $pdf =  App::make('dompdf.wrapper');
 
@@ -266,16 +298,12 @@ class SubscriptionController extends Controller
     {
 
         $Subscription = $request->session()->get('Subscription');
-        //dd($Subscription);
-       /*  $code =$Subscription['first_name'];
-        $digits =strtoupper(substr($code,0, 3)); */
+
 
         $ma=1;
         $ma += Customer::max('id');
         $customers_id=$ma;
-       /*  $digits =$ma.''.$digits;
-        $codeok =str_pad($digits, 10, "0", STR_PAD_BOTH); */
-//var_dump($codeok);exit();
+
         Customer::create([
             'code' =>$Subscription['folder'],
             'name' =>$Subscription['name'],

@@ -78,8 +78,23 @@ public function getstatistics(Request $request){
             ->where('subscriptions.agent_id','=',$agent_id)
             ->select('*')
             ->get();
+            $usr = User::find(Auth::user()->id);
+            $code = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->partner_id;
+            if ($usr->hasRole("manager")) {
+                $products = Product::all()->where("partner_id",$usr->manager->partner_id);
+            }
+            elseif ($usr->hasRole("agent_chief") OR $usr->hasRole("agent")){
+                $products = Product::all()->where("partner_id",'=',$code);
 
-        $request->session()->put('Subscription', $users);
+            }
+            else {
+                $products = Product::all()->whereIn("partner_id",Partner::where("admin_id",$usr->id));
+            }
+
+         $request->session()->put('Subscription', $users)  ;
+
+
+
 
     $pdf =  App::make('dompdf.wrapper');
 

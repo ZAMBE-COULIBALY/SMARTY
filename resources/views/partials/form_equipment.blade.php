@@ -8,8 +8,8 @@
                                         <div class="form-group">
                                            <label>Selectionnez votre équipement</label>
                                            <select name="equipment" class="form-control select2bs4" style="width: 100%;">
-                                            @foreach ($categories as $item)
-                                            <option value={{$item->id}} {{ (isset($product) && $product->category->id == $item->id)? 'selected' : '' }}>{{$item->label}}</option>
+                                            @foreach ($products as $item)
+                                            <option value={{$item->type->id}}  >{{$item->type->label}}</option>
                                           @endforeach
                                             </select>
                                         </div>
@@ -18,8 +18,8 @@
                                     <div class="form-group">
                                        <label>Marque</label>
                                        <select name="mark" class="form-control select2bs4" style="width: 100%;">
-                                        @foreach ($labels as $item)
-                                        <option value="{{$item->id}}" {{ (isset($product) && $product->label->id == $item->id)? 'selected' : '' }}>{{$item->label}}</option>
+                                        @foreach ($products as $item)
+                                        <option value="{{$item->label->id}}" >{{$item->label->label}}</option>
                                       @endforeach
                                         </select>
                                     </div>
@@ -29,8 +29,8 @@
                                 <div class="form-group">
                                    <label>Modèle</label>
                                    <select name="model" class="form-control select2bs4" style="width: 100%;">
-                                    @foreach ($models as $item)
-                                    <option value="{{$item->id}}" {{ (isset($product) && $product->model->id == $item->id)? 'selected' : '' }}>{{$item->label}}</option>
+                                    @foreach ($products as $item)
+                                    <option value="{{$item->model->id}}" >{{$item->model->label}}</option>
                                   @endforeach
 
                                     </select>
@@ -56,7 +56,7 @@
                                             <span class="fas fa-user"></span>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control " name="price" id="price" value="" placeholder="Saisir le prix d'achat" required autocomplete="price" >
+                                    <input type="number" class="form-control " name="price" id="price" value="" placeholder="Saisir le prix d'achat" required autocomplete="price" >
                                 </div>
                             </div>
                             <div class="form-group col-md-3">
