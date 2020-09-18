@@ -15,17 +15,20 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
+            $table->string('code')->unique();
             $table->string('name');
             $table->string('first_name');
             $table->date('birth_date');
-            $table->enum('gender', ['H', 'F','A']);
+            $table->enum('gender', ['Monsieur', 'Madame','Mademoiselle']);
             $table->string('place_birth');
-            $table->enum('marital_status', ['C', 'M','A']);
+            $table->enum('marital_status', ['Celibataire', 'Marie(e)','Divorce(e)','Veuf(ve)']);
             $table->string('place_residence');
-            $table->string('phone1');
-            $table->string('phone2');
+            $table->string('phone1')->unique();
+            $table->string('phone2')->nullable();
             $table->string('mail');
+            $table->string('mailing_address')->nullable();
+            $table->string('folder')->nullable()->unique();
+
             $table->timestamps();
         });
     }

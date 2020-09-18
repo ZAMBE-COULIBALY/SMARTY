@@ -9,6 +9,7 @@
 <span ><strong>Contact : </strong> </span> {{ $agency->contact }} <br>
 
 <p>Trouvez ci après les accès concernant le compte utilisateur pour la gestion de votre PDV. </p>
+<span > Partenaire : </span> {{ $agency->partner->label }} <br>
 <span > Login : </span> {{ $agencyChief->username }} <br>
 <span > Mot de passe : </span> {{ $agencyChiefUserPass }}
 <p>N.B.: Le mot de passe pourra être modifié dès la première connexion</p>

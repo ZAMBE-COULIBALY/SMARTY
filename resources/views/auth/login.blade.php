@@ -12,21 +12,37 @@
         <form action="{{ route('login') }}" method="post">
           @csrf
           <div class="input-group mb-3">
-              <input id="username" name="username" placeholder="Nom d'utilisateur" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+            <input id="partner" name="partner" placeholder="Partenaire" type="text" class="form-control @error('partner') is-invalid @enderror" name="partner" value="{{ old('partner') }}" autocomplete="partner" autofocus>
 
-          <div class="input-group-append">
+              <div class="input-group-append">
               <div class="input-group-text">
-                <span class="fas fa-user"></span>
+                  <span class="fas fa-user"></span>
 
               </div>
 
-            </div>
-             @error('username')
+              </div>
+              @error('partner')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
                   </span>
               @enderror
-          </div>
+        </div>
+        <div class="input-group mb-3">
+            <input id="username" name="username" placeholder="Nom d'utilisateur" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" >
+
+              <div class="input-group-append">
+              <div class="input-group-text">
+                  <span class="fas fa-user"></span>
+
+              </div>
+
+              </div>
+              @error('username')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
+        </div>
           <div class="input-group mb-3">
               <input id="password" name="password" placeholder="Mot de passe" type="password" class="form-control @error('password') is-invalid @enderror" name="password"  autocomplete="current-password">
 

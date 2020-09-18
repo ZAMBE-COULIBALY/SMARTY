@@ -89,7 +89,7 @@ class AgentController extends Controller
         $agentuser->save();
         $agentuser->roles()->attach(Role::where('slug','agent')->first());
         $agent->save();
-
+        dd($pass);
         Mail::to($agentuser->email,"Agent ".$agent->lastname." ".$agent->firstname)
 
         ->queue(new newAgent($agent,$agent->agency,$pass))  ;
@@ -145,11 +145,12 @@ class AgentController extends Controller
         $oldagent = clone $agent;
         $agent->firstname = $parameters['firstname'];
         $agent->lastname = $parameters['lastname'];
-        $agent->agency_id = $parameters['agency'];
-        $agent->email = $parameters['email'];
+        $agent->agency_id = Agent::where("username","=",Auth()->user()->username)->first()->agency_id ;
+        $agentuser = $agent->user;
+        $agentuser->email = $parameters['email'];
+        $agentuser->save();
         $agent->contact = $parameters['contact'] ;
         $agent->state = isset($parameters['state']) ? 1 : 0 ;
-
         $agent->save();
 
         return Redirect()->route('agents.list')->with('success',"L'agent a été correctement modifié");

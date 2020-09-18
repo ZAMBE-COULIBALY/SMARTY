@@ -25,7 +25,7 @@ class AgencyController extends Controller
     public function index()
     {
         //
-        $agencies = Agency::all();
+        $agencies = Agency::all()->where("partner_id",Manager::where("username","=",Auth()->user()->username)->first()->partner_id);
         $partners = Partner::all();
         return view('pages.agency',compact('agencies','partners'));
     }
@@ -52,15 +52,26 @@ class AgencyController extends Controller
         $parameters = $request->except("_token");
 
         $parametersvalid = $request->validate([
-            'code' => 'required|unique:agencies|max:255',
-            'label' => 'required|unique:agencies|max:255',
+            'code' =>
+                    ['required',
+                     Rule::notIn(Agency::all()->where("partner_id",Manager::where("username","=",Auth()->user()->username))->pluck("code")),
+                     'max:255'
+                    ],
+            'label' => ['required',
+            Rule::notIn(Agency::all()->where("partner_id",Manager::where("username","=",Auth()->user()->username))->pluck("label")),
+            'max:255'
+           ],
             'email' => 'required|email',
             'address' => 'required'
         ]);
-            try {
+            $agency = new Agency();
+            $agencyChief = new Agent();
+            $agencyChiefUser = new User();
+            $pass  = Str::random(8);
+              try {
                 //code...
-                $agency = new Agency();
-        $agency->code = $parametersvalid['code'];
+
+        $agency->code = Manager::where("username","=",Auth()->user()->username)->first()->partner->code.$parametersvalid['code'];
         $agency->label = $parametersvalid['label'];
         $agency->email = $parametersvalid['email'];
         $agency->address = $parametersvalid['address'];
@@ -74,11 +85,11 @@ class AgencyController extends Controller
 
         $agency->save();
 
-        $agencyChief = new Agent();
+
         $agencyChief->code     = $agency->code.str_pad(Agency::all()->where("partner_id",$agency->partner->id)->count(),3,"0",STR_PAD_LEFT);
         $agencyChief->lastname= "Chief";
         $agencyChief->firstname= $parametersvalid['label'];
-        $agencyChief->username=  Str::slug($parametersvalid['label']."chief");
+        $agencyChief->username=  "chief@".Str::slug($parametersvalid['label'],"_");
         $agencyChief->contact= $parameters['contact'];
         $agencyChief->agency_id= $agency->id;
         $agencyChief->state= true;
@@ -87,28 +98,30 @@ class AgencyController extends Controller
 
         $agency->chief_id = $agencyChief->id;
         $agency->save();
-        $agencyChiefUser = new User();
+
         $agencyChiefUser->name = $parametersvalid['label']." Chief";
         $agencyChiefUser->username = $agencyChief->username;
         $agencyChiefUser->email = $agency->email;
         $agencyChiefUser->state = 1;
-        $pass  = Str::random(8);
+
         $agencyChiefUser->password = Hash::make($pass);
         $agencyChiefUser->slug = $agencyChief->slug;
+        $agencyChiefUser->partner_id = $agency->partner_id;
+
         $agencyChiefUser->save();
         $roles = ["agent_chief"];
         foreach ($roles as $role):
             $agencyChiefUser->roles()->attach(Role::where('slug',$role)->first());
         endforeach;
             } catch (\Throwable $th) {
-                //throw $th;
+                throw $th;
             }
 
         $partners = Agency::all();
-
+       // dd($pass);
       Mail::to($agency->email,$agency->label." Chef PDV")
 
-      ->queue(new newAgency($agency,$agencyChief,$pass))  ;
+      ->send(new newAgency($agency,$agencyChief,$pass))  ;
 
         return Redirect()->route('agencies.list')->with('success',"Le PDV a été correctement créé");
     }

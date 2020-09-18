@@ -1,5 +1,10 @@
 @extends('shared.layout')
-
+@section('subscription')
+    active
+@endsection
+@section('operation')
+menu-open active
+@endsection
 @section('content')
     <section class="content">
         <div class="container-fluid">
@@ -49,7 +54,7 @@
 
                                                     <button type="submit" class="btn btn-success">PAYER LA PRIME</button>
                                                     <a class="btn btn-danger" href="{{ route('subscription.customer') }}">ANNULE SOUSCRIPTION</a>
-                                                    <a class="btn btn-warning" href="{{ route('subscription.proforma') }}">IMPRIMER</a>
+                                                    <a class="btn btn-warning" href="#">IMPRIMER</a>
                                         </form>
                                                     </td>
                                                 </tr>

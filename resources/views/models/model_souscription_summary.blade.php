@@ -9,8 +9,8 @@
 <tr>
     <td> </td>
     <td style="text-align: center">
-        CONTRAT N°: <br>
-        PDV :
+        CONTRAT N°:{{$Subscription['folder']}} <br>
+        PDV :{{$Subscription['libellepdv']}}
     </td>
 </tr>
     <tr>
@@ -61,10 +61,10 @@
     </tr>
     <tr>
     <td>Nature : </td>
-    <td><?php echo $Subscription['equipment']?></td>
+    <td> <?php echo $Subscription['equipmentLibelle'] ?></td>
     <tr>
         <td>Marque :</td>
-        <td><?php echo $Subscription['mark']?></td>
+        <td><?php echo $Subscription['marquelibelle']?></td>
     </tr>
     <tr>
         <td>Numéro identifiant (IMEI) :</td>
@@ -76,15 +76,29 @@
     </tr>
     <?php
 $madate= $Subscription['date_subscription'];
-list($annee,$mois,$jour)=sscanf($madate,"%d-%d-%d");;
+list($annee,$mois,$jour)=sscanf($madate,"%d-%d-%d");
 $annee+=1;
-$timestamp=mktime($mois,$jour,$annee);
-$new_date=date('Y-m-d ',$timestamp);
+
+if (strlen($mois)===1) {
+    $mois ='0'.$mois;
+}else {
+    $mois =$mois;
+}
+ if (strlen($jour)===1){
+    $jour ='0'.$jour;
+ }else {
+    $jour =$jour;
+ }
+
+
+$new_date=$annee.'-'.$mois.'-'.$jour;
+
+
 
 ?>
     <tr>
         <td>Date fin de garantie :</td>
-        <td><?php echo $new_date; ?></td>
+        <td><?php echo $Subscription['subscription_enddate'] ;?></td>
     </tr>
     <tr>
         <td>Valeur Achat :</td>
@@ -117,7 +131,7 @@ du Code CIMA, la prise d&#039effet de la police est subordonnée au paiement pr�
        <td> <b>
     VOTRE PRIME :</b>
         </td>
-        <td><b> <?php echo $Subscription['price']*0.10 .' FCFA' ;?> </b></td>
+        <td><b> <?php echo $Subscription['premium'].' FCFA' ;?> </b></td>
 
     </tr>
 

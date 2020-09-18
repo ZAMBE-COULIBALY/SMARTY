@@ -114,6 +114,50 @@ Route::get('/customers/{id}', [
     ]);
 
 // fin Liens Customers
+Route::group(['prefix' => '/statistics'], function () {
+    Route::get('/', [
+        'as'=> 'statistics.show',
+        'uses' => 'CustomerController@getstatistics'
+        ]);
+        Route::get('/PDF', [
+            'as'=> 'statistics.etat',
+            'uses' => 'CustomerController@statisticsPDF'
+            ]);
+
+        Route::get('/EXCEL', [
+            'as'=> 'statistics.excel',
+            'uses' => 'CustomerController@statisticsExcel'
+            ]);
+
+            Route::get('/etat', [
+                'as'=> 'statistics.etatpartenaire',
+                'uses' => 'CustomerController@etat'
+                ]);
+
+    });
+
+    // sinister
+    Route::group(['prefix' => '/sinister'], function () {
+        Route::get('/', [
+            'as'=> 'sinister.search',
+            'uses' => 'SinisterController@index'
+            ]);
+            Route::get('/etat', [
+                'as'=> 'sinister.index',
+                'uses' => 'SinisterController@index'
+                ]);
+
+            Route::POST('/statment', [
+                'as'=> 'sinister.statment',
+                'uses' => 'SinisterController@statment'
+                ]);
+
+
+
+        });
+
+        //end sinister
+
 
 Route::group(['prefix' => '/partner', 'as' => 'partners.', 'middleware' => ["auth","roles"], "roles" => ["super_administrator"]], function () {
     Route::get('/', [
@@ -261,6 +305,7 @@ Route::group(['prefix' => '/subscription'], function () {
                     ]);
 
 
+
         Route::post('/storecustomer', [
             'as'=> 'subscription.storecustomer',
             'uses' => 'SubscriptionController@storecustomers'
@@ -321,6 +366,7 @@ Route::group(['prefix' => '/subscription'], function () {
 });
 
         //fin Liens Subscritpion
+//Liens Subscritpion
 
 //Liens Customers
 
@@ -362,3 +408,41 @@ Route::group(['prefix' => '/customers'], function () {
 });
 
 // fin Liens Customers
+
+
+Route::group(['prefix' => '/product', 'as' => 'products.', 'middleware' => ["auth","roles"], "roles" => ["manager","administrator"]], function () {
+    Route::get('/', [
+        'as'=> 'list',
+        'uses' => 'ProductController@index'
+        ]);
+    Route::get('/new', [
+        'as'=> 'create',
+        'uses' => 'ProductController@create'
+        ]);
+
+    Route::post('/add', [
+        'as'=> 'add',
+        'uses' => 'ProductController@store'
+        ]);
+
+    Route::get('/details/{id}', [
+        'as'=> 'one',
+        'uses' => 'ProductController@show'
+        ]);
+
+    Route::post('/update/{id}', [
+        'as'=> 'update',
+        'uses' => 'ProductController@update'
+        ]);
+
+    Route::get('/edit/{id}', [
+        'as'=> 'edit',
+        'uses' => 'ProductController@edit'
+        ]);
+
+    Route::get('/delete/{id}', [
+        'as'=> 'delete',
+        'uses' => 'ProductController@destroy'
+        ]);
+
+});

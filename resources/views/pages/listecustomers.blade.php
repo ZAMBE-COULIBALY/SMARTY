@@ -1,4 +1,10 @@
 @extends('shared.layout')
+@section('listcustomers')
+    active
+@endsection
+@section('administration')
+    menu-open active
+@endsection
 @section('content')
 
 
@@ -22,14 +28,11 @@
                                 <div class="tab-custom-content">
                                     <p class="lead mb-0">Liste des clients |
 
-                                        <a href="{{ route('subscription.customer') }}"  class="btn btn-success btn-sm">
+                                        {{--  <a href="{{ route('subscription.customer') }}"  class="btn btn-success btn-sm">
                                             NOUVEAU
                                             <i class=" fa fa-edit"></i>
-                                        </a>
+                                        </a>  --}}
 
-                                        <div class="col-lg-2 col-md-2 col-xs-2" style="margin-left: 50% ; margin-top:-3%">
-                                               <input type="text" Name="NOMPRENOM" id="myInput" class="form-control" placeholder="Rechecher un client !">
-                                        </div>
                                     </p>
 
                                     <hr>
@@ -44,7 +47,7 @@
                                         <th >TELEPHONE 2 </th>
                                         <th >GENRE</th>
                                         <th >DATE CREATION</th>
-                                        <th >Actions</th>
+                                        {{--  <th >Actions</th>  --}}
 
                                     </tr>
                                     </thead>
@@ -58,13 +61,13 @@
                                         <td>{{ $customers->phone2 }}</td>
                                         <td>{{ $customers->gender }}</td>
                                         <td>{{ $customers->created_at }}</td>
-                                        <td>
+                                       {{--   <td>
                             <center>
                                             <a href="{{ route('customers.create') }}"  class="btn btn-info btn-sm ">
                                                 <i class="fa fa-pencil-alt"></i>
                                             </a>
                             </center>
-                                        </td>
+                                        </td> --}}
 
                                     </tbody>
                                      @endforeach
