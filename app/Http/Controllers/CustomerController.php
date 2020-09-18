@@ -102,7 +102,7 @@ public function getstatistics(Request $request){
 
     $pdf-> save(storage_path().'/app/public/statistics/statistics.pdf');
 
-    return view("pages.statistics", compact("Subscription",'users','equipmentLibelle','marquelibelle','modellibelle'));
+    return view("pages.statistics", compact("Subscription",'users'));
 }
 
 //
