@@ -63,6 +63,7 @@
 
             </div>
         </div>
+
             <div class="form-group col-md-3">
                     <label for="birth_date">Date de Naissance</label>
                     <div class="input-group">
@@ -71,7 +72,7 @@
                                 <span class="fas fa-user"></span>
                             </div>
                         </div>
-                        <input type="date" class="form-control " name="birth_date" id="birth_date"  required autocomplete="birth_date" >
+                        <input type="date" max="{{$dat}}"   class="form-control " name="birth_date" id="birth_date"  required autocomplete="birth_date" >
 
                 </div>
             </div>
@@ -95,7 +96,7 @@
                             <span class="fas fa-home"></span>
                         </div>
                     </div>
-                    <input type="text" class="form-control " name="place_residence" id="place_residence" value="" placeholder="Saisir le lieu de résidence du client" required autocomplete="place_residence" >
+                    <input type="text" class="form-control "  name="place_residence" id="place_residence" value="" placeholder="Saisir le lieu de résidence du client" required autocomplete="place_residence" >
 
                     </div>
             </div>
