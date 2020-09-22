@@ -1,8 +1,9 @@
 @extends('shared.layout')
-@section('sinister')
+@section('sinister-decla')
     active
 @endsection
-@section('operation')
+
+@section('sinister-menu')
 menu-open active
 @endsection
 @section('content')

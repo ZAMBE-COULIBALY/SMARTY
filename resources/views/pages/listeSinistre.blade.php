@@ -2,7 +2,7 @@
 @section('listeSinistre')
     active
 @endsection
-@section('SINISTRES')
+@section('sinister_menu')
     menu-open active
 @endsection
 @section('content')
