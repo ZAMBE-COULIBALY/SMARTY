@@ -144,12 +144,15 @@ class AgentController extends Controller
         $oldagent = clone $agent;
         $agent->firstname = $parameters['firstname'];
         $agent->lastname = $parameters['lastname'];
-        $agent->agency_id = Agent::where("username","=",Auth()->user()->username)->first()->agency_id ;
-        $agentuser = $agent->user;
-        $agentuser->email = $parameters['email'];
-        $agentuser->save();
-        $agent->contact = $parameters['contact'] ;
         $agent->state = isset($parameters['state']) ? 1 : 0 ;
+        $agent->contact = $parameters['contact'] ;
+        $agentuser = $agent->user;
+        $agentuser->name = "$parameters[firstname] $parameters[lastname]";
+        $agentuser->email = $parameters['email'];
+        $agentuser->state = isset($parameters['state']) ? 1 : 0 ;
+        $agentuser->save();
+
+
         $agent->save();
 
         return Redirect()->route('agents.list')->with('success',"L'agent a été correctement modifié");
