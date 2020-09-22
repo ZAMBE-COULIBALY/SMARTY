@@ -1,9 +1,9 @@
 @extends('shared.layout')
-@section('sinister')
+@section('sinister_decla')
     active
 @endsection
-@section('operation')
-menu-open active
+@section('sinister_menu')
+    menu-open active
 @endsection
 @section('content')
     <section class="content">
@@ -30,14 +30,14 @@ menu-open active
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                @if(isset($resultat))
-                                                @foreach ($resultat as $item)
+                                                @if(isset($Subscription))
+
                                                     <table  class="table table-striped">
                                                         <tr>
                                                             <td> </td>
                                                             <td style="text-align: center">
-                                                                CONTRAT N°:{{$item->folder}} <br>
-                                                                PDV :{{$libellepdv}}
+                                                                CONTRAT N°:{{$Subscription->code}} <br>
+                                                                PDV :{{$Subscription->agent->agency->label}}
                                                             </td>
                                                         </tr>
                                                         <tr >
@@ -51,27 +51,27 @@ menu-open active
                                                         </tr>
                                                         <tr>
                                                             <td>Nom & Prénoms :</td>
-                                                            <td>  {{$item->name}} {{$item->first_name }} </td>
+                                                            <td>  {{$Subscription->customer->name}} {{$Subscription->customer->first_name }} </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Téléphone :</td>
-                                                            <td>  {{$item->phone1}}</td>
+                                                            <td>  {{$Subscription->customer->phone1}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Mail :</td>
-                                                            <td>{{$item->mail}}</td>
+                                                            <td>{{$Subscription->customer->mail}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Date & lieu de naissance :</td>
-                                                            <td>{{$item->birth_date}} {{$item->place_birth}}</td>
+                                                            <td>{{$Subscription->customer->birth_date}} {{$Subscription->customer->place_birth}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Situation Matrimoniale :</td>
-                                                            <td> {{$item->marital_status}}</td>
+                                                            <td> {{$Subscription->customer->marital_status}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Lieu de résidence :</td>
-                                                            <td> {{$item->place_residence}}</td>
+                                                            <td> {{$Subscription->customer->place_residence}}</td>
                                                         </tr>
 
                                                         <tr>
@@ -81,51 +81,39 @@ menu-open active
                                                         </tr>
                                                         <tr>
                                                             <td>Nature : </td>
-                                                            <td>  {{$item->equipment}} </td>
+                                                            <td>  {{$Subscription->equipment}} </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Marque :</td>
-                                                            <td>{{$item->mark}}</td>
+                                                            <td>{{$Subscription->mark}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Numéro identifiant (IMEI) :</td>
-                                                            <td>  {{$item->numberIMEI}}</td>
+                                                            <td>  {{$Subscription->numberIMEI}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Date effet de garantie :</td>
-                                                            <td>{{$item->date_subscription}}</td>
+                                                            <td>{{$Subscription->date_subscription}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Date fin de garantie :</td>
-                                                            <td>{{$item->subscription_enddate}} </td>
+                                                            <td>{{$Subscription->subscription_enddate}} </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Valeur Achat :</td>
-                                                            <td>{{ $item->price}}  FCFA </td>
+                                                            <td>{{ $Subscription->price}}  FCFA </td>
                                                         </tr>
                                                         <tr style="color: red; ">
                                                             <td> <b> VOTRE PRIME :</b> </td>
-                                                            <td><b>{{$item->premium}}  FCFA  </b></td>
+                                                            <td><b>{{$Subscription->premium}}  FCFA  </b></td>
                                                         </tr>
                                                     </table>
-                                                 @endforeach
+
                                                  @endif
                                             </div>
 
-                                            <div class="row col-md 4">
-                                                <table style="width: 100%">
-                                                        <tr>
-                                                            <td style="text-align: center">
-                                                                <form  method="GET" action="">
-                                                                        @csrf
-                                                                            <a class="btn btn-success" href="#">DECLARER UN SINISTRE</a>
-                                                                            <a class="btn btn-warning" href="#">ANNULER</a>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-                                                </table>
-                                            </div>
                                     </div>
+                                    <a class="btn btn-primary" href="{{ route('sinister.create',['subscription' => $Subscription->id]) }}">SUIVANT</a>
                                 </div>
                             </div>
                         </div>
@@ -137,4 +125,5 @@ menu-open active
 
 
 @endsection
+
 

@@ -112,6 +112,33 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
                 'uses' => 'SinisterController@statment'
                 ]);
 
+            Route::get('/create/{subscription}', [
+                'as'=> 'sinister.create',
+                'uses' => 'SinisterController@create'
+                ]);
+            Route::get('/getvalid/{subscription}', [
+                'as'=> 'sinister.getvalid',
+                'uses' => 'SinisterController@getvalid'
+                ]);
+            Route::post('/update/{subscription}', [
+                'as'=> 'sinister.valid',
+                'uses' => 'SinisterController@valid'
+                ]);
+
+            Route::post('/store/{subscription}', [
+                'as'=> 'sinister.store',
+                'uses' => 'SinisterController@store'
+                ]);
+            Route::get('/bon/{subscription}', [
+                'as'=> 'sinister.bon',
+                'uses' => 'SinisterController@getbon'
+                ]);
+                Route::get('/list', [
+                    'as'=> 'sinister.list',
+                    'uses' => 'SinisterController@show'
+                    ]);
+
+
 
 
         });

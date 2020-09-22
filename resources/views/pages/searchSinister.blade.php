@@ -1,4 +1,10 @@
 @extends('shared.layout')
+@section('sinister_decla')
+    active
+@endsection
+@section('sinister_menu')
+    menu-open active
+@endsection
 @section('content')
 
 <section class="content">

@@ -12,7 +12,7 @@
                             <span class="fas fa-user"></span>
                         </div>
                     </div>
-                    <input type="text" class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($agent) ? $agent->code : '' }}" placeholder="Saisir le code de l'agent" required autocomplete="code" autofocus>
+                    <input type="text" {{ isset($agent) ? 'readonly' : '' }} class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($agent) ? $agent->code : '' }}" placeholder="Saisir le code de l'agent" required autocomplete="code" autofocus>
 
                 </div>
                 @error('Code')
@@ -22,7 +22,7 @@
                 @enderror
             </div>
         </div>
-<div class="form-group col-md-6">
+        <div class="form-group col-md-6">
             <label for="username">Login</label>
             <div class="input-group">
                 <div class="input-group-append">
@@ -30,7 +30,7 @@
                     <strong> @</strong>
                 </div>
                 </div>
-                <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" id="username" value="{{ isset($agent) ? $agent->username : '' }}" placeholder="Saisir le login de l'agent" required autocomplete="username" autofocus>
+                <input type="text" {{ isset($agent) ? 'readonly' : '' }} class="form-control @error('username') is-invalid @enderror" name="username" id="username" value="{{ isset($agent) ? $agent->username : '' }}" placeholder="Saisir le login de l'agent" required autocomplete="username" autofocus>
 
             </div>
             @error('username')

@@ -15,9 +15,14 @@ class CreateSinistersTable extends Migration
     {
         Schema::create('sinisters', function (Blueprint $table) {
             $table->id();
-            $table->string('folder')->unique();
-
-            $table->foreign('folder')->references('code')->on('subscriptions');
+            $table->string('description')->nullable();
+            $table->string('contract');
+            $table->string('vouchers');
+            $table->string('type1')->nullable();
+            $table->string('type2')->nullable();
+            $table->integer('state');
+            $table->string('folder');
+            $table->foreign ('folder')->references('code')->on('subscriptions');
             $table->timestamps();
         });
     }

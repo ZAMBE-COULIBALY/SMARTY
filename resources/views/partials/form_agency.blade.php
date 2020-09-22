@@ -10,7 +10,7 @@
                             <span class="fas fa-user"></span>
                         </div>
                     </div>
-                    <input type="text" class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($agency) ? $agency->code : '' }}" placeholder="Saisir le code du PDV" required autocomplete="code" autofocus>
+                    <input type="text" {{ isset($agency) ? 'readonly' : '' }} class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($agency) ? $agency->code : '' }}" placeholder="Saisir le code du PDV" required autocomplete="code" autofocus>
 
                 </div>
                 @error('code')
