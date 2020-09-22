@@ -43,7 +43,7 @@
                                             <th >CLIENT</th>
                                             <th >IDENTIFIANT EQUIPEMENT</th>
                                             <th >PERIODE D&#039EFFET</th>
-                                            <th >ACTION</th>
+                                            {{--  <th >ACTION</th>  --}}
                                         </tr>
                                     </thead>
                                     @foreach($hsubscription as $subscription)
@@ -71,13 +71,13 @@
                                         <td>{{ $subscription->name }} {{ $subscription->first_name }} </td>
                                         <td>{{ $subscription->numberIMEI }} </td>
                                         <td>{{ $subscription->date_subscription }} / {{ $subscription->subscription_enddate }} </td>
-                                        <td>
+                                        {{--  <td>
                                             <center>
                                                 <a href="#"  class="btn btn-info btn-sm ">
                                                     <i class="fa fa-pencil-alt"> VOIR</i>
                                                 </a>
                                  </center>
-                                        </td>
+                                        </td>  --}}
                                     </tbody>
                                     @endforeach
                                 </table>
