@@ -27,12 +27,9 @@
 
                           <div class="tab-pane fade show  {{ isset($histosubcription) ? '' : 'active'}}" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                 <div class="tab-custom-content">
-                                    <p class="lead mb-0">Liste des souscriptions |
+                                    <p class="lead mb-0">Liste des souscriptions
 
-                                        <a href="{{ route('subscription.customer') }}"  class="btn btn-success btn-sm">
-                                            NOUVEAU
-                                            <i class=" fa fa-edit"></i>
-                                        </a>
+
 
                                     </p>
 
