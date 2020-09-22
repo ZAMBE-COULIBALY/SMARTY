@@ -6,6 +6,7 @@ use App\Agency;
 use App\Agent;
 use App\Subscription;
 use App\Customer;
+use App\Mail\newSubscription;
 use App\payments;
 use App\Manager;
 use App\Partner;
@@ -21,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\database\Query\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 use function GuzzleHttp\Promise\all;
@@ -71,7 +73,7 @@ class SubscriptionController extends Controller
         $subscription = Subscription::all()->whereIn('agent_id',Agent::all()->whereIn('agency_id',Agency::all()->where('partner_id', '=',$partner->id)->pluck('id'))->pluck('id'))->where('date_subscription','=',$datv)->count();
        //dd($subscription);
 
-        $numdossier =$codepart.$madate.str_pad($subscription+1, 5, "0", STR_PAD_LEFT);
+        $numdossier =$codepart.$madate.$agent_id.str_pad($subscription+1, 5, "0", STR_PAD_LEFT);
 
         $Subscription = new \App\Subscription();
         $Subscription->fill(['folder' =>$numdossier,
@@ -344,6 +346,8 @@ $request->session()->put('Subscription', $Subscription)  ;
 
         $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
 
+
+        Mail::send(new newSubscription($Subscription));
 
         return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$Subscription['folder']. ') effectuée avec succès.');
     }

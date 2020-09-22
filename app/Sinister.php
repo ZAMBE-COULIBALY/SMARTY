@@ -9,12 +9,14 @@ class Sinister extends Model
     //
 
     protected $fillable = [
-        'folder',
+        'folder','description','contract','vouchers','type1','type2','state'
        ];
 
-      /*  public function customer()
+
+       public function subscription()
        {
            # code...
-           return $this->belongsTo('App\Customer');
-       } */
+
+           return $this->hasOne("App\Subscription","code","folder");
+       }
 }

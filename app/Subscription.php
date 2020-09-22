@@ -29,4 +29,10 @@ class Subscription extends Model
         # code...
         return $this->belongsTo("App\Product");
     }
+
+    public function sinisters()
+    {
+        # code...
+        return $this->hasMany("App\Sinister","folder","code");
+    }
 }

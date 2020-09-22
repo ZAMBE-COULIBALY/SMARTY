@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\database\Query\Builder;
+use Illuminate\Support\Facades\App;
 use App\User;
 use App\Customer;
 use App\Subscription;
@@ -48,46 +49,60 @@ class SinisterController extends Controller
         $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
 
         $validatedData = $request->validate([
-            'folder'=> ':sinisters',
-
+            'folder'=> 'required|exists:subscriptions,code',
         ]);
 
-        $Subscription = new \App\Sinister();
-        $Subscription->fill( $validatedData);
+        $Subscription = Subscription::where('code','=',$validatedData['folder'])->first();
 
-        $request->session()->put('Subscription', $Subscription,$libellepdv);
-        $folder=$Subscription['folder'];
-        $phone1=$Subscription['folder'];
-        $numberIMEI=$Subscription['folder'];
 
-         $resultat = DB::table('customers')
-         ->join('subscriptions', 'subscriptions.customer_id', '=', 'customers.id')
-         ->where('subscriptions.code','=',$folder)->orWhere('subscriptions.numberIMEI','=',$numberIMEI)
-         ->orWhere('customers.phone1','=',$phone1)
-         ->select('*')
-         ->get();
-         $usr = User::find(Auth::user()->id);
-
-         $product =Product::all()->where("partner_id",$usr->partner_id);
-
-        $request->session()->put('Subscription', $resultat);
-        if(count($resultat) > 0)
-            return view('pages.detailSearch',compact('Subscription',"resultat", 'libellepdv','product'));
-        else
-
-            return view ('pages.detailSearch',compact('Subscription',"resultat"))->withMessage('error','Numéro introuvable. Recherchez un autre dossier !');
+        return view('pages.detailSearch',compact('Subscription'));
      }
 
 
-    public function create()
+    public function create(Request $request,Subscription $subscription)
     {
         //
-       /*  $q = Input::get ( 'q' );
-        $user = User::where('name','LIKE','%'.$q.'%')->orWhere('email','LIKE','%'.$q.'%')->get();
-        if(count($user) > 0)
-            return view('welcome')->withDetails($user)->withQuery ( $q );
-        else retur n view ('welcome')->withMessage('No Details found. Try to search again !');*/
+// dd($subscription->agent);
+        return view('pages.declareSinister',compact('subscription',$subscription));
     }
+
+
+    public function getvalid(Request $request,Subscription $subscription)
+    {
+        //
+        return view('pages.valid',compact('subscription',$subscription));
+    }
+
+    public function valid(Request $request,Subscription $subscription)
+    {
+        //
+
+        DB::update('update sinisters set state = 1 where folder = ?', [$subscription->code]);
+
+        $listsinistres = DB::table('sinisters')
+        ->join('subscriptions', 'subscriptions.code', '=', 'sinisters.folder')
+        ->join('customers','subscriptions.customer_id', '=', 'customers.id')
+        ->select('*')
+        ->where('sinisters.state','=',1)
+        ->get();
+
+        $sinister = Sinister::where("folder","=",$subscription->code)->where('state', '=',1)->first();
+
+        $Subscription = $request->session()->get('Subscription');
+        //$Subscription = Subscription::where('code','=',[$subscription->code])->first();
+
+        //dd( $sinister);
+        $pdf =  App::make('dompdf.wrapper');
+
+        $pdf-> loadView("models.model_bon", compact('subscription',$sinister));
+
+        $pdf-> save(storage_path().'/app/public/voucher/'.$subscription->code.'.pdf');
+
+        return view('pages.listeSinistreValidate',compact('subscription',$subscription))->with('liste', $listsinistres) ;
+    }
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -95,9 +110,32 @@ class SinisterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Subscription $subscription)
     {
         //
+
+        $paramters =$request->except('_token');
+        Sinister::create([
+            'code'=>$subscription->code,
+            'folder' =>$subscription->code,
+            'description'=>$subscription->description,
+            'contract'=>$paramters['contract'],
+            'vouchers'=>$paramters['vouchers'],
+            'state'=>"0",
+            'type1'=>collect($paramters['choix1'])->implode('-'),
+            'type2'=>collect($paramters['choix2'])->implode('-'),
+        ]);
+
+        return redirect(route('sinister.list'))->with('success','déclaration transmise');
+    }
+
+    public function getbon(Request $request ,Subscription $subscription)
+    {
+        //
+       // dd($subscription->code);
+        $Subscription = $request->session()->get('subscription');
+
+        return view('pages.bon',compact('subscription'));
     }
 
     /**
@@ -106,9 +144,17 @@ class SinisterController extends Controller
      * @param  \App\Sinister  $sinister
      * @return \Illuminate\Http\Response
      */
-    public function show(Sinister $sinister)
+    public function show(Request $request )
     {
         //
+        $listsinistres = DB::table('sinisters')
+        ->join('subscriptions', 'subscriptions.code', '=', 'sinisters.folder')
+        ->join('customers','subscriptions.customer_id', '=', 'customers.id')
+        ->select('*')
+        ->where('sinisters.state','=',0)
+        ->get();
+        $Subscription = $request->session()->get('Subscription');
+        return view('pages.listeSinistre',compact('Subscription'))->with('liste', $listsinistres) ;
     }
 
     /**
