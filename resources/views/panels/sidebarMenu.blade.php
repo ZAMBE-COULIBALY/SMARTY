@@ -58,7 +58,7 @@
         </li>
         <li class="nav-item">
           <a href="{{ route('customers.list') }}" class="nav-link @yield('listcustomers')">
-            <i class="nav-icon fas fa-copy"></i>
+            <i class="far fa-circle nav-icon"></i>
             <p>Clients</p>
           </a>
         </li>
@@ -86,22 +86,39 @@
           </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('statistics.etatpartenaire') }}" class="nav-link">
+            <a href="{{ route('statistics.etatpartenaire') }}" class="nav-link @yield('statistiques')">
               <i class="far fa-circle nav-icon"></i>
               <p>Statistiques</p>
             </a>
           </li>
-        <li class="nav-item">
-          <a href="{{ route('sinister.search') }}" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Sinistres</p>
-          </a>
-        </li>
+
 
       </ul>
     </li>
- {{-- FIN MODULE OPERATION --}}
+
+    <li class="nav-item has-treeview @yield('SINISTRES')">
+      <a href="#" class="nav-link @yield('SINISTRES')">
+        <i class="nav-icon fas fa-copy"></i>
+        <p>
+          SINISTRES
+          <i class="fas fa-angle-left right"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{ route('sinister.search') }}" class="nav-link @yield('DECLARATION')">
+              <i class="far fa-circle nav-icon"></i>
+              <p>DECLARATION</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('sinister.list') }}" class="nav-link @yield('listeSinistre')">
+              <i class="far fa-circle nav-icon"></i>
+              <p>LISTE</p>
+            </a>
+        </li>
 @endif
+
   </ul>
 </nav>
 <!-- /.sidebar-menu -->

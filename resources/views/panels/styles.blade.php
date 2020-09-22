@@ -35,3 +35,5 @@
   <!-- File Uploader -->
   <link rel="stylesheet" href={{ asset('plugins/file-uploaders/dropzone.min.css') }} >
 
+
+

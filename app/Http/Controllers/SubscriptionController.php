@@ -71,7 +71,7 @@ class SubscriptionController extends Controller
         $subscription = Subscription::all()->whereIn('agent_id',Agent::all()->whereIn('agency_id',Agency::all()->where('partner_id', '=',$partner->id)->pluck('id'))->pluck('id'))->where('date_subscription','=',$datv)->count();
        //dd($subscription);
 
-        $numdossier =$codepart.$madate.str_pad($subscription+1, 5, "0", STR_PAD_LEFT);
+        $numdossier =$codepart.$madate.$agent_id.str_pad($subscription+1, 5, "0", STR_PAD_LEFT);
 
         $Subscription = new \App\Subscription();
         $Subscription->fill(['folder' =>$numdossier,

@@ -61,13 +61,7 @@
                                         <td>{{ $customers->phone2 }}</td>
                                         <td>{{ $customers->gender }}</td>
                                         <td>{{ $customers->created_at }}</td>
-                                       {{--   <td>
-                            <center>
-                                            <a href="{{ route('customers.create') }}"  class="btn btn-info btn-sm ">
-                                                <i class="fa fa-pencil-alt"></i>
-                                            </a>
-                            </center>
-                                        </td> --}}
+
 
                                     </tbody>
                                      @endforeach
