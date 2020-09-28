@@ -42,7 +42,7 @@ menu-open active
 
                                                 <center>
 
-                                                <a class="btn btn-warning" href="#">IMPRIMER</a>
+                                                {{--  <a class="btn btn-warning" href="#">IMPRIMER</a>  --}}
                                                 <a class="btn btn-success" href="{{ route('subscription.customer') }}">TERMINER</a>
                                                </center>
                                                <P style="margin-top: 50%">
