@@ -23,9 +23,13 @@ Route::post('/paiementmobile', [
     'uses' => 'SubscriptionController@paiementmobile'
     ]);
 
-
+    Route::post('/documentmobilepayment', [
+        'as'=> 'documentmobilepayment',
+        'uses' => 'SubscriptionController@documentmobilepayment'
+        ]);
 
 Route::get('/vocabulary/allVocbularySons/{vocabulary}',[
     "as" => "vocabularies.allforonevocabulary",
     "uses" => "VocabularyController@allForOneVocabulary"
 ]);
+
