@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\authorisations;
+use App\Authorisation;
 use Illuminate\Http\Request;
 
 class AuthorisationsController extends Controller
@@ -41,10 +41,10 @@ class AuthorisationsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\authorisations  $authorisations
+     * @param  \App\Authorisation  $Authorisation
      * @return \Illuminate\Http\Response
      */
-    public function show(authorisations $authorisations)
+    public function show(Authorisation $authorisation)
     {
         //
     }
@@ -52,10 +52,10 @@ class AuthorisationsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\authorisations  $authorisations
+     * @param  \App\Authorisation  $authorisation
      * @return \Illuminate\Http\Response
      */
-    public function edit(authorisations $authorisations)
+    public function edit(Authorisation $authorisation)
     {
         //
     }
@@ -64,10 +64,10 @@ class AuthorisationsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\authorisations  $authorisations
+     * @param  \App\authorisation  $authorisation
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, authorisations $authorisations)
+    public function update(Request $request, Authorisation $authorisation)
     {
         //
     }
@@ -75,10 +75,10 @@ class AuthorisationsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\authorisations  $authorisations
+     * @param  \App\authorisation  $authorisation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(authorisations $authorisations)
+    public function destroy(Authorisation $Authorisation)
     {
         //
     }
