@@ -71,19 +71,16 @@
              });
         }
                 $(document).ready(function() {
-                    if(null !== "{{$products->first()}}")
-                    {
-                        $.get("../api/vocabulary/allVocbularySons/{{$products->first()->type->id}}",function(data){
-                            // console.log(data);
-                            var lesOptions;
-                            $.each(data, function( index, value ) {
-                                lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
-                            });
-                            $("#mark").empty();
-                            $("#mark").append(lesOptions);
-                            loadModel();
-                        })
-                    }
+                    $.get("../api/vocabulary/allVocbularySons/{{$products->first()->type->id}}",function(data){
+                        // console.log(data);
+                        var lesOptions;
+                        $.each(data, function( index, value ) {
+                            lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
+                        });
+                        $("#mark").empty();
+                        $("#mark").append(lesOptions);
+                        loadModel();
+                    })
                 });
 
 

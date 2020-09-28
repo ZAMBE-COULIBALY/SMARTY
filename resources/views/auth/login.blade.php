@@ -2,7 +2,7 @@
 @section('content')
 <div class="login-box">
     <div class="login-logo">
-      <a href="{{ route('dashboard') }}"><b>{{ config('app.name', 'SMARTY') }}</b></a>
+      <a href="{{ route('dashboard') }}"><b>SMARTY</b></a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
