@@ -71,9 +71,11 @@
              });
         }
                 $(document).ready(function() {
-                    if(null !== "{{$products->first()}}")
+                    if(!(jQuery.isEmptyObject("{{$products->first()}}")))
                     {
-                        $.get("../api/vocabulary/allVocbularySons/{{$products->first()->type->id}}",function(data){
+                        var product = {{$products->first()}};
+
+                        $.get("../api/vocabulary/allVocbularySons/"+product.id,function(data){
                             // console.log(data);
                             var lesOptions;
                             $.each(data, function( index, value ) {

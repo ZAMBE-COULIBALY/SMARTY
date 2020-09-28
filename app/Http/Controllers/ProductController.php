@@ -38,7 +38,6 @@ class ProductController extends Controller
 
         }
 
-        // dd($products->first()->category);
 
         $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
         $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
