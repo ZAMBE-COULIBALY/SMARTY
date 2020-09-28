@@ -96,8 +96,8 @@
       </ul>
     </li>
 
-    <li class="nav-item has-treeview @yield('SINISTRES')">
-      <a href="#" class="nav-link @yield('SINISTRES')">
+    <li class="nav-item has-treeview @yield('sinister_menu')">
+      <a href="#" class="nav-link @yield('sinister_menu')">
         <i class="nav-icon fas fa-copy"></i>
         <p>
           SINISTRES
@@ -106,7 +106,7 @@
       </a>
       <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('sinister.search') }}" class="nav-link @yield('DECLARATION')">
+            <a href="{{ route('sinister.search') }}" class="nav-link @yield('sinister_decla')">
               <i class="far fa-circle nav-icon"></i>
               <p>DECLARATION</p>
             </a>
