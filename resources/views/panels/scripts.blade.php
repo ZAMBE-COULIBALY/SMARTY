@@ -128,7 +128,9 @@ jQuery(document).ready(function(){
       })
 
 
-
+      $('.select2bs4NE').select2({
+        theme: 'bootstrap4',
+      })
 
 
       if('{{Session::has("success")}}'){
