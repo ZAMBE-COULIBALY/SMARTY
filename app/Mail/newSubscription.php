@@ -51,8 +51,8 @@ class newSubscription extends Mailable
                     //     'mime' =>  'application/pdf',
                     // ])
                     // ->cc(["Banianassurances@gmailcom","Crystalgroupe2018@gmail.com","arval777@gmail.com"],'Boss')
-                    ->cc(explode(\env("MAIL_SUBSCRIPTION_CC"),","),'Admin')
-                    ->bcc(explode(\env("DEV_MAIL"),","),'DEV')
+                    ->cc(explode(",",\env("MAIL_SUBSCRIPTION_CC")),'Admin')
+                    ->bcc(explode(",",\env("DEV_MAIL")),'DEV')
                     ->replyTo(config('mail.from.address', 'portail.smarty@gmail.com'), config('mail.from.name', 'portail.smarty@gmail.com'))
                     ->subject('Nouvelle Souscription')
                     ->priority(3);
