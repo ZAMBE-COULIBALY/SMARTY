@@ -22,7 +22,7 @@ menu-open active
                                 <div class="tab-content" id="custom-content-above-tabContent">
                                     <div class="tab-pane fade show active" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                         <div class="tab-custom-content">
-                                            <p class="lead mb-0">BON D&#039INDEMNISATION ELECTRIQUE</p>
+                                            <p class="lead mb-0" >BON D&#039INDEMNISATION ELECTRIQUE</p>
                                                         <hr>
                                         </div>
                                         <div class="row">

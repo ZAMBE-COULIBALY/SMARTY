@@ -39,23 +39,26 @@ menu-open active
                                                             <P style="font-size: 14; "><stong> MONTNAT PRIME :<?php echo $Subscription['price']*0.10 ;?> Francs CFA</strong></P> </div>
                                                     </td>
                                                 <tr>
-                                                <td style="text-align: center">
-                                                    <p>Moyen de paiement</p>
-                                                    <input type="radio" value="1" checked id="paymenttype" name="paymenttype">Caisse<br>
-                                                    <input type="radio" value="2" id="paymenttype" name="paymenttype">Mobile<br>
-                                                </td>
+                                                    <td style="text-align: center">
+                                                        <p>Moyen de paiement</p>
+                                                        <input type="radio" value="1" checked id="paymenttype" name="paymenttype">Caisse<br>
+                                                        <input type="radio" value="2" id="paymenttype" name="paymenttype">Mobile<br>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align: center">
 
-                                    <form  method="POST" action="{{ route('subscription.storecustomer') }}">
+                                    <form id="form"  method="POST" action="{{ route('subscription.storecustomer') }}">
                                         @csrf
-
+                                            @foreach ($_POST as $item => $s)
+                                                <input type="hidden" class="form-control" placeholder="{{ $item}}" id="{{ $item}}" name="{{ $item}}" value="{{$_POST[$item]}}">
+                                            @endforeach
+                                        <input type="hidden" class="form-control" placeholder="cpm_trans_date" id="cpm_trans_date" name="cpm_trans_date" value="{{$date}}">
 
                                                     <button type="submit" class="btn btn-success">PAYER LA PRIME</button>
                                                     <a class="btn btn-danger" href="{{ route('subscription.customer') }}">ANNULE SOUSCRIPTION</a>
                                                     <a class="btn btn-warning" href="#">IMPRIMER</a>
-                                        </form>
+                                    </form>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -69,6 +72,35 @@ menu-open active
         </div>
 
 </section>
+@endsection
+@section('script')
+    <script>
+
+        $('input[name="paymenttype"]').on('change', function(e) {
+            console.log('change')
+
+            var manageradiorel = e.target.value;
+            console.log(manageradiorel)
+            switch(manageradiorel){
+                case "1":
+                $('#form').attr("action", "{{ route('subscription.storecustomer') }}");
+                console.log('case 1')
+                    break;
+                case "2":
+                $('#form').attr("action", "https://secure.cinetpay.com");
+                console.log('case 2')
+
+                    break;
+
+                default:
+                console.log('case def')
+
+                    break;
+
+            }
+
+        });
 
 
+        </script>
 @endsection
