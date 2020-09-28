@@ -68,7 +68,7 @@ menu-open active
                                         <th>MARQUE</th>
                                         <th>MODELE</th>
                                         <th>ETAT</th>
-                                        <th>ACTIONS</th>
+                                        {{--  <th>ACTIONS</th>  --}}
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -80,14 +80,14 @@ menu-open active
                                                 <td>{{$item->label->label}}</td>
                                                 <td>{{$item->model->label}}</td>
                                                 <td>{{  ($item->state == 1) ? 'Actif' : 'Inactif'}}</td>
-                                                <td>
+                                                {{--  <td>
                                                     <a href="{{route('products.delete',$item->id) }}"  class="btn btn-danger btn-sm">
                                                         <i class=" fa fa-trash"></i>
                                                     </a>
                                                     <a href="{{route('products.edit',$item->id) }}"  class="btn btn-info btn-sm ">
                                                         <i class="fa fa-pencil-alt"></i>
                                                     </a>
-                                                </td>
+                                                </td>  --}}
                                             </tr>
                                             @endforeach
 
@@ -146,17 +146,21 @@ menu-open active
                  });
             }
                     $(document).ready(function() {
-                        $.get("../api/vocabulary/allVocbularySons/{{$categories->first()->id}}",function(data){
-                            // console.log(data);
-                            var lesOptions;
-                            $.each(data, function( index, value ) {
-                                lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
-                            });
-                            $("#type").empty();
-                            $("#type").append(lesOptions);
-                         /*   loadLabel();
-                            loadModel();*/
-                        })
+                        if(!(isEmptyObject('{{$categories}}')))
+                        {
+                            var selectedCategory = $("#category").children("option:selected").val();
+                            $.get("../api/vocabulary/allVocbularySons/"+selectedCategory,function(data){
+                                // console.log(data);
+                                var lesOptions;
+                                $.each(data, function( index, value ) {
+                                    lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
+                                });
+                                $("#type").empty();
+                                $("#type").append(lesOptions);
+                            /*   loadLabel();
+                                loadModel();*/
+                            })
+                        }
                     });
 
                     loadtype = function () {
