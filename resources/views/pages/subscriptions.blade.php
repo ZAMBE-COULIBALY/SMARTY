@@ -73,7 +73,7 @@
                 $(document).ready(function() {
                     if(!(jQuery.isEmptyObject("{{$products->first()}}")))
                     {
-                        var product = "{{$products->first()}}";
+                        var product = {{$products->first()}};
 
                         $.get("../api/vocabulary/allVocbularySons/"+product.id,function(data){
                             // console.log(data);
