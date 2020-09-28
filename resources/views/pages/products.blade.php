@@ -72,7 +72,7 @@ menu-open active
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($products as $item)
+                                        @foreach ($products as $item)
                                             <tr>
                                                 <td>{{ $item->code }}</td>
                                                 <td>{{$item->name}}</td>
@@ -146,9 +146,11 @@ menu-open active
                  });
             }
                     $(document).ready(function() {
-                        if(null !== "{{$categories->first()}}")
+                        if(!(jQuery.isEmptyObject({{$categories}}) ))
                         {
-                            $.get("../api/vocabulary/allVocbularySons/{{$categories->first()->id}}",function(data){
+
+                            var cate = {{$categories->first()}};
+                            $.get("../api/vocabulary/allVocbularySons/"+cate.id,function(data){
                             // console.log(data);
                             var lesOptions;
                             $.each(data, function( index, value ) {
@@ -158,7 +160,7 @@ menu-open active
                             $("#type").append(lesOptions);
                             loadLabel();
                             loadModel();
-                        })
+                            })
                         }
 
                     });
