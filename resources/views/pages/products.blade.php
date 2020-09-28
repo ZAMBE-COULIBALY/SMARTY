@@ -146,7 +146,9 @@ menu-open active
                  });
             }
                     $(document).ready(function() {
-                        $.get("../api/vocabulary/allVocbularySons/{{$categories->first()->id}}",function(data){
+                        if(null !== "{{$categories->first()}}")
+                        {
+                            $.get("../api/vocabulary/allVocbularySons/{{$categories->first()->id}}",function(data){
                             // console.log(data);
                             var lesOptions;
                             $.each(data, function( index, value ) {
@@ -154,9 +156,11 @@ menu-open active
                             });
                             $("#type").empty();
                             $("#type").append(lesOptions);
-                         /*   loadLabel();
-                            loadModel();*/
+                            loadLabel();
+                            loadModel();
                         })
+                        }
+
                     });
 
                     loadtype = function () {
