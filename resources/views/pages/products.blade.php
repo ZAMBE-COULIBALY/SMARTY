@@ -146,10 +146,10 @@ menu-open active
                  });
             }
                     $(document).ready(function() {
-                        if(!(jQuery.isEmptyObject({{$categories}}) ))
+                        if(!(jQuery.isEmptyObject("{{$categories}}"") ))
                         {
 
-                            var cate = {{$categories->first()}};
+                            var cate = "{{$categories->first()}}"";
                             $.get("../api/vocabulary/allVocbularySons/"+cate.id,function(data){
                             // console.log(data);
                             var lesOptions;
