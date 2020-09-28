@@ -3,7 +3,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href= {{ asset('plugins/fontawesome-free/css/all.min.css') }}>
   <!-- Font feather -->
-  <link rel="stylesheet" href= {{ asset('fonts/feather/iconfont.css') }}>
+  {{--  <link rel="stylesheet" href= {{ asset('fonts/feather/iconfont.css') }}>  --}}
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
@@ -33,7 +33,7 @@
   <!-- Toastr -->
   <link rel="stylesheet" href={{ asset('plugins/toastr/toastr.min.css') }}>
   <!-- File Uploader -->
-  <link rel="stylesheet" href={{ asset('plugins/file-uploaders/dropzone.min.css') }} >
+  {{--  <link rel="stylesheet" href={{ asset('plugins/file-uploaders/dropzone.min.css') }} >  --}}
 
 
 

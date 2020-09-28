@@ -28,7 +28,6 @@
 <!-- AdminLTE App -->
 <script src={{ asset('dist/js/adminlte.js') }}></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src={{ asset('dist/js/pages/roles.js') }}></script>
 <!-- AdminLTE for demo purposes -->
 <script src={{ asset('dist/js/demo.js') }}></script>
 <!-- DataTables -->
@@ -59,7 +58,7 @@
 <link href="summernote.css" rel="stylesheet">
 <script src="summernote.js"></script>  --}}
 <!-- file uploader -->
-<script src={{ asset('plugins/file-uploaders/dropzone.min.js') }}></script>
+{{--  <script src={{ asset('plugins/file-uploaders/dropzone.min.js') }}></script>  --}}
 
 <script>
 jQuery(document).ready(function(){

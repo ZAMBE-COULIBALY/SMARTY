@@ -124,3 +124,117 @@ menu-open active
     </section>
 @endsection
 
+@section('script')
+    <script>
+
+
+
+        $(function () {
+            loadvocabularies = function (parent,sons) {
+                $.get("../api/vocabulary/allVocbularySons/"+parent,function(data){
+                    // console.log(data);
+                     var lesOptions;
+                     $.each(data, function( index, value ) {
+                         lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
+                     });
+                    sons.empty();
+                    sons.append(lesOptions);
+                     {{--  loadagent($("#agency").children("option:selected").val());  --}}
+
+                     //  $("#id_categorie").trigger("chosen:updated");
+
+                 });
+            }
+                    $(document).ready(function() {
+                        $.get("../api/vocabulary/allVocbularySons/{{$categories->first()->id}}",function(data){
+                            // console.log(data);
+                            var lesOptions;
+                            $.each(data, function( index, value ) {
+                                lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
+                            });
+                            $("#type").empty();
+                            $("#type").append(lesOptions);
+                         /*   loadLabel();
+                            loadModel();*/
+                        })
+                    });
+
+                    loadtype = function () {
+                        var selectedCategory = $("#category").children("option:selected").val();
+                        console.log("chargement type de "+selectedCategory);
+
+                        $.get("../api/vocabulary/allVocbularySons/"+selectedCategory,function(data){
+                            // console.log(data);
+                            var lesOptions;
+                            $.each(data, function( index, value ) {
+                                lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
+                            });
+                            $("#type").empty();
+                            $("#type").append(lesOptions);
+                            loadLabel();
+                            loadModel();
+                        });
+                    }
+
+                    loadLabel = function () {
+                        var selectedType = $("#type").children("option:selected").val();
+                        console.log("chargement marque");
+
+
+                        $.get("../api/vocabulary/allVocbularySons/"+selectedType,function(data){
+                            // console.log(data);
+                            var lesOptions;
+                            $.each(data, function( index, value ) {
+                                lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
+                            });
+                            $("#label").empty();
+                            $("#label").append(lesOptions);
+                            loadModel();
+                        });
+                    }
+
+                    loadModel = function () {
+                        console.log("chargement model");
+                        var selectedLabel = $("#label").children("option:selected").val();
+                        $.get("../api/vocabulary/allVocbularySons/"+selectedLabel,function(data){
+                            // console.log(data);
+                            var lesOptions;
+                            $.each(data, function( index, value ) {
+                                lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
+                            });
+                            $("#model").empty();
+                            $("#model").append(lesOptions);
+                        });
+                    }
+
+                    $("#category").change(function (e) {
+                        {{-- appelle ws liste agences --}}
+                        console.log("changement category");
+
+                        loadtype();
+
+                        //  alert("ddd");
+                    })
+
+
+
+
+                    $("#type").change(function (e) {
+                        {{-- appelle ws liste agences --}}
+
+                        loadLabel();
+
+                        //  alert("ddd");
+                    })
+
+                    $("#label").change(function (e) {
+                        {{-- appelle ws liste agences --}}
+
+                        loadModel();
+                        //  alert("ddd");
+                    })
+
+            })
+
+    </script>
+@endsection

@@ -82,4 +82,12 @@ class VocabularyController extends Controller
     {
         //
     }
+
+    public function allForOneVocabulary(Vocabulary $vocabulary)
+    {
+        # code...
+        $vocabularies = Vocabulary::all()->where('parent',$vocabulary->id);
+        return response()->json($vocabularies);
+
+    }
 }
