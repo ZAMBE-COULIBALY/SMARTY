@@ -10,6 +10,7 @@ use App\Mail\newSubscription;
 use App\payments;
 use App\Manager;
 use App\Partner;
+use App\Payment;
 use App\Product;
 use App\Role;
 use App\User;
@@ -18,11 +19,15 @@ use App\VocabularyType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Providers\AppServiceProvider;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\database\Query\Builder;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 use function GuzzleHttp\Promise\all;
@@ -49,8 +54,9 @@ class SubscriptionController extends Controller
 
         $code = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->partner_id;
         $codepart=Partner::where("id",$code)->first()->code;
-        $date= date_format(date_create(now()),'d-m-Y');
-        list($jour,$mois,$annee)=sscanf($date,"%d-%d-%d");
+        $date= date_format(date_create(now()),'d-m-Y H:i:s');
+        list($jour,$mois,$annee,$heure,$munite,$seconde)=sscanf($date,"%d-%d-%d %d:%d:%d");
+
         if (strlen($mois)===1 ) {
             $mois ='0'.$mois;
         }else {
@@ -73,7 +79,7 @@ class SubscriptionController extends Controller
         $subscription = Subscription::all()->whereIn('agent_id',Agent::all()->whereIn('agency_id',Agency::all()->where('partner_id', '=',$partner->id)->pluck('id'))->pluck('id'))->where('date_subscription','=',$datv)->count();
        //dd($subscription);
 
-        $numdossier =$codepart.$madate.$agent_id.str_pad($subscription+1, 5, "0", STR_PAD_LEFT);
+        $numdossier =$codepart.$madate.$agent_id.$munite.$seconde.str_pad($subscription+1, 5, "0", STR_PAD_LEFT);
 
         $Subscription = new \App\Subscription();
         $Subscription->fill(['folder' =>$numdossier,
@@ -278,7 +284,49 @@ $request->session()->put('Subscription', $Subscription)  ;
         //
         $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.recapitulatif',compact('Subscription'));
+         //proforma document
+         $date = date("Y-m-d H:i:s");
+        $custom = json_encode($Subscription);
+        $designation = "Paiement de la souscription N°".$Subscription['folder'];
+        $params = [
+            "cpm_amount" =>100,
+            "cpm_designation" => $designation ,
+            "cpm_trans_id" => $Subscription['folder'],
+            "cpm_trans_date" => $date,
+            "cpm_language" => "fr",
+            "cpm_version" => "V1",
+            "cpm_page_action" => "PAYMENT",
+            "cpm_payment_config" =>"SINGLE" ,
+            "cpm_currency" => "CFA",
+            "cpm_site_id" => "448173",
+            "apikey" => "13013879545bdc3a5579f458.42836232",
+            "cpm_custom" => json_encode($Subscription),
+        ];
+        $client = new Client();
+                $response = $client->request("POST","https://api.cinetpay.com/v1/?method=getSignatureByPost",
+                [
+                    'verify' => false,
+                    'headers' => [
+                        'Content-Type'     => 'application/x-www-form-urlencoded',
+                    ],
+                    'form_params' => $params
+                ]);
+
+                $reponse = \GuzzleHttp\json_decode($response->getBody());
+                $signature = $reponse;
+                $params["notify_url"] = route("paiementmobile");
+                $params["return_url"] = route("documentmobilepayment");
+                $params["cancel_url"] = route("subscription.recapitulatif");
+                $params["debug"] = 0;
+                $params["signature"] = $signature;
+                unset( $params["cpm_trans_date"]);
+//dd($params);
+        foreach ($params as $key => $value){
+        $_POST[$key] = $value;
+        }
+
+
+        return view('pages.recapitulatif',compact('Subscription','date'));
 
 
     }
@@ -300,6 +348,7 @@ $request->session()->put('Subscription', $Subscription)  ;
     {
 
         $Subscription = $request->session()->get('Subscription');
+
 
 
         $ma=1;
@@ -347,10 +396,146 @@ $request->session()->put('Subscription', $Subscription)  ;
         $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
 
 
-        Mail::send(new newSubscription($Subscription));
+        //Mail::send(new newSubscription($Subscription));
 
         return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$Subscription['folder']. ') effectuée avec succès.');
     }
+
+    public function paiementmobile (Request $request)
+    {
+
+
+        // if(empty($request->session()->get('subscription')))
+        // return redirect(route('subscriptions.list'))->with('warning','Aucune souscription en cours de traitement');
+        Log::info(json_encode($request->all()));
+        Log::info(json_encode($request["cpm_trans_id"]));
+        if (null !== $request['cpm_trans_id']) {
+
+            Log::info('le numero de transacion est bien recu'.now());
+            $id_transaction = $_POST['cpm_trans_id'];
+            if(null !== Payment::where("refpayment","=",$id_transaction)->first())
+            {
+                Log::info("Operation $id_transaction déjà effectuée");
+                return 0;
+            }
+
+            //Veuillez entrer votre apiKey et site ID
+            $apiKey = "13013879545bdc3a5579f458.42836232";
+            $site_id = "448173";
+            $plateform = "PROD";
+            $version = "V1";
+            $params = [
+                "apikey" => "13013879545bdc3a5579f458.42836232",
+                "cpm_site_id" => "448173",
+                "cpm_trans_id" => $id_transaction,
+
+            ];
+            $client = new Client();
+            $response = $client->request("POST","https://api.cinetpay.com/v1/?method=checkPayStatus",
+            [
+                'verify' => false,
+                'headers' => [
+                    'Content-Type'     => 'application/x-www-form-urlencoded',
+                ],
+                'form_params' => $params
+            ]);
+
+            $reponse = json_decode($response->getBody());
+            $transaction = $reponse->transaction;
+            Log::alert('recuperation informations transacton ok '.json_encode($transaction). ' h '.now());
+
+
+
+            $cpm_site_id = $transaction->cpm_site_id;
+            $signature = $transaction->signature;
+            $cpm_amount = $transaction->cpm_amount;
+            $cpm_trans_id = $transaction->cpm_trans_id;
+            $cpm_custom = $transaction->cpm_custom;
+            $cpm_currency = $transaction->cpm_currency;
+            $cpm_payid = $transaction->cpm_payid;
+            $cpm_payment_date = $transaction->cpm_payment_date;
+            $cpm_payment_time = $transaction->cpm_payment_time;
+            $cpm_error_message = $transaction->cpm_error_message;
+            $payment_method = $transaction->payment_method;
+            $cpm_phone_prefixe = $transaction->cpm_phone_prefixe;
+            $cel_phone_num = $transaction->cel_phone_num;
+            $cpm_ipn_ack = $transaction->cpm_ipn_ack;
+            $created_at = $transaction->created_at;
+            $updated_at = $transaction->updated_at;
+            $cpm_result = $transaction->cpm_result;
+            $cpm_trans_status = $transaction->cpm_trans_status;
+            $cpm_designation = $transaction->cpm_designation;
+            $buyer_name = $transaction->buyer_name;
+
+            if($cpm_result == '00'){
+              $Subscription = json_decode($cpm_custom);
+
+
+            }
+
+               $ma=1;
+                $ma += Customer::max('id');
+                $customers_id=$ma;
+
+                Customer::create([
+                    'code' =>$Subscription->folder,
+                    'name' =>$Subscription->name,
+                   'first_name' =>$Subscription->first_name,
+                   'birth_date' =>$Subscription->birth_date,
+                   'gender' =>$Subscription->gender,
+                   'place_birth' =>$Subscription->place_birth,
+                    'marital_status'=>$Subscription->marital_status,
+                   'place_residence' =>$Subscription->place_residence,
+                   'phone1' =>$Subscription->phone1,
+                   'phone2' =>$Subscription->phone2,
+                   'mail' =>$Subscription->mail,
+                   'folder' =>$Subscription->folder,
+                   'mailing_address' =>$Subscription->mailing_address,
+
+                ]);
+
+                Subscription::create([
+                    'code'=>$Subscription->folder,
+                    'equipment' =>$Subscription->equipment,
+                    'model' =>$Subscription->model,
+                    'mark' =>$Subscription->mark,
+                    'picture' =>$Subscription->picture,
+                    'numberIMEI' =>$Subscription->numberIMEI,
+                    'price' =>$Subscription->price,
+                    'premium' =>$Subscription->premium,
+                    'date_subscription' =>$Subscription->date_subscription,
+                    'subscription_enddate' =>$Subscription->subscription_enddate,
+                    'customer_id'=>$customers_id,
+                    'agent_id' =>$Subscription->agent_id,
+                ]);
+
+                Payment::create([
+                    'refsubscription'=>$Subscription->folder,
+                    'paymentmethod' =>2,
+                    'refpayment' =>$cpm_trans_id,
+                    'datepayment' =>$cpm_payment_date,
+                    'amount' =>$Subscription->premium,
+
+                ]);
+
+
+
+                $pdf =  App::make('dompdf.wrapper');
+
+                $pdf-> loadView("models.document", compact('Subscription'));
+
+                $pdf-> save(storage_path().'/app/public/received/'.$Subscription->first_name.$Subscription->phone1.'.pdf');
+               // Mail::send(new newSubscription($Subscription));
+
+            }
+            else{
+                    //Le paiement a échoué
+                    Log::alert('Paiement echoué');
+                }
+
+    return 0;
+
+            }
 
 
     public function getrecu(Request $request )
@@ -358,6 +543,106 @@ $request->session()->put('Subscription', $Subscription)  ;
         //
         $Subscription = $request->session()->get('Subscription');
         return view('pages.recu',compact('Subscription'));
+    }
+
+    public function documentmobilepayment(Request $request)
+    {
+
+
+        # code...
+        if (isset($_POST['cpm_trans_id'])) {
+            // SDK PHP de CinetPay
+
+            try {
+                // Initialisation de CinetPay et Identification du paiement
+                $id_transaction = $_POST['cpm_trans_id'];
+                //Veuillez entrer votre apiKey et site ID
+                //Veuillez entrer votre apiKey et site ID
+            $apiKey = "13013879545bdc3a5579f458.42836232";
+            $site_id = "448173";
+            $plateform = "PROD";
+            $version = "V1";
+            $params = [
+                "apikey" => "13013879545bdc3a5579f458.42836232",
+                "cpm_site_id" => "448173",
+                "cpm_trans_id" => $id_transaction,
+
+            ];
+            $client = new Client();
+            $response = $client->request("POST","https://api.cinetpay.com/v1/?method=checkPayStatus",
+            [
+                'verify' => false,
+                'headers' => [
+                    'Content-Type'     => 'application/x-www-form-urlencoded',
+                ],
+                'form_params' => $params
+            ]);
+
+            $reponse = json_decode($response->getBody());
+            $transaction = $reponse->transaction;
+            Log::alert('recuperation informations transacton ok '.json_encode($transaction). ' h '.now());
+
+
+
+            $cpm_site_id = $transaction->cpm_site_id;
+            $signature = $transaction->signature;
+            $cpm_amount = $transaction->cpm_amount;
+            $cpm_trans_id = $transaction->cpm_trans_id;
+            $cpm_custom = $transaction->cpm_custom;
+            $cpm_currency = $transaction->cpm_currency;
+            $cpm_payid = $transaction->cpm_payid;
+            $cpm_payment_date = $transaction->cpm_payment_date;
+            $cpm_payment_time = $transaction->cpm_payment_time;
+            $cpm_error_message = $transaction->cpm_error_message;
+            $payment_method = $transaction->payment_method;
+            $cpm_phone_prefixe = $transaction->cpm_phone_prefixe;
+            $cel_phone_num = $transaction->cel_phone_num;
+            $cpm_ipn_ack = $transaction->cpm_ipn_ack;
+            $created_at = $transaction->created_at;
+            $updated_at = $transaction->updated_at;
+            $cpm_result = $transaction->cpm_result;
+            $cpm_trans_status = $transaction->cpm_trans_status;
+            $cpm_designation = $transaction->cpm_designation;
+            $buyer_name = $transaction->buyer_name;
+
+            if($cpm_result == '00'){
+
+                    // une page HTML de paiement bon
+                    $Subscription = Subscription::where("code","=",$cpm_trans_id)->first();
+
+//dd($cpm_trans_id);
+                    Log::alert('Le paiement de la souscription a réussi');
+                    $user =  User::find($Subscription->agent->user->id);
+                Auth::login($user);
+                Session::Put("success",'Souscription ('.$Subscription->folder. ') effectuée avec succès.');
+
+                return view('pages.recu',compact('Subscription'));
+
+                }else{
+                    // une page HTML de paiement echoué
+                    Log::alert('Le paiement de la souscription a échoué');
+
+                 return redirect(route('subscription.customer'))->with('error','Le paiement de la souscription a échoué');
+
+                }
+            } catch (Exception $e) {
+                // Une erreur s'est produite
+                Log::alert("Erreur :" . $e->getMessage().now());
+                throw $e;
+            }
+        } else {
+           // redirection vers la page d'accueil
+           Log::alert('Le paiement de la souscription a échoué');
+
+           return redirect(route('subscription.customer'))->with('warning','Aucune souscription en cours de traitement');
+
+        }
+
+
+
+        return redirect(route('subscription.customer'))->with('warning','Aucune souscription en cours de traitement');
+
+
     }
 
     public function exportToPDF(Request $request){

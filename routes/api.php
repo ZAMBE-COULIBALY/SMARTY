@@ -18,8 +18,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/paiementmobile', [
+    'as'=> 'paiementmobile',
+    'uses' => 'SubscriptionController@paiementmobile'
+    ]);
+
+    Route::post('/documentmobilepayment', [
+        'as'=> 'documentmobilepayment',
+        'uses' => 'SubscriptionController@documentmobilepayment'
+        ]);
 
 Route::get('/vocabulary/allVocbularySons/{vocabulary}',[
     "as" => "vocabularies.allforonevocabulary",
     "uses" => "VocabularyController@allForOneVocabulary"
 ]);
+

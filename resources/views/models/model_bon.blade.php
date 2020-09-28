@@ -6,8 +6,11 @@
 
         <table  style=" width:850px;margin-left:35% color:#120d74">
             <tr>
-                <td colspan="2"  style="margin-left: 80%">
-                <center> <span style="font-family: Arial, Helvetica, sans-serif; color: #120d74;; font-size:16px"><H1> BON D&#039INDEMNISATION SMARTY</H1></span></center>
+                <td >
+
+                </td>
+                <td style="margin-left: 80%">
+                    <center> <span style="font-family: Arial, Helvetica, sans-serif; color: #120d74;; font-size:16px"><H1> BON D&#039INDEMNISATION SMARTY</H1></span></center>
                 </td>
 
             </tr>
@@ -34,7 +37,7 @@
             </tr>
             <tr>
                 <td>Date & lieu de naissance :</td>
-                <td>"Né le " {{$subscription->customer->birth_date}} à {{$subscription->customer->place_birth}}</td>
+                <td>Né le  {{$subscription->customer->birth_date}} à {{$subscription->customer->place_birth}}</td>
             </tr>
             <tr>
                 <td>Situation Matrimoniale :</td>
@@ -64,18 +67,19 @@
             </tr>
             <tr>
                 <td>VALEUR DE SOUSCRIPTION :</td>
-                <td>{{$subscription->date_subscription}}</td>
+                <td>{{$subscription->price}}</td>
             </tr>
 
             <tr>
                 <td>BON D&#039INDEMNISATION SMARTY D&#039UNE VALEUR DE :</td>
-                <td>{{$subscription->subscription_enddate}}</td>
+                <td>{{$subscription->premium}}</td>
             </tr>
             <tr>
                 <td colspan="2" style="color: red; ">
                 <b> NB: CE BON VALABLE NE PEUT ETRE ECHANGE CONTRE DE L&#039ESPECES </b>
                 </td>
             </tr>
+
             <tr>
                 <td> BON N°: </td>
                 <td></td>
@@ -87,8 +91,8 @@
                 </td>
             </tr>
             <tr>
-                <td>Le </td>
-                <td> à</td>
+                <td>Le  </td>
+                <td> à </td>
             </tr>
         </table>
     </body>

@@ -90,8 +90,23 @@ class SinisterController extends Controller
 
         $Subscription = $request->session()->get('Subscription');
         //$Subscription = Subscription::where('code','=',[$subscription->code])->first();
+        $date= date_format(date_create(now()),'d-m-Y H:i:s');
 
-        //dd( $sinister);
+        list($jour,$mois,$annee,$heure,$munite,$seconde)=sscanf($date,"%d-%d-%d %d:%d:%d");
+
+        if (strlen($mois)===1 ) {
+            $mois ='0'.$mois;
+        }else {
+            $mois =$mois;
+        }
+        if (strlen($jour)===1){
+            $jour ='0'.$jour;
+        }else {
+            $jour =$jour;
+        }
+
+        $user= Auth()->user()->username;
+
         $pdf =  App::make('dompdf.wrapper');
 
         $pdf-> loadView("models.model_bon", compact('subscription',$sinister));
@@ -133,6 +148,8 @@ class SinisterController extends Controller
     {
         //
        // dd($subscription->code);
+
+
         $Subscription = $request->session()->get('subscription');
 
         return view('pages.bon',compact('subscription'));
