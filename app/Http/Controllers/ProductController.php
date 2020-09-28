@@ -44,7 +44,6 @@ class ProductController extends Controller
         $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
         $labels = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id);
         $models = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id);
-
         return view("pages.products",compact("products","categories","types","labels","models"));
         //
     }
@@ -75,7 +74,7 @@ class ProductController extends Controller
         $product->code = $parameters["code"];
         $product->name = $parameters["name"];
 
-        if (null !== Vocabulary::all()->where("id",$parameters["category"])->first())  {
+        if (null !== Vocabulary::all()->whereStrict("id",$parameters["category"])->first())  {
             # code...
              $product->category_id = $parameters["category"] ;
         } else {
@@ -89,7 +88,7 @@ class ProductController extends Controller
             $product->category_id = $category->id;
         }
 
-        if (null !== Vocabulary::all()->where("id",$parameters["type"])->first())  {
+        if (null !== Vocabulary::all()->whereStrict("id",$parameters["type"])->first())  {
             # code...
              $product->type_id = $parameters["type"] ;
         } else {
@@ -103,7 +102,7 @@ class ProductController extends Controller
             $product->type_id = $type->id;
         }
 
-        if (null !== Vocabulary::all()->where("id",$parameters["label"])->first())  {
+        if (null !== Vocabulary::all()->whereStrict("id",$parameters["label"])->first())  {
             # code...
              $product->label_id = $parameters["label"] ;
         } else {
@@ -117,7 +116,7 @@ class ProductController extends Controller
             $product->label_id = $label->id;
         }
 
-        if (null !== Vocabulary::all()->where("id",$parameters["model"])->first())  {
+        if (null !== Vocabulary::all()->whereStrict("id",$parameters["model"])->first())  {
             # code...
              $product->model_id = $parameters["model"] ;
         } else {

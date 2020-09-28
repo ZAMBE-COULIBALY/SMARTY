@@ -64,6 +64,7 @@ class AgentController extends Controller
 
         try {
             //code...
+<<<<<<< HEAD
             $agent = new Agent();
         $date = new DateTime(null);
         $agent->code = $parameters['code'];
@@ -93,6 +94,36 @@ class AgentController extends Controller
         Mail::to($agentuser->email,"Agent ".$agent->lastname." ".$agent->firstname)
 
         ->queue(new newAgent($agent,$agent->agency,$pass))  ;
+=======
+                    $agent = new Agent();
+                $date = new DateTime(null);
+                $agent->code = $parameters['code'];
+                $agent->firstname = $parameters['firstname'];
+                $agent->lastname = $parameters['lastname'];
+                $agent->username = $parameters['username'];
+                $agent->agency_id = Agent::where("username",Auth::user()->username)->first()->agency->id;
+
+                $agent->contact = $parameters['contact'] ;
+                $agent->state = isset($parameters['state']) ? 1 : 0 ;
+                $agent->slug = Str::slug($agent->username.$date->format('dmYhis'));
+
+
+                $agentuser = new User();
+                $agentuser->name = $agent->lastname.' '.$agent->firstname;
+                $agentuser->username = $agent->username;
+                $agentuser->email = $parameters['email'];
+                $agentuser->name = $agent->lastname.' '.$agent->firstname;
+                $agentuser->slug = $agent->slug;
+                $agentuser->state = $agent->state;
+                $pass  = Str::random(8);
+                $agentuser->password = Hash::make($pass);
+                $agentuser->save();
+                $agentuser->roles()->attach(Role::where('slug','agent')->first());
+                $agent->save();
+                Mail::to($agentuser->email,"Agent ".$agent->lastname." ".$agent->firstname)
+
+                ->send(new newAgent($agent,$agent->agency,$pass))  ;
+>>>>>>> e731786cc0af1446a0471ad588b94e870de62320
 
 
         } catch (\Throwable $th) {
@@ -145,12 +176,15 @@ class AgentController extends Controller
         $oldagent = clone $agent;
         $agent->firstname = $parameters['firstname'];
         $agent->lastname = $parameters['lastname'];
-        $agent->agency_id = Agent::where("username","=",Auth()->user()->username)->first()->agency_id ;
-        $agentuser = $agent->user;
-        $agentuser->email = $parameters['email'];
-        $agentuser->save();
-        $agent->contact = $parameters['contact'] ;
         $agent->state = isset($parameters['state']) ? 1 : 0 ;
+        $agent->contact = $parameters['contact'] ;
+        $agentuser = $agent->user;
+        $agentuser->name = "$parameters[firstname] $parameters[lastname]";
+        $agentuser->email = $parameters['email'];
+        $agentuser->state = isset($parameters['state']) ? 1 : 0 ;
+        $agentuser->save();
+
+
         $agent->save();
 
         return Redirect()->route('agents.list')->with('success',"L'agent a été correctement modifié");

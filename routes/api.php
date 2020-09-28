@@ -24,3 +24,8 @@ Route::post('/paiementmobile', [
     ]);
 
 
+
+Route::get('/vocabulary/allVocbularySons/{vocabulary}',[
+    "as" => "vocabularies.allforonevocabulary",
+    "uses" => "VocabularyController@allForOneVocabulary"
+]);

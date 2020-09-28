@@ -27,12 +27,9 @@
 
                           <div class="tab-pane fade show  {{ isset($histosubcription) ? '' : 'active'}}" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                 <div class="tab-custom-content">
-                                    <p class="lead mb-0">Liste des souscriptions |
+                                    <p class="lead mb-0">Liste des souscriptions
 
-                                        <a href="{{ route('subscription.customer') }}"  class="btn btn-success btn-sm">
-                                            NOUVEAU
-                                            <i class=" fa fa-edit"></i>
-                                        </a>
+
 
                                     </p>
 
@@ -46,7 +43,7 @@
                                             <th >CLIENT</th>
                                             <th >IDENTIFIANT EQUIPEMENT</th>
                                             <th >PERIODE D&#039EFFET</th>
-                                            <th >ACTION</th>
+                                            {{--  <th >ACTION</th>  --}}
                                         </tr>
                                     </thead>
                                     @foreach($hsubscription as $subscription)
@@ -74,13 +71,13 @@
                                         <td>{{ $subscription->name }} {{ $subscription->first_name }} </td>
                                         <td>{{ $subscription->numberIMEI }} </td>
                                         <td>{{ $subscription->date_subscription }} / {{ $subscription->subscription_enddate }} </td>
-                                        <td>
+                                        {{--  <td>
                                             <center>
                                                 <a href="#"  class="btn btn-info btn-sm ">
                                                     <i class="fa fa-pencil-alt"> VOIR</i>
                                                 </a>
                                  </center>
-                                        </td>
+                                        </td>  --}}
                                     </tbody>
                                     @endforeach
                                 </table>

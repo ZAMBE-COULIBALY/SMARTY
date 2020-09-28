@@ -79,9 +79,9 @@
                                                 <td>{{$item->address}}</td>
                                                 <td>{{  ($item->state == 1) ? 'Actif' : 'Inactif'}}</td>
                                                 <td>
-                                                    <a href="{{route('agencies.delete',$item->slug) }}"  class="btn btn-danger btn-sm">
+                                                    {{--  <a href="{{route('agencies.delete',$item->slug) }}"  class="btn btn-danger btn-sm">
                                                         <i class=" fa fa-trash"></i>
-                                                    </a>
+                                                    </a>  --}}
                                                     <a href="{{route('agencies.edit',$item->slug) }}"  class="btn btn-info btn-sm ">
                                                         <i class="fa fa-pencil-alt"></i>
                                                     </a>
