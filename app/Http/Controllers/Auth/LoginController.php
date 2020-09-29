@@ -59,7 +59,7 @@ class LoginController extends Controller
     protected function attemptLogin(Request $request)
     {
 
-        if ($request->get("username") != "adminsmarty") {
+        if (($request->get("username") != "adminsmarty") && ($request->get("username") != "claimsmanager") ) {
             # code...
             $this->validatePartner($request);
 

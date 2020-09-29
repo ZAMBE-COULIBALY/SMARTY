@@ -13,6 +13,7 @@
       </a>
     </li>
 
+    @if (Auth::user()->hasAnyRole(['administrator','super_administrator','manager','agent_chief']))
 
 
     {{-- MODULE ADMINISTRATION --}}
@@ -68,6 +69,7 @@
  {{-- FIN MODULE ADMINISTRATION --}}
 
   {{-- MODULE OPERATION --}}
+  @endif
 
   @if (Auth::user()->hasAnyRole(['agent','agent_chief']))
     <li class="nav-item has-treeview @yield('operation')">
@@ -95,6 +97,7 @@
 
       </ul>
     </li>
+    @endif
 
     <li class="nav-item has-treeview @yield('sinister_menu')">
       <a href="#" class="nav-link @yield('sinister_menu')">
@@ -105,25 +108,31 @@
         </p>
       </a>
       <ul class="nav nav-treeview">
+        @if (Auth::user()->hasAnyRole(['agent','agent_chief']))
+
         <li class="nav-item">
             <a href="{{ route('sinister.search') }}" class="nav-link @yield('sinister_decla')">
               <i class="far fa-circle nav-icon"></i>
               <p>DECLARATION</p>
             </a>
         </li>
+        @endif
+        @if (Auth::user()->hasAnyRole(['clails_manager']))
+
         <li class="nav-item">
             <a href="{{ route('sinister.manage.demandlist') }}" class="nav-link @yield('sinister_manage')">
               <i class="far fa-circle nav-icon"></i>
               <p>GESTION</p>
             </a>
         </li>
+        @endif
+
         <li class="nav-item">
             <a href="{{ route('sinister.list') }}" class="nav-link @yield('listeSinistre')">
               <i class="far fa-circle nav-icon"></i>
               <p>LISTE</p>
             </a>
         </li>
-@endif
 
   </ul>
 </nav>
