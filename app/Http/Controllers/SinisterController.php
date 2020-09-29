@@ -13,6 +13,7 @@ use App\Customer;
 use App\Subscription;
 use App\Agency;
 use App\Agent;
+use App\Mail\newSinister;
 use App\payments;
 use App\Manager;
 use App\Partner;
@@ -22,8 +23,11 @@ use App\Vocabulary;
 use App\VocabularyType;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
+use Illuminate\Support\Str;
+
 
 class SinisterController extends Controller
 {
@@ -58,11 +62,11 @@ class SinisterController extends Controller
         $subscription = Subscription::where('code','=',$validatedData['folder'])->first();
 
 
-        return view('pages.declareSinister',compact('subscription'));
+        return redirect()->route("sinister.create",$subscription->id);
      }
 
 
-    public function create(Request $request,Subscription $subscription)
+    public function create(Subscription $subscription)
     {
         //
 // dd($subscription->agent);
@@ -133,32 +137,53 @@ class SinisterController extends Controller
         //
 
         $paramters =$request->except('_token');
-        $contract = $paramters['contract'];
-        $vouchers = $paramters['vouchers'];
-            if (null !== $request->file('contract') && null !== $request->file('vouchers')) {
-                # code...
 
-                $contract = "contract-".$subscription->code."-". time() . '.' . $request->file('contract')->getClientOriginalExtension();
-                $request->file('contract')->storeAs('public/sinisters/'.$subscription->code.'/', $contract);
-
-
-                $vouchers = "vouchers-".$subscription->code."-". time() . '.' . $request->file('vouchers')->getClientOriginalExtension();
-                $request->file('vouchers')->storeAs('public/sinisters/'.$subscription->code.'/', $vouchers);
-
-
-            }
-        Sinister::create([
-            'code'=>$subscription->code,
-            'folder' =>$subscription->code,
-            'description'=>$paramters['description'],
-            'contract'=>$contract,
-            'vouchers'=>$vouchers,
-            'state'=>"0",
-            'type1'=>(isset($paramters['choix1']))  ? collect($paramters['choix1'])->implode('-'): "",
-            'type2'=> (isset($paramters['choix2'])) ? collect($paramters['choix2'])->implode('-') : "",
+        $parametersvalid = $request->validate([
+            'description' => 'required|max:750',
+            'contract' => 'required|image',
+            'vouchers' => 'required|image',
+            'type1' => 'sometimes|required',
+            'type2' => 'sometimes|required',
         ]);
+try {
+    //code...
+    $contract = $paramters['contract'];
+    $vouchers = $paramters['vouchers'];
+        if (null !== $request->file('contract') && null !== $request->file('vouchers')) {
+            # code...
 
-        return redirect(route('sinister.list'))->with('success','déclaration transmise');
+            $contract = "contract-".$subscription->code."-". time() . '.' . $request->file('contract')->getClientOriginalExtension();
+            $request->file('contract')->storeAs('public/sinisters/'.$subscription->code.'/', $contract);
+
+
+            $vouchers = "vouchers-".$subscription->code."-". time() . '.' . $request->file('vouchers')->getClientOriginalExtension();
+            $request->file('vouchers')->storeAs('public/sinisters/'.$subscription->code.'/', $vouchers);
+
+
+        }
+        $code = Str::random(14);
+    Sinister::create([
+        'code'=> $code,
+        'folder' =>$subscription->code,
+        'description'=>$paramters['description'],
+        'contract'=>$contract,
+        'vouchers'=>$vouchers,
+        'state'=>"0",
+        'type1'=>(isset($paramters['choix1']))  ? collect($paramters['choix1'])->implode('-'): "",
+        'type2'=> (isset($paramters['choix2'])) ? collect($paramters['choix2'])->implode('-') : "",
+    ]);
+
+    $sinister = Sinister::where("code",$code)->first();
+    $agent = Agent::where("username",Auth::user()->username);
+        // Mail::to(explode(",",env("MAIL_SINISTERS_MANAGER")))->send(new newSinister($sinister,$agent));
+        Session::put('success','Déclaration de sinistre transmise');
+    } catch (\Throwable $th) {
+        Log::error(json_encode($th));
+        Session::put('error','Erreur lors de la déclaration de sinistre');
+
+    }
+
+        return redirect(route('sinister.list'));
     }
 
     public function getbon(Request $request ,Sinister $sinister)

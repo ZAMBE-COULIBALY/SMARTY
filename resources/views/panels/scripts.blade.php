@@ -274,6 +274,10 @@ jQuery(document).ready(function(){
                 "responsive": true,
               "autoWidth": false,
             })
+            $('#listsinisters').DataTable({
+                "responsive": true,
+              "autoWidth": false,
+            })
 
         })
         </script>

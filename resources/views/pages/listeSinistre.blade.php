@@ -34,7 +34,7 @@
 
                                     <hr>
                                 </div>
-                                <table id="list" class="table table-bordered ">
+                                <table id="listsinisters" class="table table-bordered ">
                                     <thead>
                                     <tr>
                                         <th >Contrat</th>
