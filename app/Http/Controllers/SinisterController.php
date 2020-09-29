@@ -131,6 +131,7 @@ class SinisterController extends Controller
         //
 
         $paramters =$request->except('_token');
+
         Sinister::create([
             'code'=>$subscription->code,
             'folder' =>$subscription->code,
@@ -139,7 +140,7 @@ class SinisterController extends Controller
             'vouchers'=>$paramters['vouchers'],
             'state'=>"0",
             'type1'=>collect($paramters['choix1'])->implode('-'),
-            'type2'=>collect($paramters['choix2'])->implode('-'),
+            'type2'=> (isset($paramters['choix2'])) ? collect($paramters['choix2'])->implode('-') : "",
         ]);
 
         return redirect(route('sinister.list'))->with('success','déclaration transmise');

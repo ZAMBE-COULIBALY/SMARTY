@@ -1,21 +1,37 @@
+<form  method="POST" class="form" role="search" action="{{ route('sinister.statment') }}">
+@csrf
 
-<form  method="POST" role="search" action="{{ route('sinister.statment') }}">
-    {{ csrf_field() }}
-<div class="row form-group">
 <div class="row">
-</div>
 
-<div class="form-group col-md-8">
 
-        <div class="input-group" style=" margin-left:30%">
-            <input type="text" class="form-control" name="folder"  id="folder" placeholder="rechercher le numéro dossier">
-                <span class="input-group-btn">
-                    <button type="submit" class="btn btn-default">
-                        <span>Rechercher</span>
-                    </button>
-                 </span>
+        <div class="col-md-8">
+
+                <div class="input-group" >
+                    <div class="input-group">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control @error('folder') is-invalid @enderror" name="folder" id="folder" value="{{ old('subscription') }}" placeholder="Rechercher la souscription" required autofocus>
+                    @error('folder')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                    </div>
+
+
+                </div>
+        </div>
+            <div class="col-md-4">
+
+                <button type="submit" class="btn btn-default">
+                    <span>Rechercher</span>
+                </button>
+
+            </div>
         </div>
 
-</div>
 
 </form>
