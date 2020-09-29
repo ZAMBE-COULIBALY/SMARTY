@@ -6,6 +6,7 @@
   <title>{{ config('app.name', 'SMARTY') }}</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="shortcut icon" type="image/png" href="{{ asset('dist/img/logo-dark.png') }}" >
   <link rel="icon" type="image/png" href="{{ asset('dist/img/logo-dark.png') }}" >
  {{-- Include Navbar --}}
