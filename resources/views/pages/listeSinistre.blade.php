@@ -47,12 +47,12 @@
                             @foreach ($liste as $item)
                                     <tbody>
                                         <td>{{ $item->folder }}  </td>
-                                        <td>{{ $item->name }}  {{ $item->first_name}}</td>
+                                        <td>{{ $item->name }}  {{ $item->subscription->customer->first_name}}</td>
                                         <td>{{ $item->type1 }}, {{ $item->type2 }}</td>
                                         <td>{{ $item->created_at }}</td>
                                         <td>
                                             <center>
-                                            <a href="{{ route('sinister.getvalid',['subscription' => $item->id]) }}"  class="btn btn-info btn-sm ">
+                                            <a href="{{ route('sinister.getvalid',['subscription' => $item->subscription->id]) }}"  class="btn btn-info btn-sm ">
                                                 <i class="fa fa-pencil-alt"> VOIR</i>
                                             </a>
                                             </center>

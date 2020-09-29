@@ -21,6 +21,7 @@ use App\Role;
 use App\Vocabulary;
 use App\VocabularyType;
 use Illuminate\Support\Facades\Input;
+use phpDocumentor\Reflection\DocBlock\Tags\Since;
 
 class SinisterController extends Controller
 {
@@ -164,13 +165,10 @@ class SinisterController extends Controller
     public function show(Request $request )
     {
         //
-        $listsinistres = DB::table('sinisters')
-        ->join('subscriptions', 'subscriptions.code', '=', 'sinisters.folder')
-        ->join('customers','subscriptions.customer_id', '=', 'customers.id')
-        ->select('*')
-        ->where('sinisters.state','=',0)
-        ->get();
-        $Subscription = $request->session()->get('Subscription');
+        $listsinistres = Sinister::all()
+        ->where('state',0);
+        // dd($listsinistres);
+                $Subscription = $request->session()->get('Subscription');
         return view('pages.listeSinistre',compact('Subscription'))->with('liste', $listsinistres) ;
     }
 
