@@ -117,7 +117,7 @@
             </a>
         </li>
         @endif
-        @if (Auth::user()->hasAnyRole(['clails_manager']))
+        @if (Auth::user()->hasAnyRole(['claims_manager']))
 
         <li class="nav-item">
             <a href="{{ route('sinister.manage.demandlist') }}" class="nav-link @yield('sinister_manage')">
