@@ -145,7 +145,7 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
 
 
 
-        Route::group(['prefix' => '/manage','as' => 'sinister.manage.', 'middleware' => ["auth","roles"], "roles" => ["Claims_Manager","manager","agent",'agent_chief']], function() {
+        Route::group(['prefix' => '/manage','as' => 'sinister.manage.', 'middleware' => ["auth","roles"], "roles" => ["Claims_Manager"]], function() {
             //
             Route::get('/demands', [
                 'as'=> 'demandlist',

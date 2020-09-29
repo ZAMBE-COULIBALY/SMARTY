@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -21,6 +22,16 @@ class UserSeeder extends Seeder
             'email' => 'armandperise@gmail.com',
             'password' => Hash::make('password'),
             'slug' => Str::slug('adminsmarty'.$date->format('dmYhis')),
+            'state' => true,
+
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Sinitre MANAGER',
+            'username' => 'claimsmanager',
+            'email' => 'armandperise@gmail.com',
+            'password' => Hash::make('password'),
+            'slug' => Str::slug('claimsmanager'.$date->format('dmYhis')),
             'state' => true,
 
         ]);
