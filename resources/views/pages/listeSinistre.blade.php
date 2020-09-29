@@ -52,10 +52,25 @@
                                         <td>{{ $item->created_at }}</td>
                                         <td>
                                             <center>
-                                            <a href="{{ route('sinister.getvalid',['subscription' => $item->subscription->id]) }}"  class="btn btn-info btn-sm ">
-                                                <i class="fa fa-pencil-alt"> VOIR</i>
-                                            </a>
+
+                                            @switch($item->state)
+                                                @case(0)
+                                                    <p>EN ATTENTE</p>
+                                                    @break
+                                                @case(1)
+                                                <a {{ ($item->state != 1) ? 'disabled' :'' }} href={{ route('sinister.bon',$item->id) }}  class="btn btn-primary btn-sm ">
+                                                    <i class="fa fa-eye"> VOIR </i>
+                                                </a>
+                                                <span style="color: green"><i class="far fa-check-square"></i></span>
+
+                                                    @break
+                                                @default
+                                                <p></p>
+                                                <span style="color: red">REFUSE<i class="far fa-times-circle"></i></span>
+
+                                        @endswitch
                                             </center>
+
                                         </td>
 
                                     </tbody>

@@ -17,7 +17,7 @@
         <tr>
             <td>{{ $item->subscription->code }}</td>
             <td>{{$item->subscription->customer->name ." ".$item->subscription->customer->first_name}}</td>
-            <td>{{$item->type1}}</td>
+            <td>{{$item->type2.$item->type1}}</td>
             <td>{{ date_format($item->created_at,"d/m/y") }}</td>
             <td>
                 {{--  <a href="{{route('agencies.delete',$item->slug) }}"  class="btn btn-danger btn-sm">

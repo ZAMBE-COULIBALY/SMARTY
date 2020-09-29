@@ -129,14 +129,14 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
             'as'=> 'sinister.store',
             'uses' => 'SinisterController@store'
             ]);
-        Route::get('/bon/{subscription}', [
+        Route::get('/bon/{sinister}', [
             'as'=> 'sinister.bon',
             'uses' => 'SinisterController@getbon'
-            ]);
-            Route::get('/list', [
+        ]);
+        Route::get('/list', [
                 'as'=> 'sinister.list',
                 'uses' => 'SinisterController@show'
-                ]);
+        ]);
 
 
 
@@ -155,6 +155,11 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
             Route::get('/show/{sinister}', [
                 'as'=> 'demanddetails',
                 'uses' => 'SinisterController@manageDemandDetails'
+            ]);
+
+            Route::get('/answer/{sinister}/{state}', [
+                'as'=> 'demandstate',
+                'uses' => 'SinisterController@manageDemandState'
             ]);
         });
 
