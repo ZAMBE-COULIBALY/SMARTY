@@ -97,56 +97,74 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
     });
 
     // sinister
-    Route::group(['prefix' => '/sinister'], function () {
+ Route::group(['prefix' => '/sinister'], function () {
         Route::get('/', [
             'as'=> 'sinister.search',
             'uses' => 'SinisterController@index'
             ]);
-            Route::get('/etat', [
+        Route::get('/etat', [
                 'as'=> 'sinister.index',
                 'uses' => 'SinisterController@index'
-                ]);
+        ]);
 
-            Route::POST('/statment', [
-                'as'=> 'sinister.statment',
-                'uses' => 'SinisterController@statment'
-                ]);
+        Route::POST('/statment', [
+            'as'=> 'sinister.statment',
+            'uses' => 'SinisterController@statment'
+            ]);
 
-            Route::get('/create/{subscription}', [
-                'as'=> 'sinister.create',
-                'uses' => 'SinisterController@create'
-                ]);
-            Route::get('/getvalid/{subscription}', [
-                'as'=> 'sinister.getvalid',
-                'uses' => 'SinisterController@getvalid'
-                ]);
-            Route::post('/update/{subscription}', [
-                'as'=> 'sinister.valid',
-                'uses' => 'SinisterController@valid'
-                ]);
+        Route::get('/create/{subscription}', [
+            'as'=> 'sinister.create',
+            'uses' => 'SinisterController@create'
+            ]);
+        Route::get('/getvalid/{subscription}', [
+            'as'=> 'sinister.getvalid',
+            'uses' => 'SinisterController@getvalid'
+            ]);
+        Route::post('/update/{subscription}', [
+            'as'=> 'sinister.valid',
+            'uses' => 'SinisterController@valid'
+            ]);
 
-            Route::post('/store/{subscription}', [
-                'as'=> 'sinister.store',
-                'uses' => 'SinisterController@store'
+        Route::post('/store/{subscription}', [
+            'as'=> 'sinister.store',
+            'uses' => 'SinisterController@store'
+            ]);
+        Route::get('/bon/{subscription}', [
+            'as'=> 'sinister.bon',
+            'uses' => 'SinisterController@getbon'
+            ]);
+            Route::get('/list', [
+                'as'=> 'sinister.list',
+                'uses' => 'SinisterController@show'
                 ]);
-            Route::get('/bon/{subscription}', [
-                'as'=> 'sinister.bon',
-                'uses' => 'SinisterController@getbon'
-                ]);
-                Route::get('/list', [
-                    'as'=> 'sinister.list',
-                    'uses' => 'SinisterController@show'
-                    ]);
 
 
 
 
         });
 
+
+
+        Route::group(['prefix' => '/manage','as' => 'sinister.manage.', 'middleware' => ["auth","roles"], "roles" => ["Claims_Manager","manager","agent",'agent_chief']], function() {
+            //
+            Route::get('/demands', [
+                'as'=> 'demandlist',
+                'uses' => 'SinisterController@manageDemandList'
+            ]);
+
+            Route::get('/show/{sinister}', [
+                'as'=> 'demanddetails',
+                'uses' => 'SinisterController@manageDemandDetails'
+            ]);
+        });
+
+
+
         //end sinister
 
 
-Route::group(['prefix' => '/partner', 'as' => 'partners.', 'middleware' => ["auth","roles"], "roles" => ["super_administrator"]], function () {
+
+ Route::group(['prefix' => '/partner', 'as' => 'partners.', 'middleware' => ["auth","roles"], "roles" => ["super_administrator"]], function () {
     Route::get('/', [
         'as'=> 'list',
         'uses' => 'PartnerController@index'

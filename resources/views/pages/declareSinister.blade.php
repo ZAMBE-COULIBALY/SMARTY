@@ -31,7 +31,7 @@ menu-open active
                                         </div>
                                         <div class="row">
                                             <div class="row col-md 4">
-                                                <form method="POST" action="{{ route('sinister.store',['subscription' => $subscription->id]) }}" >
+                                                <form method="POST" enctype="multipart/form-data" action="{{ route('sinister.store',['subscription' => $subscription->id]) }}" >
                                                     @csrf
                                                     <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                                         <label for=""> Souscription N°</label><strong style="color: brown">{{$subscription->code}}</strong>

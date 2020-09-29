@@ -131,15 +131,28 @@ class SinisterController extends Controller
         //
 
         $paramters =$request->except('_token');
+        $contract = $paramters['contract'];
+        $vouchers = $paramters['vouchers'];
+            if (null !== $request->file('contract') && null !== $request->file('vouchers')) {
+                # code...
 
+                $contract = "contract-".$subscription->code."-". time() . '.' . $request->file('contract')->getClientOriginalExtension();
+                $request->file('contract')->storeAs('sinisters/'.$subscription->code.'/', $contract);
+
+
+                $vouchers = "vouchers-".$subscription->code."-". time() . '.' . $request->file('vouchers')->getClientOriginalExtension();
+                $request->file('vouchers')->storeAs('sinisters/'.$subscription->code.'/', $vouchers);
+
+
+            }
         Sinister::create([
             'code'=>$subscription->code,
             'folder' =>$subscription->code,
-            'description'=>$subscription->description,
-            'contract'=>$paramters['contract'],
-            'vouchers'=>$paramters['vouchers'],
+            'description'=>$paramters['description'],
+            'contract'=>$contract,
+            'vouchers'=>$vouchers,
             'state'=>"0",
-            'type1'=>collect($paramters['choix1'])->implode('-'),
+            'type1'=>(isset($paramters['choix1']))  ? collect($paramters['choix1'])->implode('-'): "",
             'type2'=> (isset($paramters['choix2'])) ? collect($paramters['choix2'])->implode('-') : "",
         ]);
 
@@ -205,5 +218,20 @@ class SinisterController extends Controller
     public function destroy(Sinister $sinister)
     {
         //
+    }
+
+    public function manageDemandList()
+    {
+        # code...
+        $sinisters = Sinister::all()->where("state",0);
+        $step = "DL";
+        return view("pages.sinisters",compact("sinisters","step"));
+    }
+
+    public function manageDemandDetails(Sinister $sinister)
+    {
+        # code...
+        $step = "DD";
+        return view("pages.sinisters",compact("sinister","step"));
     }
 }
