@@ -349,56 +349,64 @@ $request->session()->put('Subscription', $Subscription)  ;
 
         $Subscription = $request->session()->get('Subscription');
 
+try {
+    //code...
+    $ma=1;
+    $ma += Customer::max('id');
+    $customers_id=$ma;
+
+    Customer::create([
+        'code' =>$Subscription['folder'],
+        'name' =>$Subscription['name'],
+       'first_name' =>$Subscription['first_name'],
+       'birth_date' =>$Subscription['birth_date'],
+       'gender' =>$Subscription['gender'],
+       'place_birth' =>$Subscription['place_birth'],
+        'marital_status'=>$Subscription['marital_status'],
+       'place_residence' =>$Subscription['place_residence'],
+       'phone1' =>$Subscription['phone1'],
+       'phone2' =>$Subscription['phone2'],
+       'mail' =>$Subscription['mail'],
+       'folder' =>$Subscription['folder'],
+       'mailing_address' =>$Subscription['mailing_address'],
+
+    ]);
+
+    Subscription::create([
+        'code'=>$Subscription['folder'],
+        'equipment' =>$Subscription['equipment'],
+        'model' =>$Subscription['model'],
+        'mark' =>$Subscription['mark'],
+        'picture' =>$Subscription['picture'],
+        'numberIMEI' =>$Subscription['numberIMEI'],
+        'price' =>$Subscription['price'],
+        'premium' =>$Subscription['premium'],
+        'date_subscription' =>$Subscription['date_subscription'],
+        'subscription_enddate' =>$Subscription['subscription_enddate'],
+        'customer_id'=>$customers_id,
+        'agent_id' =>$Subscription['agent_id'],
+    ]);
 
 
-        $ma=1;
-        $ma += Customer::max('id');
-        $customers_id=$ma;
 
-        Customer::create([
-            'code' =>$Subscription['folder'],
-            'name' =>$Subscription['name'],
-           'first_name' =>$Subscription['first_name'],
-           'birth_date' =>$Subscription['birth_date'],
-           'gender' =>$Subscription['gender'],
-           'place_birth' =>$Subscription['place_birth'],
-            'marital_status'=>$Subscription['marital_status'],
-           'place_residence' =>$Subscription['place_residence'],
-           'phone1' =>$Subscription['phone1'],
-           'phone2' =>$Subscription['phone2'],
-           'mail' =>$Subscription['mail'],
-           'folder' =>$Subscription['folder'],
-           'mailing_address' =>$Subscription['mailing_address'],
+    $pdf =  App::make('dompdf.wrapper');
 
-        ]);
+    $pdf-> loadView("models.document", compact('Subscription'));
 
-        Subscription::create([
-            'code'=>$Subscription['folder'],
-            'equipment' =>$Subscription['equipment'],
-            'model' =>$Subscription['model'],
-            'mark' =>$Subscription['mark'],
-            'picture' =>$Subscription['picture'],
-            'numberIMEI' =>$Subscription['numberIMEI'],
-            'price' =>$Subscription['price'],
-            'premium' =>$Subscription['premium'],
-            'date_subscription' =>$Subscription['date_subscription'],
-            'subscription_enddate' =>$Subscription['subscription_enddate'],
-            'customer_id'=>$customers_id,
-            'agent_id' =>$Subscription['agent_id'],
-        ]);
+    $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
 
 
-
-        $pdf =  App::make('dompdf.wrapper');
-
-        $pdf-> loadView("models.document", compact('Subscription'));
-
-        $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
-
-
-        Mail::send(new newSubscription($Subscription));
-
+    Mail::send(new newSubscription($Subscription));
         return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$Subscription['folder']. ') effectuée avec succès.');
+
+} catch (\Throwable $th) {
+    //throw $th;
+    Log::warning('Erreur de souscription : '.json_encode($Subscription));
+    Log::warning('Erreur de souscription : '.json_encode($th));
+    return back()->with('error','Erreur de souscription ');
+}
+return back()->with('error','Erreur de souscription ');
+
     }
 
     public function paiementmobile (Request $request)
