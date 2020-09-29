@@ -11,9 +11,11 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str as Str;
-
+use Illuminate\Validation\Rule;
 
 class AgentController extends Controller
 {
@@ -61,7 +63,18 @@ class AgentController extends Controller
     {
         //
         $parameters = $request->except("_token");
-
+        $parametersv = $request->validate([
+            'code' =>
+            ['required',
+             Rule::notIn(Agent::all()->where("partner_id",Agent::where("username","=",Auth()->user()->username))->pluck("code")),
+             'max:255'
+            ],
+    'username' => ['required',
+    Rule::notIn(Agency::all()->where("partner_id",Agent::where("username","=",Auth()->user()->username))->pluck("username")),
+    'max:255', Rule::notIn(User::all()->pluck("username"))
+   ],
+    'email' => 'required|email',
+]);
         try {
             //code...
                     $agent = new Agent();
@@ -93,13 +106,14 @@ class AgentController extends Controller
 
                 ->send(new newAgent($agent,$agent->agency,$pass))  ;
 
+                Session::Put('success',"L'agent a été correctement modifié");
 
         } catch (\Throwable $th) {
-            throw $th;
-        }
+            Log::info("Erreur lors de la création de l'agent. agent: ". json_encode($agent). " | ".now());
+            Session::Put("error","Erreur lors de la création de l'agent");        }
 
 
-        return Redirect()->route('agents.list')->with('success',"L'agent a été correctement créé");
+        return Redirect()->route('agents.list');
     }
 
     /**
@@ -142,20 +156,34 @@ class AgentController extends Controller
         $agent = Agent::where('slug','=',$slug)->first();
         $parameters = $request->except("_token");
         $oldagent = clone $agent;
-        $agent->firstname = $parameters['firstname'];
-        $agent->lastname = $parameters['lastname'];
-        $agent->state = isset($parameters['state']) ? 1 : 0 ;
-        $agent->contact = $parameters['contact'] ;
-        $agentuser = $agent->user;
-        $agentuser->name = "$parameters[firstname] $parameters[lastname]";
-        $agentuser->email = $parameters['email'];
-        $agentuser->state = isset($parameters['state']) ? 1 : 0 ;
-        $agentuser->save();
+        $parametersvalid = $request->validate([
+            'username' =>  [
+                'required','max:255', Rule::notIn(Agent::all()->except($oldagent->id)->pluck("username"))],
+            'email' => 'required|email',
+        ]);
+        try {
+            //code...
+            $agent->firstname = $parameters['firstname'];
+            $agent->lastname = $parameters['lastname'];
+            $agent->state = isset($parameters['state']) ? 1 : 0 ;
+            $agent->contact = $parameters['contact'] ;
+            $agentuser = $agent->user;
+            $agentuser->name = "$parameters[firstname] $parameters[lastname]";
+            $agentuser->email = $parameters['email'];
+            $agentuser->state = isset($parameters['state']) ? 1 : 0 ;
+            $agentuser->save();
 
 
-        $agent->save();
+            $agent->save();
+            Session::Put('success',"L'agent a été correctement modifié");
 
-        return Redirect()->route('agents.list')->with('success',"L'agent a été correctement modifié");
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::info("Erreur lors de la MAJ de l'agent. agent: ". json_encode($agent). " | ".now());
+            Session::Put("error","Erreur lors de la MAJ de l'agent");
+        }
+
+        return Redirect()->route('agents.list');
     }
 
     /**

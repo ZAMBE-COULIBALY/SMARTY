@@ -25,27 +25,27 @@
             <td>REMPLACEMENT</td>
             <tr>
                 <td>Nom & Prénoms :</td>
-                <td> {{$subscription->customer->name}} {{$subscription->customer->first_name}} </td>
+                <td> {{$sinister->subscription->customer->name}} {{$sinister->subscription->customer->first_name}} </td>
             </tr>
             <tr>
                 <td>Téléphone :</td>
-                <td> {{$subscription->customer->phone1}}</td>
+                <td> {{$sinister->subscription->customer->phone1}}</td>
             </tr>
             <tr>
                 <td>Mail :</td>
-                <td>{{$subscription->customer->mail}}</td>
+                <td>{{$sinister->subscription->customer->mail}}</td>
             </tr>
             <tr>
                 <td>Date & lieu de naissance :</td>
-                <td>Né le  {{$subscription->customer->birth_date}} à {{$subscription->customer->place_birth}}</td>
+                <td>Né le  {{$sinister->subscription->customer->birth_date}} à {{$sinister->subscription->customer->place_birth}}</td>
             </tr>
             <tr>
                 <td>Situation Matrimoniale :</td>
-                <td>{{$subscription->customer->marital_status}}</td>
+                <td>{{$sinister->subscription->customer->marital_status}}</td>
             </tr>
             <tr>
                 <td>Lieu de résidence :</td>
-                <td>{{$subscription->customer->place_residence}}</td>
+                <td>{{$sinister->subscription->customer->place_residence}}</td>
             </tr>
             //info equipement
 
@@ -56,23 +56,23 @@
             </tr>
             <tr>
             <td>Nature : </td>
-            <td> {{$subscription->equipment}}</td>
+            <td> {{$sinister->subscription->equipment}}</td>
             <tr>
                 <td>Marque :</td>
-                <td>{{$subscription->mark}}</td>
+                <td>{{$sinister->subscription->mark}}</td>
             </tr>
             <tr>
                 <td>Numéro identifiant (IMEI) :</td>
-                <td> {{ $subscription->numberIMEI}}</td>
+                <td> {{ $sinister->subscription->numberIMEI}}</td>
             </tr>
             <tr>
                 <td>VALEUR DE SOUSCRIPTION :</td>
-                <td>{{$subscription->price}}</td>
+                <td>{{$sinister->subscription->price}}</td>
             </tr>
 
             <tr>
                 <td>BON D&#039INDEMNISATION SMARTY D&#039UNE VALEUR DE :</td>
-                <td>{{$subscription->premium}}</td>
+                <td>{{$sinister->subscription->premium}}</td>
             </tr>
             <tr>
                 <td colspan="2" style="color: red; ">

@@ -21,6 +21,8 @@ use App\Role;
 use App\Vocabulary;
 use App\VocabularyType;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 
 class SinisterController extends Controller
@@ -53,10 +55,10 @@ class SinisterController extends Controller
             'folder'=> 'required|exists:subscriptions,code',
         ]);
 
-        $Subscription = Subscription::where('code','=',$validatedData['folder'])->first();
+        $subscription = Subscription::where('code','=',$validatedData['folder'])->first();
 
 
-        return view('pages.detailSearch',compact('Subscription'));
+        return view('pages.declareSinister',compact('subscription'));
      }
 
 
@@ -131,21 +133,35 @@ class SinisterController extends Controller
         //
 
         $paramters =$request->except('_token');
+        $contract = $paramters['contract'];
+        $vouchers = $paramters['vouchers'];
+            if (null !== $request->file('contract') && null !== $request->file('vouchers')) {
+                # code...
+
+                $contract = "contract-".$subscription->code."-". time() . '.' . $request->file('contract')->getClientOriginalExtension();
+                $request->file('contract')->storeAs('public/sinisters/'.$subscription->code.'/', $contract);
+
+
+                $vouchers = "vouchers-".$subscription->code."-". time() . '.' . $request->file('vouchers')->getClientOriginalExtension();
+                $request->file('vouchers')->storeAs('public/sinisters/'.$subscription->code.'/', $vouchers);
+
+
+            }
         Sinister::create([
             'code'=>$subscription->code,
             'folder' =>$subscription->code,
-            'description'=>$subscription->description,
-            'contract'=>$paramters['contract'],
-            'vouchers'=>$paramters['vouchers'],
+            'description'=>$paramters['description'],
+            'contract'=>$contract,
+            'vouchers'=>$vouchers,
             'state'=>"0",
-            'type1'=>collect($paramters['choix1'])->implode('-'),
-            'type2'=>collect($paramters['choix2'])->implode('-'),
+            'type1'=>(isset($paramters['choix1']))  ? collect($paramters['choix1'])->implode('-'): "",
+            'type2'=> (isset($paramters['choix2'])) ? collect($paramters['choix2'])->implode('-') : "",
         ]);
 
         return redirect(route('sinister.list'))->with('success','déclaration transmise');
     }
 
-    public function getbon(Request $request ,Subscription $subscription)
+    public function getbon(Request $request ,Sinister $sinister)
     {
         //
        // dd($subscription->code);
@@ -153,7 +169,7 @@ class SinisterController extends Controller
 
         $Subscription = $request->session()->get('subscription');
 
-        return view('pages.bon',compact('subscription'));
+        return view('pages.bon',compact('sinister'));
     }
 
     /**
@@ -165,8 +181,7 @@ class SinisterController extends Controller
     public function show(Request $request )
     {
         //
-        $listsinistres = Sinister::all()
-        ->where('state',0);
+        $listsinistres = Sinister::all();
         // dd($listsinistres);
                 $Subscription = $request->session()->get('Subscription');
         return view('pages.listeSinistre',compact('Subscription'))->with('liste', $listsinistres) ;
@@ -205,4 +220,49 @@ class SinisterController extends Controller
     {
         //
     }
+
+    public function manageDemandList()
+    {
+        # code...
+        $sinisters = Sinister::all()->where("state",0);
+        $step = "DL";
+        return view("pages.sinisters",compact("sinisters","step"));
+    }
+
+    public function manageDemandDetails(Sinister $sinister)
+    {
+        # code...
+        $step = "DD";
+        return view("pages.sinisters",compact("sinister","step"));
+    }
+
+    public function manageDemandState(Sinister $sinister,$state)
+    {
+        # code...
+        try {
+            //code...
+            $sinister->state = $state;
+            $sinister->save();
+            if ($state == 1) {
+                # code...
+
+
+                $user= Auth()->user()->username;
+
+                $pdf =  App::make('dompdf.wrapper');
+
+                $pdf-> loadView("models.model_bon", compact('sinister'));
+
+                $pdf-> save(storage_path().'/app/public/voucher/'.$sinister->folder.$sinister->id.'.pdf');
+            }
+            Session::Put('success',"Demande traitée avec succès!");
+        } catch (\Throwable $th) {
+            throw $th;
+            Session::Put('error',"Erreur lors du  traitement de la demande!");
+Log::info(json_encode($th));
+        }
+
+        return redirect()->route("sinister.manage.demandlist");
+
+}
 }

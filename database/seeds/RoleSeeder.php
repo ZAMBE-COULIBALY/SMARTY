@@ -51,5 +51,12 @@ class RoleSeeder extends Seeder
         'slug' => Str::slug('Agent')
     ]);
 
+    DB::table('roles')->insert([
+        'label' => 'Gestionnaire sinistres',
+        'description' => 'Agent NSIA en charge des sinistres',
+        'level' => 3,
+        'slug' => Str::slug('Claims Manager','_')
+    ]);
+
     }
 }

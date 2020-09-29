@@ -112,6 +112,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('sinister.manage.demandlist') }}" class="nav-link @yield('sinister_manage')">
+              <i class="far fa-circle nav-icon"></i>
+              <p>GESTION</p>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('sinister.list') }}" class="nav-link @yield('listeSinistre')">
               <i class="far fa-circle nav-icon"></i>
               <p>LISTE</p>

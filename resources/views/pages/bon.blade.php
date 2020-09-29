@@ -27,7 +27,7 @@ menu-open active
                                         </div>
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <object data="{{ asset('storage/voucher/'.$subscription->code.'.pdf') }}"  type="application/pdf" width="100%" height="500">
+                                                <object data="{{ asset('storage/voucher/'.$sinister->folder.$sinister->id.'.pdf') }}"  type="application/pdf" width="100%" height="500">
                                                 </object>
                                             </div>
 

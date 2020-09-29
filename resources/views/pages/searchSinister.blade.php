@@ -11,7 +11,7 @@
     <div class="container-fluid">
         <div class="row" >
 
-            <div class="col-6 col-sm-6" style=" margin:10% 0 0 25%" >
+            <div class="col-8 col-sm-8" style=" margin:10% 0 0 15%" >
                 <div class="card card-primary  shadow-sm ">
                     <div class="card-header p-0 pt-1" style="background-color:#120d74; ">
                         <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
