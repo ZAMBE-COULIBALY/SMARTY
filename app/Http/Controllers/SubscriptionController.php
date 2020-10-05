@@ -396,7 +396,7 @@ try {
     $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
 
 
-    Mail::send(new newSubscription($Subscription));
+   Mail::send(new newSubscription($Subscription));
         return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$Subscription['folder']. ') effectuée avec succès.');
 
 } catch (\Throwable $th) {

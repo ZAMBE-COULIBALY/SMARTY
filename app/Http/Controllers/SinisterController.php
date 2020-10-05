@@ -173,7 +173,7 @@ try {
         'type2'=> (isset($paramters['choix2'])) ? collect($paramters['choix2'])->implode('-') : "",
     ]);
 
-    $sinister = Sinister::where("code",$code)->first();
+   $sinister = Sinister::where("code",$code)->first();
     $agent = Agent::where("username",Auth::user()->username);
         // Mail::to(explode(",",env("MAIL_SINISTERS_MANAGER")))->send(new newSinister($sinister,$agent));
         Session::put('success','Déclaration de sinistre transmise');
