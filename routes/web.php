@@ -78,21 +78,21 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
     Route::get('/', [
         'as'=> 'statistics.show',
         'uses' => 'CustomerController@getstatistics'
-        ]);
+    ]);
         Route::get('/PDF', [
             'as'=> 'statistics.etat',
             'uses' => 'CustomerController@statisticsPDF'
-            ]);
+        ]);
 
         Route::get('/EXCEL', [
             'as'=> 'statistics.excel',
             'uses' => 'CustomerController@statisticsExcel'
-            ]);
+        ]);
 
             Route::get('/etat', [
                 'as'=> 'statistics.etatpartenaire',
                 'uses' => 'CustomerController@etat'
-                ]);
+            ]);
 
     });
 

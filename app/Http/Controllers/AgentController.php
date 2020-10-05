@@ -65,16 +65,16 @@ class AgentController extends Controller
         $parameters = $request->except("_token");
         $parametersv = $request->validate([
             'code' =>
-            ['required',
-             Rule::notIn(Agent::all()->where("partner_id",Agent::where("username","=",Auth()->user()->username))->pluck("code")),
-             'max:255'
-            ],
-    'username' => ['required',
-    Rule::notIn(Agency::all()->where("partner_id",Agent::where("username","=",Auth()->user()->username))->pluck("username")),
-    'max:255', Rule::notIn(User::all()->pluck("username"))
-   ],
-    'email' => 'required|email',
-]);
+                ['required',
+                Rule::notIn(Agent::all()->where("partner_id",Agent::where("username","=",Auth()->user()->username))->pluck("code")),
+                'max:255'
+                ],
+                'username' => ['required',
+                Rule::notIn(Agency::all()->where("partner_id",Agent::where("username","=",Auth()->user()->username))->pluck("username")),
+                'max:255', Rule::notIn(User::all()->pluck("username"))
+                        ],
+                'email' => 'required|email',
+            ]);
         try {
             //code...
                     $agent = new Agent();
@@ -95,6 +95,7 @@ class AgentController extends Controller
                 $agentuser->username = $agent->username;
                 $agentuser->email = $parameters['email'];
                 $agentuser->name = $agent->lastname.' '.$agent->firstname;
+                $agentuser->partner_id = $agent->agency->partner_id;
                 $agentuser->slug = $agent->slug;
                 $agentuser->state = $agent->state;
                 $pass  = Str::random(8);
