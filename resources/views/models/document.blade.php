@@ -7,9 +7,9 @@
 
 <p style="border: 5px; margin-top:8%; font-size:14px; font-family: Arial, Helvetica, sans-serif;margin-left:3%; ">
    <b> RESERVE A NSIA ASSRANCES </b><br>
-   <b>Numéro de police</b>  {{$Subscription['folder']}}  <b>Numéro du client</b> _________________________________<br>
+   <b>Numéro de police</b>  {{$subscription->code}}  <b>Numéro du client</b> {{$subscription->customer->id}} <br>
 
-   <b>Nom du conseiller</b> __________________________ <b>Code</b>  ____________ <b>Revendeur</b>  __________________ <br>
+   <b>Nom du conseiller</b> {{$subscription->agent->firstname.' '.$subscription->agent->lastname}} <b>Code</b> {{ $subscription->agent->agency->partner->code }} <b>Revendeur</b>  {{ $subscription->agent->agency->label }}<br>
 </p>
 
 <p style="margin-top:-3%">
@@ -26,27 +26,27 @@
 </p>
 
 <p style="margin-top:1%">
-<p style="border: 5px; margin-top:8%; font-size:14px; font-family: Arial, Helvetica, sans-serif; line-height:25px; margin-left:3%; ">
- <b>  2. ASSURE      </b>               {{ $Subscription['gender'] }} <br>
+<p style="border: 5px; margin-top:8%; font-size:14px;  font-family: Arial, Helvetica, sans-serif; line-height:25px; margin-left:3%; ">
+ <b>  2. ASSURE      </b>               {{ $subscription->customer->gender }} <br>
 
- <b> Nom </b>{{ $Subscription['name'] }} <b>Prénoms</b> {{ $Subscription['first_name'] }} <br>
+ <b> Nom </b> {{ $subscription->customer->name }} <b>Prénoms</b> {{ $subscription->customer->first_name }} <br>
 
- <b>Date de Naissance</b> {{ $Subscription['birth_date'] }}  <b>Lieu de Naissance</b>  {{ $Subscription['place_birth'] }} <br>
+ <b>Date de Naissance</b> {{ $subscription->customer->birth_date }}  <b>Lieu de Naissance</b>  {{ $subscription->customer->place_birth }} <br>
 
- <b>Situation Matrimoniale:</b>		{{  $Subscription['marital_status'] }}<br>
+ <b>Situation Matrimoniale:</b>		{{  $subscription->customer->marital_status }}<br>
 
- <b>Lieu de Résidence :</b>    {{ $Subscription['place_residence'] }} <br>
+ <b>Lieu de Résidence :</b>    {{ $subscription->customer->place_residence }} <br>
 
- <b>Adresse Postale Personnelle</b>   {{ $Subscription['mailing_address'] }}  <b>Cellulaire</b> {{ $Subscription['phone1']}} / {{ $Subscription['phone2'] }}<br>
+ <b>Adresse Postale Personnelle</b>   {{ $subscription->customer->mailing_address }}  <b>Cellulaire</b> {{ $subscription->customer->phone1}} / {{ $subscription->customer->phone2 }}<br>
 
- <b>Email</b> {{ $Subscription['mail'] }}<br>
+ <b>Email</b> {{ $subscription->customer->mail }}<br>
 
 </p></p>
 </b>
 
 <p style="margin-top:1%; font-size:14px; font-family: Arial, Helvetica, sans-serif;">
   <b>  3. CARACTERISTIQUES </b> <br>
-  <table  border="0.5px" style="width: 800px; margin-left:15%; font-size:14px; font-family: Arial, Helvetica, sans-serif;">
+  <table  border="0.5px" style="width: 800px; margin-left:15%; border-collapse: collapse; font-size:14px; font-family: Arial, Helvetica, sans-serif;">
         <thead>
             <tr style="background-color:rgba(190, 190, 190, 0.267) ">
                 <th>Type d’Appareil</th>
@@ -59,12 +59,12 @@
         </thead>
     <tbody>
             <tr>
-                <td> {{ $Subscription['equipmentLibelle'] }}</td>
-                <td> {{ $Subscription['marquelibelle'] }}</td>
-                <td> {{ $Subscription['modellibelle'] }}</td>
-                <td> {{ $Subscription['numberIMEI'] }}</td>
-                <td> {{ $Subscription['price'] }}</td>
-                <td> {{ $Subscription['price'] }}</td>
+                <td> {{ $subscription->pack->product->type->label }}</td>
+                <td> {{ $subscription->pack->product->label->label }}</td>
+                <td> {{ $subscription->pack->product->model->label }}</td>
+                <td> {{ $subscription->numberIMEI }}</td>
+                <td> {{ round( $subscription->price )}}</td>
+                <td> {{ round( $subscription->price )}}</td>
             </tr>
     </tbody>
     </table>
@@ -72,7 +72,7 @@
     </p>
 
     <p style="margin-top:1%; font-size:14px; font-family: Arial, Helvetica, sans-serif;">
-        <table border="0.5px" style="width: 800px; margin-left:15%; font-size:14px; font-family: Arial, Helvetica, sans-serif;" >
+        <table border="0.5px" style="width: 800px; margin-left:15%; border-collapse: collapse; font-size:14px; font-family: Arial, Helvetica, sans-serif;" >
             <tr>
                 <td colspan="4">
                  <b>   4. FORMULE </b>
@@ -82,7 +82,7 @@
                 <td colspan="4" style="background-color:rgba(190, 190, 190, 0.267) ">
                     <center>
                     <b>  Formule PREMIUM</b>
-</center>
+                    </center>
                 </td>
             </tr>
             <tr>
@@ -98,7 +98,7 @@
                          </center>
                     </td>
                     <td colspan="3">
-                        {{ $Subscription['date_subscription'] }}
+                        {{ $subscription->date_subscription }}
                     </td>
             </tr>
             <tr >
@@ -111,13 +111,13 @@
 
             </td>
                 <td>
-                    {{ $Subscription['price'] }}
+                    {{ round( $subscription->price) }}
                 </td>
                 <td style="background-color:rgba(190, 190, 190, 0.267) ">
                   <p>  Prime  Total TTC </p>
                 </td>
                 <td>
-                    {{ $Subscription['price']*0.10 }}
+                    {{  round( $subscription->price*0.10) }}
                 </td>
             </tr>
 
@@ -135,7 +135,7 @@
     </p>
 
     <p style="margin-top:1%; font-size:14px; font-family: Arial, Helvetica, sans-serif; margin-left:3%; ">
-        Fait à Abidjan  le {{ $Subscription['date_subscription'] }} <br>
+        Fait à Abidjan  le {{ $subscription->date_subscription }} <br>
 
               Visa du Souscripteur	       		   		                                                                              Visa de l’Assureur
 

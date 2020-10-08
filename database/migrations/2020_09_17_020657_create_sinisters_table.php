@@ -15,6 +15,7 @@ class CreateSinistersTable extends Migration
     {
         Schema::create('sinisters', function (Blueprint $table) {
             $table->id();
+            $table->string('code');
             $table->string('description')->nullable();
             $table->string('contract');
             $table->string('vouchers');

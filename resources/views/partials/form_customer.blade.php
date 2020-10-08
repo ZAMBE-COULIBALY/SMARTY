@@ -59,7 +59,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control " name="mailing_address" id="mailing_address" autocomplete="adress" value="" placeholder="Adresse postale du client" >
+                <input type="text" class="form-control " name="mailing_address" id="mailing_address" autocomplete="address" value="" placeholder="Adresse postale du client" >
 
             </div>
         </div>

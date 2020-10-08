@@ -9,6 +9,7 @@ use App\Customer;
 use App\Mail\newSubscription;
 use App\payments;
 use App\Manager;
+use App\Pack;
 use App\Partner;
 use App\Payment;
 use App\Product;
@@ -105,14 +106,14 @@ class SubscriptionController extends Controller
              'marital_status'=> 'required:customers',
              'place_birth'=> 'required:customers',
              'place_residence'=> 'required:customers',
-             'phone1'=> 'required|unique:customers',
+             'phone1'=> 'required',
              'phone2'=> ':customers',
              'mail'=> ':customers',
              'folder'=> ':customers',
              'mailing_address'=> ':customers',
 
         ]);
- //var_dump($validatedData);exit();
+        //var_dump($validatedData);exit();
         if(empty($request->session()->get('Subscription'))){
             $Subscription = new \App\Subscription();
             $Subscription->fill($validatedData);
@@ -126,7 +127,7 @@ class SubscriptionController extends Controller
         }
         //dd($Subscription);
             return redirect(route('subscription.getequipment'));
-}
+    }
 
 
     public function index(Request $request)
@@ -154,7 +155,7 @@ class SubscriptionController extends Controller
             $products = Product::all()->whereIn("partner_id",Partner::where("admin_id",$usr->id));
         }
         $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
-        $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
+        $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id)->whereIn('id',$products->pluck("type_id"));
         $labels = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id);
         $models = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id);
 
@@ -172,7 +173,7 @@ class SubscriptionController extends Controller
         $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
         $pdv_id = Agency::Where("label",$libellepdv)->first()->id;
         $date_subscription= date_format(date_create(now()),'Y-m-d');
-//dd($codepdv);
+        //dd($codepdv);
         $validatedData = $request->validate([
                 'code'=> ':subscriptions',
                 'equipment'=> 'required:subscriptions',
@@ -232,41 +233,41 @@ class SubscriptionController extends Controller
         }
         $subscription_enddate=$annee.'-'.$mois.'-'.$jour;
 
-    //proforma document creation
-    $usr = User::find(Auth::user()->id);
-    $code = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->partner_id;
-    if ($usr->hasRole("manager")) {
-        $products = Product::all()->where("partner_id",$usr->manager->partner_id);
-    }
-    elseif ($usr->hasRole("agent_chief") OR $usr->hasRole("agent")){
-        $products = Product::all()->where("partner_id",'=',$code);
+        //proforma document creation
+        $usr = User::find(Auth::user()->id);
+        $code = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->partner_id;
+        if ($usr->hasRole("manager")) {
+            $products = Product::all()->where("partner_id",$usr->manager->partner_id);
+        }
+        elseif ($usr->hasRole("agent_chief") OR $usr->hasRole("agent")){
+            $products = Product::all()->where("partner_id",'=',$code);
 
-    }
-    else {
-        $products = Product::all()->whereIn("partner_id",Partner::where("admin_id",$usr->id));
-    }
-    foreach ($products as $item){
-    if ($item->type->id==$Subscription['equipment']){
-        $equipmentLibelle=$item->type->label;
-    }
-    if ($item->label->id==$Subscription['mark']){
-        $marquelibelle=$item->label->label;
-    }
-    if ($item->model->id==$Subscription['model']){
-        $modellibelle=$item->model->label;
-    }
-}
-//dd($equipmentLibelle);
-$Subscription->fill([
-    'subscription_enddate' =>$subscription_enddate,
-    'premium' =>$premium,
-    'equipmentLibelle' =>$equipmentLibelle,
-    'marquelibelle' =>$marquelibelle,
-    'modellibelle' =>$modellibelle,
-    ]);
+        }
+        else {
+            $products = Product::all()->whereIn("partner_id",Partner::where("admin_id",$usr->id));
+        }
+        foreach ($products as $item){
+            if ($item->type->id==$Subscription['equipment']){
+                $equipmentLibelle=$item->type->label;
+            }
+            if ($item->label->id==$Subscription['mark']){
+                $marquelibelle=$item->label->label;
+            }
+            if ($item->model->id==$Subscription['model']){
+                $modellibelle=$item->model->label;
+            }
+        }
+        //dd($equipmentLibelle);
+        $Subscription->fill([
+            'subscription_enddate' =>$subscription_enddate,
+            'premium' =>$premium,
+            'equipmentLibelle' =>$equipmentLibelle,
+            'marquelibelle' =>$marquelibelle,
+            'modellibelle' =>$modellibelle,
+            ]);
 
-$request->session()->put('Subscription', $Subscription)  ;
-//dd($Subscription);
+        $request->session()->put('Subscription', $Subscription)  ;
+        //dd($Subscription);
 
         $pdf =  App::make('dompdf.wrapper');
 
@@ -275,7 +276,7 @@ $request->session()->put('Subscription', $Subscription)  ;
        $pdf-> save(storage_path().'/app/public/invoices/'.$Subscription['first_name'].'.pdf');
 
 
- return redirect(route('subscription.recapitulatif'));
+        return redirect(route('subscription.recapitulatif'));
 
     }
 
@@ -283,13 +284,13 @@ $request->session()->put('Subscription', $Subscription)  ;
     {
         //
         $Subscription = $request->session()->get('Subscription');
-
+        $connectedagent = User::where('username',Auth::user()->username)->first();
          //proforma document
          $date = date("Y-m-d H:i:s");
         $custom = json_encode($Subscription);
         $designation = "Paiement de la souscription N°".$Subscription['folder'];
         $params = [
-            "cpm_amount" =>100,
+            "cpm_amount" =>$Subscription['premium'],
             "cpm_designation" => $designation ,
             "cpm_trans_id" => $Subscription['folder'],
             "cpm_trans_date" => $date,
@@ -317,16 +318,16 @@ $request->session()->put('Subscription', $Subscription)  ;
                 $params["notify_url"] = route("paiementmobile");
                 $params["return_url"] = route("documentmobilepayment");
                 $params["cancel_url"] = route("subscription.recapitulatif");
-                $params["debug"] = 0;
+                $params["debug"] = 1;
                 $params["signature"] = $signature;
                 unset( $params["cpm_trans_date"]);
-//dd($params);
+        //dd($params);
         foreach ($params as $key => $value){
         $_POST[$key] = $value;
         }
 
 
-        return view('pages.recapitulatif',compact('Subscription','date'));
+        return view('pages.recapitulatif',compact('Subscription','date','connectedagent'));
 
 
     }
@@ -342,70 +343,84 @@ $request->session()->put('Subscription', $Subscription)  ;
         return view('pages.subscriptions',compact('Subscription'));
 
 
-  }
+    }
 
     public function storecustomers(Request $request)
     {
 
         $Subscription = $request->session()->get('Subscription');
 
-try {
-    //code...
-    $ma=1;
-    $ma += Customer::max('id');
-    $customers_id=$ma;
-
-    Customer::create([
-        'code' =>$Subscription['folder'],
-        'name' =>$Subscription['name'],
-       'first_name' =>$Subscription['first_name'],
-       'birth_date' =>$Subscription['birth_date'],
-       'gender' =>$Subscription['gender'],
-       'place_birth' =>$Subscription['place_birth'],
-        'marital_status'=>$Subscription['marital_status'],
-       'place_residence' =>$Subscription['place_residence'],
-       'phone1' =>$Subscription['phone1'],
-       'phone2' =>$Subscription['phone2'],
-       'mail' =>$Subscription['mail'],
-       'folder' =>$Subscription['folder'],
-       'mailing_address' =>$Subscription['mailing_address'],
-
-    ]);
-
-    Subscription::create([
-        'code'=>$Subscription['folder'],
-        'equipment' =>$Subscription['equipment'],
-        'model' =>$Subscription['model'],
-        'mark' =>$Subscription['mark'],
-        'picture' =>$Subscription['picture'],
-        'numberIMEI' =>$Subscription['numberIMEI'],
-        'price' =>$Subscription['price'],
-        'premium' =>$Subscription['premium'],
-        'date_subscription' =>$Subscription['date_subscription'],
-        'subscription_enddate' =>$Subscription['subscription_enddate'],
-        'customer_id'=>$customers_id,
-        'agent_id' =>$Subscription['agent_id'],
-    ]);
+        try {
+            //code...
 
 
+            $customer = new Customer();
 
-    $pdf =  App::make('dompdf.wrapper');
+            $customer->code =  $Subscription['folder'];
+            $customer->name = $Subscription['name'];
+            $customer->first_name = $Subscription['first_name'];
+            $customer->birth_date = $Subscription['birth_date'];
+            $customer->gender = $Subscription['gender'];
+            $customer->place_birth = $Subscription['place_birth'];
+            $customer->marital_status = $Subscription['marital_status'];
+            $customer->place_residence = $Subscription['place_residence'];
+            $customer->phone1 = $Subscription['phone1'];
+            $customer->phone2 = $Subscription['phone2'];
+            $customer->mail = $Subscription['mail'];
+            $customer->folder = $Subscription['folder'];
+            $customer->mailing_address = $Subscription['mailing_address'];
+            $customer->save();
 
-    $pdf-> loadView("models.document", compact('Subscription'));
 
-    $pdf-> save(storage_path().'/app/public/received/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
+            $newsubscription = new Subscription();
+            $newsubscription->code = $Subscription['folder'];
+            $newsubscription->equipment = $Subscription['equipment'];
+            $newsubscription->model = $Subscription['model'];
+            $newsubscription->mark = $Subscription['mark'];
+            $newsubscription->picture = $Subscription['picture'];
+            $newsubscription->numberIMEI = $Subscription['numberIMEI'];
+            $newsubscription->price = $Subscription['price'];
+            $newsubscription->premium = $Subscription['premium'];
+            $newsubscription->date_subscription = $Subscription['date_subscription'];
+            $newsubscription->subscription_enddate = $Subscription['subscription_enddate'];
+            $newsubscription->customer_id = $customer->id;
+            $newsubscription->agent_id = $Subscription['agent_id'];
+            $newsubscription->save();
+
+            $pack = new Pack();
+            $pack->product_id = $newsubscription->equipment;
+            $pack->subscription_id = $newsubscription->id;
+            $pack->save();
+
+            $newsubscription->equipment = $pack->id;
+            $newsubscription->save();
+
+            $payment = new Payment();
+            $payment->refsubscription = $newsubscription->code;
+            $payment->paymentmethod = 1;
+            $payment->refpayment = $newsubscription->code;
+            $payment->datepayment = $newsubscription->date_subscription;
+            $payment->amount = $newsubscription->premium;
+
+            $payment->save();
+
+            $pdf =  App::make('dompdf.wrapper');
+
+            $pdf-> loadView("models.document", compact('newsubscription'));
+
+            $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
 
 
-    Mail::send(new newSubscription($Subscription));
-        return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$Subscription['folder']. ') effectuée avec succès.');
+            Mail::send(new newSubscription($newsubscription));
+            return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$newsubscription->code. ') effectuée avec succès.');
 
-} catch (\Throwable $th) {
-    //throw $th;
-    Log::warning('Erreur de souscription : '.json_encode($Subscription));
-    Log::warning('Erreur de souscription : '.json_encode($th));
-    return back()->with('error','Erreur de souscription ');
-}
-return back()->with('error','Erreur de souscription ');
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::warning('Erreur de souscription : '.json_encode($newsubscription));
+            Log::warning('Erreur de souscription : '.json_encode($th));
+            return back()->with('error','Erreur de souscription ');
+        }
+        return back()->with('error','Erreur de souscription ');
 
     }
 
@@ -481,59 +496,66 @@ return back()->with('error','Erreur de souscription ');
 
             }
 
-               $ma=1;
-                $ma += Customer::max('id');
-                $customers_id=$ma;
+            $customer = new Customer();
 
-                Customer::create([
-                    'code' =>$Subscription->folder,
-                    'name' =>$Subscription->name,
-                   'first_name' =>$Subscription->first_name,
-                   'birth_date' =>$Subscription->birth_date,
-                   'gender' =>$Subscription->gender,
-                   'place_birth' =>$Subscription->place_birth,
-                    'marital_status'=>$Subscription->marital_status,
-                   'place_residence' =>$Subscription->place_residence,
-                   'phone1' =>$Subscription->phone1,
-                   'phone2' =>$Subscription->phone2,
-                   'mail' =>$Subscription->mail,
-                   'folder' =>$Subscription->folder,
-                   'mailing_address' =>$Subscription->mailing_address,
+            $customer->code = $Subscription->folder;
+            $customer->name = $Subscription->name;
+            $customer->first_name = $Subscription->first_name;
+            $customer->birth_date = $Subscription->birth_date;
+            $customer->gender = $Subscription->gender;
+            $customer->place_birth = $Subscription->place_birth;
+            $customer->marital_status = $Subscription->marital_status;
+            $customer->place_residence = $Subscription->place_residence;
+            $customer->phone1 = $Subscription->phone1;
+            $customer->phone2 = $Subscription->phone2;
+            $customer->mail = $Subscription->mail;
+            $customer->folder = $Subscription->folder;
+            $customer->mailing_address = $Subscription->mailing_address;
+            $customer->save();
 
-                ]);
+            $newsubscription = new Subscription();
 
-                Subscription::create([
-                    'code'=>$Subscription->folder,
-                    'equipment' =>$Subscription->equipment,
-                    'model' =>$Subscription->model,
-                    'mark' =>$Subscription->mark,
-                    'picture' =>$Subscription->picture,
-                    'numberIMEI' =>$Subscription->numberIMEI,
-                    'price' =>$Subscription->price,
-                    'premium' =>$Subscription->premium,
-                    'date_subscription' =>$Subscription->date_subscription,
-                    'subscription_enddate' =>$Subscription->subscription_enddate,
-                    'customer_id'=>$customers_id,
-                    'agent_id' =>$Subscription->agent_id,
-                ]);
 
-                Payment::create([
-                    'refsubscription'=>$Subscription->folder,
-                    'paymentmethod' =>2,
-                    'refpayment' =>$cpm_trans_id,
-                    'datepayment' =>$cpm_payment_date,
-                    'amount' =>$Subscription->premium,
 
-                ]);
+            $newsubscription->code = $Subscription->folder;
+            $newsubscription->equipment = $Subscription->equipment;
+            $newsubscription->model = $Subscription->model;
+            $newsubscription->mark = $Subscription->mark;
+            $newsubscription->picture = $Subscription->picture;
+            $newsubscription->numberIMEI = $Subscription->numberIMEI;
+            $newsubscription->price = $Subscription->price;
+            $newsubscription->premium = $Subscription->premium;
+            $newsubscription->date_subscription = $Subscription->date_subscription;
+            $newsubscription->subscription_enddate = $Subscription->subscription_enddate;
+            $newsubscription->customer_id = $customer->id;
+            $newsubscription->agent_id = $Subscription->agent_id;
+            $newsubscription->save();
+
+            $pack = new Pack();
+            $pack->product_id = $newsubscription->equipment;
+            $pack->subscription_id = $newsubscription->id;
+            $pack->save();
+
+            $newsubscription->equipment = $pack->id;
+            $newsubscription->save();
+
+            $payment = new Payment();
+            $payment->refsubscription = $newsubscription->code;
+            $payment->paymentmethod = 2;
+            $payment->refpayment = $cpm_trans_id;
+            $payment->datepayment = $cpm_payment_date;
+            $payment->amount = $newsubscription->premium;
+            $payment->save();
+
 
 
 
                 $pdf =  App::make('dompdf.wrapper');
 
-                $pdf-> loadView("models.document", compact('Subscription'));
+                $pdf-> loadView("models.document", compact('newsubscription'));
 
-                $pdf-> save(storage_path().'/app/public/received/'.$Subscription->first_name.$Subscription->phone1.'.pdf');
-              Mail::send(new newSubscription($Subscription));
+                $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
+              Mail::send(new newSubscription($newsubscription));
 
             }
             else{
@@ -541,16 +563,18 @@ return back()->with('error','Erreur de souscription ');
                     Log::alert('Paiement echoué');
                 }
 
-    return 0;
+        return 0;
 
-            }
+    }
 
 
-    public function getrecu(Request $request )
+
+    public function getrecu(Request $request)
     {
         //
         $Subscription = $request->session()->get('Subscription');
-        return view('pages.recu',compact('Subscription'));
+        $subscription = Subscription::where('code',$Subscription['folder']);
+         return view('pages.recu',compact('subscription'));
     }
 
     public function documentmobilepayment(Request $request)
@@ -615,16 +639,21 @@ return back()->with('error','Erreur de souscription ');
 
             if($cpm_result == '00'){
 
-                    // une page HTML de paiement bon
-                    $Subscription = Subscription::where("code","=",$cpm_trans_id)->first();
-
-//dd($cpm_trans_id);
-                    Log::alert('Le paiement de la souscription a réussi');
-                    $user =  User::find($Subscription->agent->user->id);
+                // une page HTML de paiement bon
+                $subscription = Subscription::where("code","=",$cpm_trans_id)->first();
+                //dd($cpm_trans_id);
+                Log::alert('Le paiement de la souscription a réussi');
+                $user =  User::find($subscription->agent->user->id);
                 Auth::login($user);
-                Session::Put("success",'Souscription ('.$Subscription->folder. ') effectuée avec succès.');
+                Session::Put("success",'Souscription ('.$subscription->code. ') effectuée avec succès.');
 
-                return view('pages.recu',compact('Subscription'));
+                $pdf =  App::make('dompdf.wrapper');
+
+                $pdf-> loadView("models.document", compact('subscription'));
+
+                $pdf-> save(storage_path().'/app/public/received/'.$subscription->first_name.$subscription->phone1.'.pdf');
+
+                      return view('pages.recu',compact('subscription'));
 
                 }else{
                     // une page HTML de paiement echoué
