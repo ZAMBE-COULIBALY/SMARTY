@@ -18,9 +18,7 @@
                                     <div class="form-group">
                                        <label>Marque</label>
                                        <select name="mark" id="mark" class="form-control select2bs4NE" style="width: 100%;">
-                                        @foreach ($products as $item)
-                                        <option value="{{$item->label->id}}" >{{$item->label->label}}</option>
-                                      @endforeach
+
                                         </select>
                                     </div>
                                 </div>
@@ -29,9 +27,7 @@
                                 <div class="form-group">
                                    <label>Modèle</label>
                                    <select name="model" id="model" class="form-control select2bs4NE" style="width: 100%;">
-                                    @foreach ($products as $item)
-                                    <option value="{{$item->model->id}}" >{{$item->model->label}}</option>
-                                  @endforeach
+
 
                                     </select>
                                 </div>

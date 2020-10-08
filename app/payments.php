@@ -12,4 +12,11 @@ class payments extends Model
 'refsubscription','paymentmethod', 'refpayment','datepayment','amount','customer_id',
 
     ];
+
+    public function subscription()
+    {
+        # code...
+        return $this->belongsTo("App\Subscription");
+    }
+
 }

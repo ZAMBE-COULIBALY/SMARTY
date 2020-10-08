@@ -41,14 +41,24 @@ menu-open active
                                                 <tr>
                                                     <td style="text-align: center">
                                                         <p>Moyen de paiement</p>
-                                                        <input type="radio" value="1" checked id="paymenttype" name="paymenttype">Caisse<br>
-                                                        <input type="radio" value="2" id="paymenttype" name="paymenttype">Mobile<br>
+                                                        @switch($connectedagent->partner->paymode)
+                                                            @case(1)
+                                                            <input type="radio" value="2" checked id="paymenttype" name="paymenttype">Mobile<br>
+
+                                                                @break
+                                                            @case(2)
+                                                            <input type="radio" value="1" checked id="paymenttype" name="paymenttype">Caisse<br>
+
+                                                                @break
+                                                            @default
+
+                                                        @endswitch
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align: center">
 
-                                    <form id="form"  method="POST" action="{{ route('subscription.storecustomer') }}">
+                                    <form id="form"  method="POST" action="{{ ($connectedagent->partner->paymode == 1 ) ? "https://secure.cinetpay.com" : route('subscription.storecustomer') }}">
                                         @csrf
                                             @foreach ($_POST as $item => $s)
                                                 <input type="hidden" class="form-control" placeholder="{{ $item}}" id="{{ $item}}" name="{{ $item}}" value="{{$_POST[$item]}}">
@@ -77,10 +87,10 @@ menu-open active
     <script>
 
         $('input[name="paymenttype"]').on('change', function(e) {
-            console.log('change')
+            console.log('change');
 
             var manageradiorel = e.target.value;
-            console.log(manageradiorel)
+            console.log(manageradiorel);
             switch(manageradiorel){
                 case "1":
                 $('#form').attr("action", "{{ route('subscription.storecustomer') }}");
@@ -101,6 +111,27 @@ menu-open active
 
         });
 
+        $(document).ready(function() {
+            var manageradiorel = "{{ $connectedagent->partner->paymode }}";
+            console.log(manageradiorel);
+            switch(manageradiorel){
+                case "2":
+                $('#form').attr("action", "{{ route('subscription.storecustomer') }}");
+                console.log('case 2')
+                    break;
+                case "1":
+                $('#form').attr("action", "https://secure.cinetpay.com");
+                console.log('case 1')
+
+                    break;
+
+                default:
+                console.log('case def')
+
+                    break;
+                }
+
+        });
 
         </script>
 @endsection

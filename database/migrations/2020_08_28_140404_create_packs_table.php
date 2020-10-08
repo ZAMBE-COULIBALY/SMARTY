@@ -14,9 +14,9 @@ class CreatePacksTable extends Migration
     public function up()
     {
         Schema::create('packs', function (Blueprint $table) {
-            $table->foreignId('subcription_id')->references('id')->on('subscriptions');
+            $table->foreignId('subscription_id')->references('id')->on('subscriptions');
             $table->foreignId('product_id')->references('id')->on('products');
-            $table->primary(['subcription_id', 'product_id']);
+            $table->primary(['subscription_id', 'product_id']);
             $table->timestamps();
         });
     }

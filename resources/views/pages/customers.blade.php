@@ -42,31 +42,33 @@
                                             <th >CODE</th>
                                             <th >CLIENT</th>
                                             <th >IDENTIFIANT EQUIPEMENT</th>
-                                            <th >PERIODE D&#039EFFET</th>
+                                            <th >{{ __("PERIODE D'EFFET")}}</th>
                                             {{--  <th >ACTION</th>  --}}
                                         </tr>
                                     </thead>
+                                    <tbody >
+
                                     @foreach($hsubscription as $subscription)
                                     @php
-                                    $date= date_format(date_create(now()),'d-m-Y');
-                                    $jour= date_format(date_create($subscription->date_subscription),'d-m-Y') ;
-                                    $date1=strtotime($date);
-                                    $date2 =strtotime($jour);
-                                    $resultat=$date1 - $date2;
-                                    $nbJours = ($resultat/86400);
-                                        if ($nbJours <= 90) {
-                                        $color ="p-3 mb-2 bg-success text-white";
-                                        }elseif ($nbJours >= 91 && $nbJours <=180) {
-                                                $color ="p-3 mb-2 bg-warning text-dark";
-                                        }elseif ($nbJours >= 181 && $nbJours <365) {
-                                                        $color= "p-3 mb-2 bg-danger text-white";
-                                        }else {
-                                                            $color = "p-3 mb-2 bg-secondary text-white";
-                                          };
+                                         $date= date_format(date_create(now()),'d-m-Y');
+                                        $jour= date_format(date_create($subscription->date_subscription),'d-m-Y') ;
+                                        $date1=strtotime($date);
+                                        $date2 =strtotime($jour);
+                                        $resultat=$date1 - $date2;
+                                        $nbJours = ($resultat/86400);
+                                            if ($nbJours <= 90) {
+                                            $color ="p-3 mb-2 bg-success text-white";
+                                            }elseif ($nbJours >= 91 && $nbJours <=180) {
+                                                    $color ="p-3 mb-2 bg-warning text-dark";
+                                            }elseif ($nbJours >= 181 && $nbJours <365) {
+                                                            $color= "p-3 mb-2 bg-danger text-white";
+                                            }else {
+                                                                $color = "p-3 mb-2 bg-secondary text-white";
+                                            };
 
                                     @endphp
 
-                                    <tbody class="{{$color}}";>
+                                        <tr class="{{$color}}">
                                         <td> {{ $subscription->code }} </td>
                                         <td>{{ $subscription->name }} {{ $subscription->first_name }} </td>
                                         <td>{{ $subscription->numberIMEI }} </td>
@@ -78,9 +80,10 @@
                                                 </a>
                                  </center>
                                         </td>  --}}
-                                    </tbody>
+                                    </tr>
                                     @endforeach
-                                </table>
+                                </tbody>
+                            </table>
 
 
 
