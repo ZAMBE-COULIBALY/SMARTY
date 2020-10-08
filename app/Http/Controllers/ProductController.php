@@ -30,17 +30,12 @@ class ProductController extends Controller
         //
         $usr = User::find(Auth::user()->id);
 
-        if ($usr->hasRole("manager")) {
-            $products = Product::all()->where("partner_id",$usr->manager->partner_id);
-        }
-        else {
-            $products = Product::all()->whereIn("partner_id",Partner::where("admin_id",$usr->id));
+        $products = Product::all()->where("partner_id",$usr->manager->partner_id);
 
-        }
 
         // dd($products->first()->category);
 
-        $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
+        $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->whereIn('code',json_decode($usr->manager->partner->category));
         // $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
         // $labels = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id);
         // $models = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id);
