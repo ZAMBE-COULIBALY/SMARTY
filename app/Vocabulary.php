@@ -12,4 +12,11 @@ class Vocabulary extends Model
     protected $guarded = [
         '*'
     ];
+
+
+    public function attribute($code)
+    {
+        # code...
+        return json_decode($this->attribute)->$code;
+    }
 }

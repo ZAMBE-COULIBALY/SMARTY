@@ -32,7 +32,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control @error('libelle') is-invalid @enderror" name="label" id="label" value="{{ isset($agency) ? $agency->label : '' }}" placeholder="Saisir le libelle du PDV" required autocomplete="label" >
+                <input type="text" class="form-control @error('label') is-invalid @enderror" name="label" id="label" value="{{ isset($agency) ? $agency->label : '' }}" placeholder="Saisir le libelle du PDV" required autocomplete="label" >
 
             </div>
             @error('label')
@@ -50,10 +50,10 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control @error('adresse') is-invalid @enderror" name="address" id="address" value="{{ isset($agency) ? $agency->address : '' }}" placeholder="Saisir l'adresse du PDV" required autocomplete="address" >
+                <input type="text" class="form-control @error('address') is-invalid @enderror" name="address" id="address" value="{{ isset($agency) ? $agency->address : '' }}" placeholder="Saisir l'adresse du PDV" required autocomplete="address" >
 
             </div>
-            @error('adresse')
+            @error('address')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>

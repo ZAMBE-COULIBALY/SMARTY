@@ -41,10 +41,10 @@ class ProductController extends Controller
         // dd($products->first()->category);
 
         $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
-        $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
-        $labels = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id);
-        $models = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id);
-        return view("pages.products",compact("products","categories","types","labels","models"));
+        // $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
+        // $labels = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id);
+        // $models = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id);
+        return view("pages.products",compact("products","categories"));
         //
     }
 
@@ -74,35 +74,12 @@ class ProductController extends Controller
         $product->code = $parameters["code"];
         $product->name = $parameters["name"];
 
-        if (null !== Vocabulary::all()->where("id","=",$parameters["category"])->first())  {
-            # code...
-             $product->category_id = $parameters["category"] ;
-        } else {
-            # code...
-            $category = new Vocabulary();
-            $category->code = Str::random(5);
-            $category->label = $parameters["category"];
-            $category->type_id = VocabularyType::where("code","PDT-TYP")->first()->id;
-            $category->parent = 0;
-            $category->save();
-            $product->category_id = $category->id;
-        }
+        $product->category_id = $parameters["category"] ;
+        $product->type_id = $parameters["type"] ;
 
-        if (null !== Vocabulary::all()->where("id","=",$parameters["type"])->first())  {
-            # code...
-             $product->type_id = $parameters["type"] ;
-        } else {
-            # code...
-            $type = new Vocabulary();
-            $type->code = Str::random(5);
-            $type->label = $parameters["type"];
-            $type->type_id = VocabularyType::where("code","PDT-KIND")->first()->id;
-            $type->parent = $product->category_id;
-            $type->save();
-            $product->type_id = $type->id;
-        }
 
-        if (null !== Vocabulary::all()->where("id","=",$parameters["label"])->first())  {
+        if (is_numeric($parameters["label"])
+            && null !== Vocabulary::all()->where('type_id',VocabularyType::where("code","PDT-LBL")->first()->id)->where("id","=",$parameters["label"])->first())  {
             # code...
              $product->label_id = $parameters["label"] ;
         } else {
@@ -116,7 +93,11 @@ class ProductController extends Controller
             $product->label_id = $label->id;
         }
 
-        if (null !== Vocabulary::all()->where("id","=",$parameters["model"])->first())  {
+        if (is_numeric($parameters["model"])
+            && null !== Vocabulary::all()->where('type_id',VocabularyType::where("code","PDT-MDL")->first()->id)->where("id","=",$parameters["model"])->first()
+            )
+
+            {
             # code...
              $product->model_id = $parameters["model"] ;
         } else {

@@ -18,7 +18,8 @@ class VocabularyTypeSeeder extends Seeder
         DB::table('vocabularytypes')->insert(
             [
             'code' => 'PDT-TYP',
-            'label' => 'TYPE PRODUIT',
+            'label' => 'TYPE DE PRODUIT',
+            "created_at" => now()
             ]
         );
         DB::table('vocabularytypes')->insert(
@@ -31,16 +32,30 @@ class VocabularyTypeSeeder extends Seeder
         DB::table('vocabularytypes')->insert(
             [
                 'code' => 'PDT-LBL',
-                'label' => 'MARQUE',
+                'label' => 'MARQUE DE PRODUIT',
                 'parent' => VocabularyType::all()->where("code","PDT-KIND")->first()->id,
             ]);
 
-            DB::table('vocabularytypes')->insert(
+        DB::table('vocabularytypes')->insert(
                 [
                     'code' => 'PDT-MDL',
-                    'label' => 'MODELE',
+                    'label' => 'MODELE DE PRODUIT',
                     'parent' => VocabularyType::all()->where("code","PDT-LBL")->first()->id,
                     "created_at" => now()
                 ]);
+
+        DB::table('vocabularytypes')->insert(
+            [
+                'code' => 'ASS-TYP',
+                'label' => "TYPE D'ASSURANCE",
+                "created_at" => now()
+            ]);
+
+        DB::table('vocabularytypes')->insert(
+            [
+                'code' => 'CLM-TYP',
+                'label' => 'TYPE DE SINISTRE',
+                "created_at" => now()
+            ]);
     }
 }
