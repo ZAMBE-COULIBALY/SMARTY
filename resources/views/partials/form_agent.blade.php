@@ -119,7 +119,7 @@
         <div class="form-group col-md-6">
             <label for="state" >Actif</label>
             <div class="input-group">
-                <input type="checkbox" name="state" id="state" {{ (isset($agent) && $agent->state) ? 'checked' : ''}} data-bootstrap-switch data-off-color="danger" data-on-color="success">
+                <input type="checkbox" name="state" id="state" {{ isset($agent) ? (($agent->state) ? 'checked' : '') : 'checked'}} data-bootstrap-switch data-off-color="danger" data-on-color="success">
             </div>
         </div>
 
