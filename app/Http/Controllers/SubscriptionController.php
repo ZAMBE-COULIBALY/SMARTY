@@ -112,7 +112,7 @@ class SubscriptionController extends Controller
              'mailing_address'=> ':customers',
 
         ]);
- //var_dump($validatedData);exit();
+        //var_dump($validatedData);exit();
         if(empty($request->session()->get('Subscription'))){
             $Subscription = new \App\Subscription();
             $Subscription->fill($validatedData);
@@ -126,7 +126,7 @@ class SubscriptionController extends Controller
         }
         //dd($Subscription);
             return redirect(route('subscription.getequipment'));
-}
+    }
 
 
     public function index(Request $request)
@@ -154,7 +154,7 @@ class SubscriptionController extends Controller
             $products = Product::all()->whereIn("partner_id",Partner::where("admin_id",$usr->id));
         }
         $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
-        $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
+        $types = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id)->whereIn('id',$products->pluck("type_id"));
         $labels = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-LBL")->first()->id);
         $models = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-MDL")->first()->id);
 

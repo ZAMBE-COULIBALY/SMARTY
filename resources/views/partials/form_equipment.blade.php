@@ -8,9 +8,9 @@
                                         <div class="form-group">
                                            <label>Selectionnez votre équipement</label>
                                            <select name="equipment" id="equipment" class="form-control select2bs4NE" style="width: 100%;">
-                                            @foreach ($products as $item)
-                                            <option value={{$item->type->id}}  >{{$item->type->label}}</option>
-                                          @endforeach
+                                        @foreach ($types as $item)
+                                            <option value={{$item->id}}  >{{$item->label}}</option>
+                                        @endforeach
                                             </select>
                                         </div>
                                     </div>
