@@ -94,11 +94,11 @@ menu-open active
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Nature : </td>
-                                                                            <td>  {{$subscription->equipment}} </td>
+                                                                            <td>  {{$subscription->pack->product->type->label }} </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Marque :</td>
-                                                                            <td>{{$subscription->mark}}</td>
+                                                                            <td>{{$subscription->pack->product->label->label }}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Numéro identifiant (IMEI) :</td>
