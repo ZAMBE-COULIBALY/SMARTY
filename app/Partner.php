@@ -31,4 +31,20 @@ class Partner extends Model
         # code...
         return $this->hasMany("App\Manager","partner_id");
     }
+
+    public function hasCategory($category)
+    {
+        # code...
+        if(null !== $this->category)
+        {
+                if (collect(json_decode($this->category))->contains($category)) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+
 }

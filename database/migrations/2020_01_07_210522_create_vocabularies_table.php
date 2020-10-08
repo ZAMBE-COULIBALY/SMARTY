@@ -21,6 +21,7 @@ class CreateVocabulariesTable extends Migration
 
             $table->string("label");
 
+
             $table->unsignedBigInteger('type_id');
             $table->foreign('type_id')->references('id')->on('vocabularytypes');
 

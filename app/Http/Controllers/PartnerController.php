@@ -8,6 +8,8 @@ use App\Manager;
 use App\Partner;
 use App\Role;
 use App\User;
+use App\Vocabulary;
+use App\VocabularyType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +28,8 @@ class PartnerController extends Controller
     {
         //
         $partners = Partner::all();
-        return view('pages.partners',compact('partners'));
+        $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
+        return view('pages.partners',compact('partners','categories'));
     }
 
     /**
@@ -62,6 +65,9 @@ class PartnerController extends Controller
         $partner->email = $parametersvalid['email'];
         $partner->contact = $parameters['contact'] ;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
+        $partner->paymode = $parameters['paymode'];
+        $partner->category = json_encode($parameters['category']);
+
 
         $date = new \DateTime(null);
         $partner->slug = Str::slug($partner->label.$date->format('dmYhis'));
@@ -127,7 +133,8 @@ class PartnerController extends Controller
         //
         $partners = Partner::all();
         $partner = Partner::where("slug","=",$partner)->first();
-        return view('pages.partners',compact('partners','partner'));
+        $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
+        return view('pages.partners',compact('partners','partner','categories'));
     }
 
     /**
@@ -155,6 +162,8 @@ class PartnerController extends Controller
         $partner->email = $parametersvalid['email'];
         $partner->contact = $parametersvalid['contact'] ;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
+        $partner->paymode = $parameters['paymode'];
+        $partner->category = json_encode($parameters['category']);
 
         $partner->save();
         return Redirect()->route('partners.list')->with('success','Le partenaire a été ecorrectement modifié');

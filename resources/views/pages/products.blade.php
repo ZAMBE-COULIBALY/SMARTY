@@ -130,15 +130,19 @@ menu-open active
 
 
         $(function () {
-            loadvocabularies = function (parent,sons) {
+            loadvocabularies = function (parent,sons,next = null) {
                 $.get("../api/vocabulary/allVocbularySons/"+parent,function(data){
                     // console.log(data);
                      var lesOptions;
                      $.each(data, function( index, value ) {
-                         lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
+                         lesOptions+="<option value="+value.id+">"+value.label+"</option>" ;
                      });
                     sons.empty();
                     sons.append(lesOptions);
+                    if(null !== next){
+                        next();
+                    }
+
                      {{--  loadagent($("#agency").children("option:selected").val());  --}}
 
                      //  $("#id_categorie").trigger("chosen:updated");
@@ -146,20 +150,22 @@ menu-open active
                  });
             }
                     $(document).ready(function() {
-                        if(!(isEmptyObject('{{$categories}}')))
+                        if(!(('{{$categories}}').length === 0))
                         {
                             var selectedCategory = $("#category").children("option:selected").val();
-                            $.get("../api/vocabulary/allVocbularySons/"+selectedCategory,function(data){
+                           /* $.get("../api/vocabulary/allVocbularySons/"+selectedCategory,function(data){
                                 // console.log(data);
                                 var lesOptions;
                                 $.each(data, function( index, value ) {
                                     lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
                                 });
                                 $("#type").empty();
-                                $("#type").append(lesOptions);
+                                $("#type").append(lesOptions);*/
                             /*   loadLabel();
-                                loadModel();*/
-                            })
+                                loadModel();
+                            })*/
+                            loadvocabularies(selectedCategory,$("#type"),loadtype);
+
                         }
                     });
 
@@ -167,7 +173,7 @@ menu-open active
                         var selectedCategory = $("#category").children("option:selected").val();
                         console.log("chargement type de "+selectedCategory);
 
-                        $.get("../api/vocabulary/allVocbularySons/"+selectedCategory,function(data){
+                       /* $.get("../api/vocabulary/allVocbularySons/"+selectedCategory,function(data){
                             // console.log(data);
                             var lesOptions;
                             $.each(data, function( index, value ) {
@@ -175,40 +181,50 @@ menu-open active
                             });
                             $("#type").empty();
                             $("#type").append(lesOptions);
-                            loadLabel();
-                            loadModel();
                         });
+                                                  */
+                        if(selectedCategory !== undefined)
+                        {
+                            loadvocabularies(selectedCategory,$("#type"),loadLabel);
+
+                        }
+                        else
+                        {
+                            $("#type").empty();
+                            loadLabel();
+                        }
+
+
                     }
 
                     loadLabel = function () {
                         var selectedType = $("#type").children("option:selected").val();
-                        console.log("chargement marque");
+                        console.log("chargement label");
+                        if(selectedType !== undefined)
+                        {
+                            loadvocabularies(selectedType,$("#label"),loadModel);
 
-
-                        $.get("../api/vocabulary/allVocbularySons/"+selectedType,function(data){
-                            // console.log(data);
-                            var lesOptions;
-                            $.each(data, function( index, value ) {
-                                lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
-                            });
+                        }
+                        else
+                        {
                             $("#label").empty();
-                            $("#label").append(lesOptions);
                             loadModel();
-                        });
+                        }
                     }
 
                     loadModel = function () {
                         console.log("chargement model");
                         var selectedLabel = $("#label").children("option:selected").val();
-                        $.get("../api/vocabulary/allVocbularySons/"+selectedLabel,function(data){
-                            // console.log(data);
-                            var lesOptions;
-                            $.each(data, function( index, value ) {
-                                lesOptions+="<option value='"+value.id+"'>"+value.label+"</option>" ;
-                            });
+                        var selectedLabeltext = $("#label").children("option:selected").text();
+                        console.log("chargement texte marque de "+selectedLabeltext);
+                        if(selectedLabel !== undefined && selectedLabel !== selectedLabeltext)
+                        {
+                            loadvocabularies(selectedLabel,$("#model"));
+                        }
+                        else
+                        {
                             $("#model").empty();
-                            $("#model").append(lesOptions);
-                        });
+                        }
                     }
 
                     $("#category").change(function (e) {

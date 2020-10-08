@@ -78,21 +78,21 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
     Route::get('/', [
         'as'=> 'statistics.show',
         'uses' => 'CustomerController@getstatistics'
-        ]);
+    ]);
         Route::get('/PDF', [
             'as'=> 'statistics.etat',
             'uses' => 'CustomerController@statisticsPDF'
-            ]);
+        ]);
 
         Route::get('/EXCEL', [
             'as'=> 'statistics.excel',
             'uses' => 'CustomerController@statisticsExcel'
-            ]);
+        ]);
 
             Route::get('/etat', [
                 'as'=> 'statistics.etatpartenaire',
                 'uses' => 'CustomerController@etat'
-                ]);
+            ]);
 
     });
 
@@ -454,4 +454,29 @@ Route::group(['prefix' => '/product', 'as' => 'products.', 'middleware' => ["aut
         'uses' => 'ProductController@destroy'
         ]);
 
+});
+
+Route::group(['prefix' => '/category', 'middleware' => ["auth","roles"], "roles" => ["administrator","super_administrator"]], function () {
+    Route::get('/', [
+        'as'=> 'category.list',
+        'uses' => 'VocabularyController@categoryIndex'
+        ]);
+
+    Route::get('/edit/{category}', [
+        'as'=> 'category.edit',
+        'uses' => 'VocabularyController@categoryEdit'
+        ]);
+        Route::get('/delete/{category}', [
+            'as'=> 'category.delete',
+            'uses' => 'VocabularyController@categoryDestroy'
+            ]);
+    Route::post('/new', [
+        'as'=> 'category.add',
+        'uses' => 'VocabularyController@categoryStore'
+        ]);
+
+    Route::post('/update/{category}', [
+        'as'=> 'category.update',
+        'uses' => 'VocabularyController@categoryUpdate'
+        ]);
 });

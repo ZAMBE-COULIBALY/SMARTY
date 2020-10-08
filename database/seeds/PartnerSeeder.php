@@ -1,6 +1,8 @@
 <?php
 
+use App\VocabularyType;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PartnerSeeder extends Seeder
 {
@@ -12,7 +14,14 @@ class PartnerSeeder extends Seeder
     public function run()
     {
         //
-        factory(App\Provider::class, 5)->create();
+        DB::table('vocabularies')->insert(
+            [
+                'code' => 'ELM',
+                'label' => 'ELECTROMENAGER',
+                "type_id" => VocabularyType::where("code","PDT-TYP")->first()->id,
+                "attribute" => json_encode(["ASS-TYP" => "FULL"]),
+                "created_at" => now()
+            ]);
 
     }
 }
