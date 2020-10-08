@@ -455,3 +455,28 @@ Route::group(['prefix' => '/product', 'as' => 'products.', 'middleware' => ["aut
         ]);
 
 });
+
+Route::group(['prefix' => '/category', 'middleware' => ["auth","roles"], "roles" => ["administrator","super_administrator"]], function () {
+    Route::get('/', [
+        'as'=> 'category.list',
+        'uses' => 'VocabularyController@categoryIndex'
+        ]);
+
+    Route::get('/edit/{category}', [
+        'as'=> 'category.edit',
+        'uses' => 'VocabularyController@categoryEdit'
+        ]);
+        Route::get('/delete/{category}', [
+            'as'=> 'category.delete',
+            'uses' => 'VocabularyController@categoryDestroy'
+            ]);
+    Route::post('/new', [
+        'as'=> 'category.add',
+        'uses' => 'VocabularyController@categoryStore'
+        ]);
+
+    Route::post('/update/{category}', [
+        'as'=> 'category.update',
+        'uses' => 'VocabularyController@categoryUpdate'
+        ]);
+});
