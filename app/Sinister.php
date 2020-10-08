@@ -9,7 +9,7 @@ class Sinister extends Model
     //
 
     protected $fillable = [
-        'folder','description','contract','vouchers','type1','type2','state'
+       'code', 'folder','description','contract','vouchers','type1','type2','state'
        ];
 
 

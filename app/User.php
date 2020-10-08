@@ -49,6 +49,11 @@ class User extends Authenticatable
         return $this->hasOne('App\Manager','username','username');
     }
 
+    public function partner()
+    {
+        return $this->belongsTo('App\Partner');
+    }
+
 
     public function hasRole($role)
     {

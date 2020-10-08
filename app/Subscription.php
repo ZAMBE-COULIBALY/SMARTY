@@ -35,4 +35,10 @@ class Subscription extends Model
         # code...
         return $this->hasMany("App\Sinister","folder","code");
     }
+
+    public function pack()
+    {
+        # code...
+        return $this->hasOne("App\Pack","subscription_id","id");
+    }
 }

@@ -143,8 +143,6 @@ menu-open active
                         next();
                     }
 
-                     {{--  loadagent($("#agency").children("option:selected").val());  --}}
-
                      //  $("#id_categorie").trigger("chosen:updated");
 
                  });
