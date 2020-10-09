@@ -76,12 +76,13 @@ class VocabularyController extends Controller
         $parameters = $request->validate([
             "label" => [ Rule::notIn(Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->except($category->id)->pluck("label")), "required" ],
             "asstyp" => [Rule::In(Vocabulary::all()->where("type_id",VocabularyType::where("code","ASS-TYP")->first()->id)->pluck("code")), "required" ],
+            "clmtyp" => ""
 
         ]);
 
         $newcategory = clone $category;
         $newcategory->label = $parameters["label"];
-        $newcategory->attribute = json_encode(["ASS-TYP" => $parameters["asstyp"]]) ;
+        $newcategory->attribute = json_encode(["ASS-TYP" => $parameters["asstyp"],"CLM-TYP" => $parameters["clmtyp"]]);
 
         $newcategory->save();
         Session::put("success","Catégorie paramétrée avec succès");
