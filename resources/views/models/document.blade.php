@@ -59,9 +59,9 @@
         </thead>
     <tbody>
             <tr>
-                <td> {{ $newsubscription->equipment }}</td>
-                <td> {{ $newsubscription->mark }}</td>
-                <td> {{ $newsubscription->model }}</td>
+                <td> {{ $newsubscription->pack->first()->product->type->label}}</td>
+                <td> {{ $newsubscription->pack->first()->product->label->label }}</td>
+                <td> {{ $newsubscription->pack->first()->product->model->label }}</td>
                 <td> {{ $newsubscription->numberIMEI }}</td>
                 <td> {{ round( $newsubscription->price )}}</td>
                 <td> {{ round( $newsubscription->price )}}</td>

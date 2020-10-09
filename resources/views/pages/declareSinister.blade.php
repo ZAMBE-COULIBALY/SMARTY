@@ -94,11 +94,11 @@ menu-open active
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Nature : </td>
-                                                                            <td>  {{$subscription->pack->product->type->label }} </td>
+                                                                            <td>  {{$subscription->pack->first()->product->type->label }} </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Marque :</td>
-                                                                            <td>{{$subscription->pack->product->label->label }}</td>
+                                                                            <td>{{$subscription->pack->first()->product->label->label }}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Numéro identifiant (IMEI) :</td>
@@ -173,9 +173,12 @@ menu-open active
                                                                  <div class="form-group">
 
                                                                      <div class="checkbox">
-                                                                        <label for="choix1">$subscription->pack->product->label</label><br/>
+                                                                        <label for="choix1">SINISTRE {{$subscription->pack->first()->product->type->label}}</label><br/>
                                                                     @foreach ($clmtypes as $item)
+                                                                        @if ($subscription->pack->first()->product->type->hasAttribute($item->code,'CLM-TYP'))
                                                                         <input{{ (old('choix1') && (in_array($item->code, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="bris_ecran" value={{$item->code}} > {{$item->label}} <br/>
+
+                                                                        @endif
                                                                      @endforeach
                                                                     </div> <br>
 
