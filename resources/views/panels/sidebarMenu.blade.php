@@ -76,6 +76,14 @@
                 @endif
                 @if (Auth::user()->hasAnyRole(['manager','administrator','super_administrator']))
                     <li class="nav-item">
+                        <a href="{{ route('type.list') }}" class="nav-link @yield('type')">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Article</p>
+                        </a>
+                    </li>
+                @endif
+                @if (Auth::user()->hasAnyRole(['manager','administrator','super_administrator']))
+                    <li class="nav-item">
                     <a href="{{ route('customers.list') }}" class="nav-link @yield('listcustomers')">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Clients</p>

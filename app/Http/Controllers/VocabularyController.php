@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Exists;
+use PhpOffice\PhpSpreadsheet\Calculation\Category;
 
 class VocabularyController extends Controller
 {
@@ -120,6 +121,112 @@ class VocabularyController extends Controller
 
     }
 
+
+    public function typeIndex()
+    {
+        # code...
+        $collection = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
+        $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
+        $clmtypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","CLM-TYP")->first()->id);
+        return view("pages.type",compact("collection","clmtypes","categories"));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function typeStore(Request $request)
+    {
+        //
+        //    dd(Vocabulary::all()->where("type_id",VocabularyType::where("code","ASS-TYP")->first()->id)->pluck("code"));
+
+        $parameters = $request->validate([
+            "code" => [ Rule::notIn(Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id)->pluck("code")), "required" ],
+            "label" => [ Rule::notIn(Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id)->pluck("label")), "required" ],
+            "category" => "required",
+            "clmtyp" => ""
+        ]);
+        $type = new Vocabulary();
+        $type->code = $parameters["code"];
+        $type->label = $parameters["label"];
+        $type->parent = $parameters["category"];
+        $type->attribute = json_encode(["CLM-TYP" => $parameters["clmtyp"]]);
+        $type->type_id = VocabularyType::where("code","PDT-KIND")->first()->id;
+
+        $type->save();
+        Session::put('success',"Nouvau type paramétré");
+        return redirect()->route("type.list");
+    }
+
+     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Vocabulary  $type
+     * @return \Illuminate\Http\Response
+     */
+    public function typeUpdate(Request $request,Vocabulary $type)
+    {
+        //
+
+        $parameters = $request->all();
+        $parametersvd = $request->validate([
+            "label" => [ Rule::notIn(Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id)->except($type->id)->pluck("label")), "required" ],
+
+        ]);
+
+        $newtype = clone $type;
+        $type->label = $parametersvd["label"];
+        $type->parent = $parameters["category"];
+        $type->attribute = json_encode(["CLM-TYP" => $parameters["clmtyp"]]);
+        $type->type_id = VocabularyType::where("code","PDT-KIND")->first()->id;
+
+        $type->save();
+
+        $newtype->save();
+        Session::put("success","Type paramétrée avec succès");
+        return redirect()->route("type.list");
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Vocabulary  $type
+     * @return \Illuminate\Http\Response
+     */
+    public function typeEdit(Vocabulary $type)
+    {
+        //
+        $collection = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-KIND")->first()->id);
+        $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
+        $clmtypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","CLM-TYP")->first()->id);
+
+        return view("pages.type",compact("collection","clmtypes","type","categories"));
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Vocabulary  $vocabulary
+     * @return \Illuminate\Http\Response
+     */
+    public function typeDestroy(Vocabulary $type)
+    {
+        //
+        if(!(Vocabulary::all()->where("parent",$type->id)->count() !==0 ))
+        {
+            $type->delete();
+            Session::put('success',"Catégorie supprimée avec succès.");
+        } else {
+            Session::put('warning',"Attention! La catégorie est utilisée.");
+        }
+
+        return redirect()->route("type.list");
+
+    }
 
     /**
      * Show the form for creating a new resource.
