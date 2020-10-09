@@ -371,6 +371,7 @@ class SubscriptionController extends Controller
             //code...
 
 
+            Log::info('Création customer start '.now());
 
             $customer->code =  $Subscription['folder'];
             $customer->name = $Subscription['name'];
@@ -387,6 +388,8 @@ class SubscriptionController extends Controller
             $customer->mailing_address = $Subscription['mailing_address'];
             $customer->save();
 
+            Log::info('Création customer ok '.now());
+            Log::info('Création subscription start '.now());
 
             $newsubscription->code = $Subscription['folder'];
             $newsubscription->equipment = $Subscription['equipment'];
@@ -401,6 +404,10 @@ class SubscriptionController extends Controller
             $newsubscription->customer_id = $customer->id;
             $newsubscription->agent_id = $Subscription['agent_id'];
             $newsubscription->save();
+            Log::info('Création subscipriotn ok '.now());
+
+            Log::info('Création pack start '.now());
+
             $pack->product_id = 1;
             try {
                 //code...
@@ -411,9 +418,15 @@ class SubscriptionController extends Controller
             }
             $pack->subscription_id = $newsubscription->id;
             $pack->save();
+            Log::info('Création pack ok '.now());
+
+            Log::info('Update equipment subscr start '.now());
 
             $newsubscription->equipment = $pack->id;
             $newsubscription->save();
+            Log::info('Update equipment ok '.now());
+
+            Log::info('Création payment start '.now());
 
             $payment->refsubscription = $newsubscription->code;
             $payment->paymentmethod = 1;
@@ -422,20 +435,28 @@ class SubscriptionController extends Controller
             $payment->amount = $newsubscription->premium;
 
             $payment->save();
+            Log::info('Création payment ok '.now());
+
+            Log::info('Création pdf document start '.now());
 
             $pdf =  App::make('dompdf.wrapper');
 
             $pdf-> loadView("models.document", compact('newsubscription'));
 
             $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
+            Log::info('Création pdf document ok '.now());
 
+            Log::info('Création send mail start '.now());
 
             Mail::send(new newSubscription($newsubscription));
+
+            Log::info('Création send mail ok '.now());
+
             return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$newsubscription->code. ') effectuée avec succès.');
 
         } catch (\Throwable $th) {
             //throw $th;
-            Log::warning('Erreur de souscription : '.json_encode($newsubscription));
+            Log::warning('Erreur de souscription : '.json_encode($Subscription));
             Log::warning('Erreur de souscription : '.json_encode($th));
             return redirect(route('subscription.customer'))->with('error','Erreur de souscription ');
         }
