@@ -349,12 +349,16 @@ class SubscriptionController extends Controller
     {
 
         $Subscription = $request->session()->get('Subscription');
+        $customer = new Customer();
+        $newsubscription = new Subscription();
+        $pack = new Pack();
+
+        $payment = new Payment();
 
         try {
             //code...
 
 
-            $customer = new Customer();
 
             $customer->code =  $Subscription['folder'];
             $customer->name = $Subscription['name'];
@@ -372,7 +376,6 @@ class SubscriptionController extends Controller
             $customer->save();
 
 
-            $newsubscription = new Subscription();
             $newsubscription->code = $Subscription['folder'];
             $newsubscription->equipment = $Subscription['equipment'];
             $newsubscription->model = $Subscription['model'];
@@ -387,7 +390,6 @@ class SubscriptionController extends Controller
             $newsubscription->agent_id = $Subscription['agent_id'];
             $newsubscription->save();
 
-            $pack = new Pack();
             $pack->product_id = $newsubscription->equipment;
             $pack->subscription_id = $newsubscription->id;
             $pack->save();
@@ -395,7 +397,6 @@ class SubscriptionController extends Controller
             $newsubscription->equipment = $pack->id;
             $newsubscription->save();
 
-            $payment = new Payment();
             $payment->refsubscription = $newsubscription->code;
             $payment->paymentmethod = 1;
             $payment->refpayment = $newsubscription->code;
@@ -497,70 +498,82 @@ class SubscriptionController extends Controller
             }
 
             $customer = new Customer();
-
-            $customer->code = $Subscription->folder;
-            $customer->name = $Subscription->name;
-            $customer->first_name = $Subscription->first_name;
-            $customer->birth_date = $Subscription->birth_date;
-            $customer->gender = $Subscription->gender;
-            $customer->place_birth = $Subscription->place_birth;
-            $customer->marital_status = $Subscription->marital_status;
-            $customer->place_residence = $Subscription->place_residence;
-            $customer->phone1 = $Subscription->phone1;
-            $customer->phone2 = $Subscription->phone2;
-            $customer->mail = $Subscription->mail;
-            $customer->folder = $Subscription->folder;
-            $customer->mailing_address = $Subscription->mailing_address;
-            $customer->save();
-
             $newsubscription = new Subscription();
 
 
-
-            $newsubscription->code = $Subscription->folder;
-            $newsubscription->equipment = $Subscription->equipment;
-            $newsubscription->model = $Subscription->model;
-            $newsubscription->mark = $Subscription->mark;
-            $newsubscription->picture = $Subscription->picture;
-            $newsubscription->numberIMEI = $Subscription->numberIMEI;
-            $newsubscription->price = $Subscription->price;
-            $newsubscription->premium = $Subscription->premium;
-            $newsubscription->date_subscription = $Subscription->date_subscription;
-            $newsubscription->subscription_enddate = $Subscription->subscription_enddate;
-            $newsubscription->customer_id = $customer->id;
-            $newsubscription->agent_id = $Subscription->agent_id;
-            $newsubscription->save();
-
             $pack = new Pack();
-            $pack->product_id = $newsubscription->equipment;
-            $pack->subscription_id = $newsubscription->id;
-            $pack->save();
 
-            $newsubscription->equipment = $pack->id;
+
+                       $payment = new Payment();
+
+
+            try {
+                //code...
+                    $customer->code = $Subscription->folder;
+                $customer->name = $Subscription->name;
+                $customer->first_name = $Subscription->first_name;
+                $customer->birth_date = $Subscription->birth_date;
+                $customer->gender = $Subscription->gender;
+                $customer->place_birth = $Subscription->place_birth;
+                $customer->marital_status = $Subscription->marital_status;
+                $customer->place_residence = $Subscription->place_residence;
+                $customer->phone1 = $Subscription->phone1;
+                $customer->phone2 = $Subscription->phone2;
+                $customer->mail = $Subscription->mail;
+                $customer->folder = $Subscription->folder;
+                $customer->mailing_address = $Subscription->mailing_address;
+                $customer->save();
+                $newsubscription->code = $Subscription->folder;
+                            $newsubscription->equipment = $Subscription->equipment;
+                            $newsubscription->model = $Subscription->model;
+                            $newsubscription->mark = $Subscription->mark;
+                            $newsubscription->picture = $Subscription->picture;
+                            $newsubscription->numberIMEI = $Subscription->numberIMEI;
+                            $newsubscription->price = $Subscription->price;
+                            $newsubscription->premium = $Subscription->premium;
+                            $newsubscription->date_subscription = $Subscription->date_subscription;
+                            $newsubscription->subscription_enddate = $Subscription->subscription_enddate;
+                            $newsubscription->customer_id = $customer->id;
+                            $newsubscription->agent_id = $Subscription->agent_id;
+                            $newsubscription->save();
+                $pack->product_id = $newsubscription->equipment;
+                            $pack->subscription_id = $newsubscription->id;
+                            $pack->save();
+                             $newsubscription->equipment = $pack->id;
             $newsubscription->save();
 
-            $payment = new Payment();
             $payment->refsubscription = $newsubscription->code;
             $payment->paymentmethod = 2;
             $payment->refpayment = $cpm_trans_id;
             $payment->datepayment = $cpm_payment_date;
             $payment->amount = $newsubscription->premium;
             $payment->save();
-
-
-
-
-                $pdf =  App::make('dompdf.wrapper');
+            $pdf =  App::make('dompdf.wrapper');
 
                 $pdf-> loadView("models.document", compact('newsubscription'));
 
                 $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
               Mail::send(new newSubscription($newsubscription));
 
+            } catch (\Throwable $th) {
+                Log::alert(json_encode($th));
+                Log::alert('Paiement echoué');
+                return 0;
+
+
+            }
+
+
+
+
+
+
             }
             else{
                     //Le paiement a échoué
                     Log::alert('Paiement echoué');
+                    return 0;
+
                 }
 
         return 0;
