@@ -63,6 +63,7 @@
                                             <th>CODE</th>
                                             <th>LIBELLE</th>
                                             <th>INDEMNISATION</th>
+                                            <th>TYPE DE DEGATS</th>
                                             <th>ACTIONS</th>
                                         </tr>
                                         </thead>
@@ -72,6 +73,7 @@
                                                 <td>{{$item->code }}</td>
                                                 <td>{{$item->label}}</td>
                                                 <td>{{$item->attribute("ASS-TYP")}}</td>
+                                                <td>{{ json_encode($item->attribute("CLM-TYP"))}}</td>
                                                 <td>
                                                     <a href="{{route('category.delete',$item->id) }}"  class="btn btn-danger btn-sm">
                                                         <i class=" fa fa-trash"></i>

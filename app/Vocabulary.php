@@ -17,7 +17,9 @@ class Vocabulary extends Model
     public function attribute($code)
     {
         # code...
+        if(property_exists(json_decode($this->attribute),$code))
         return json_decode($this->attribute)->$code;
+        return [];
     }
 
 

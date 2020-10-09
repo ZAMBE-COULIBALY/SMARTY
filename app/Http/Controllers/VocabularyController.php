@@ -27,7 +27,9 @@ class VocabularyController extends Controller
         # code...
         $collection = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
         $asstypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","ASS-TYP")->first()->id);
-        return view("pages.category",compact("collection","asstypes"));
+        $clmtypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","CLM-TYP")->first()->id);
+
+        return view("pages.category",compact("collection","asstypes","clmtypes"));
     }
 
     /**
@@ -45,12 +47,13 @@ class VocabularyController extends Controller
             "code" => [ Rule::notIn(Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->pluck("code")), "required" ],
             "label" => [ Rule::notIn(Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->pluck("label")), "required" ],
             "asstyp" => [ Rule::In(Vocabulary::all()->where("type_id",VocabularyType::where("code","ASS-TYP")->first()->id)->pluck("code")), "required" ],
+            "clmtyp" => ""
 
         ]);
         $category = new Vocabulary();
         $category->code = $parameters["code"];
         $category->label = $parameters["label"];
-        $category->attribute = json_encode(["ASS-TYP" => $parameters["asstyp"]]);
+        $category->attribute = json_encode(["ASS-TYP" => $parameters["asstyp"],"CLM-TYP" => $parameters["clmtyp"]]);
         $category->type_id = VocabularyType::where("code","PDT-TYP")->first()->id;
 
         $category->save();

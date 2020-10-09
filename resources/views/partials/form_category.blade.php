@@ -25,7 +25,7 @@
 
 
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="label">Libelle</label>
             <div class="input-group">
                 <div class="input-group-append">
@@ -53,6 +53,22 @@
                   @endforeach
                 </select>
                 @error('asstyp')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+        </div>
+        <div class="form-group col-md-5">
+            <div class="input-group">
+                <label>TYPE DE DEGATS</label>
+                <select name="clmtyp[]" id="clmtyp[]" multiple class="form-control  @error('clmtyp') is-invalid @enderror select2bs4NE" style="width: 100%;">
+                  @foreach ($clmtypes as $item)
+                    <option value="{{$item->code}}" {{ (isset($type) && $type->hasAttribute($item->code,"CLM-TYP"))? 'selected' : '' }}>{{$item->label}}</option>
+                  @endforeach
+                </select>
+                @error('clmtyp')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
