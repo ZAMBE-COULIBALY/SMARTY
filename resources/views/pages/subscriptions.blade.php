@@ -55,8 +55,9 @@
 
 
     $(function () {
-        loadvocabularies = function (parent,sons,next = null) {
-            $.get("../api/vocabulary/allVocbularySons/"+parent,function(data){
+        loadvocabularies = function (parent,sons,next = null,level) {
+            var partner = "{{$usr->partner_id}}";
+            $.get("../api/vocabulary/allForOneVocabularyFromPartner/"+parent+"/"+level+"/"+partner,function(data){
                 // console.log(data);
                  var lesOptions;
                  $.each(data, function( index, value ) {
@@ -87,7 +88,7 @@
                     console.log("chargement marque");
                     if(selectedType !== undefined)
                     {
-                        loadvocabularies(selectedType,$("#mark"),loadModel);
+                        loadvocabularies(selectedType,$("#mark"),loadModel,2);
 
                     }
                     else
@@ -102,7 +103,7 @@
                     var selectedLabel = $("#mark").children("option:selected").val();
                     if(selectedLabel !== undefined )
                     {
-                        loadvocabularies(selectedLabel,$("#model"));
+                        loadvocabularies(selectedLabel,$("#model"),null,3);
                     }
                     else
                     {

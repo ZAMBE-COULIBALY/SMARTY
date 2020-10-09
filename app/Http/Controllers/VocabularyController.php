@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Partner;
 use App\Vocabulary;
 use App\VocabularyType;
 use Illuminate\Http\Request;
@@ -303,6 +304,30 @@ class VocabularyController extends Controller
 
 
         $vocabularies = Vocabulary::all()->where('parent',$vocabulary->id);
+        return response()->json($vocabularies);
+
+    }
+
+    public function allForOneVocabularyFromPartner(Vocabulary $vocabulary,$level,Partner $partner)
+    {
+        # code...
+
+        switch ($level) {
+            case '2':
+                # code...
+                $vocabularies = Vocabulary::all()->where('parent',$vocabulary->id)->whereIn("id",collect($partner->product->all())->pluck("label")->pluck("id"));
+
+                break;
+                case '3':
+                    # code...
+                    $vocabularies = Vocabulary::all()->where('parent',$vocabulary->id)->whereIn("id",collect($partner->product->all())->pluck("model")->pluck("id"));
+
+                    break;
+            default:
+                # code...
+                $vocabularies = Vocabulary::all()->where('parent',$vocabulary->id);
+                break;
+        }
         return response()->json($vocabularies);
 
     }

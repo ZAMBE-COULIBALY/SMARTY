@@ -162,7 +162,7 @@ class SubscriptionController extends Controller
 
         $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.subscriptions',compact("Subscription","products","categories","types","labels","models"));
+        return view('pages.subscriptions',compact("Subscription","products","categories","types","labels","models","usr"));
 
     }
 

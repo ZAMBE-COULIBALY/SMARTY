@@ -46,5 +46,11 @@ class Partner extends Model
         return false;
     }
 
+    public function Product()
+    {
+        # code...
+        return $this->hasMany("App\Product");
+    }
+
 
 }
