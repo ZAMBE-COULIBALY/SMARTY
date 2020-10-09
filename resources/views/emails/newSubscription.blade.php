@@ -1,18 +1,18 @@
 <p style="margin-top:1%">
     <p style="border: 5px; margin-top:8%; font-size:14px; font-family: Arial, Helvetica, sans-serif; line-height:25px; margin-left:3%; ">
-     <b>  2. ASSURE      </b>               {{ $subscription->gender }} <br>
+     <b>  2. ASSURE      </b>               {{ $subscription->customer->gender }} <br>
 
-     <b> Nom </b>{{ $subscription->name }} <b>Prénoms</b> {{ $subscription->first_name }} <br>
+     <b> Nom </b>{{ $subscription->customer->name }} <b>Prénoms</b> {{ $subscription->customer->first_name }} <br>
 
-     <b>Date de Naissance</b> {{ $subscription->birth_date }}  <b>Lieu de Naissance</b>  {{ $subscription->place_birth }} <br>
+     <b>Date de Naissance</b> {{ $subscription->customer->birth_date }}  <b>Lieu de Naissance</b>  {{ $subscription->customer->place_birth }} <br>
 
-     <b>Situation Matrimoniale:</b>		{{  $subscription->marital_status }}<br>
+     <b>Situation Matrimoniale:</b>		{{  $subscription->customer->marital_status }}<br>
 
-     <b>Lieu de Résidence :</b>    {{ $subscription->place_residence }} <br>
+     <b>Lieu de Résidence :</b>    {{ $subscription->customer->place_residence }} <br>
 
-     <b>Adresse Postale Personnelle</b>   {{ $subscription->mailing_address }}  <b>Cellulaire</b> {{ $subscription->phone1}} / {{ $subscription->phone2 }}<br>
+     <b>Adresse Postale Personnelle</b>   {{ $subscription->customer->mailing_address }}  <b>Cellulaire</b> {{ $subscription->customer->phone1}} / {{ $subscription->customer->phone2 }}<br>
 
-     <b>Email</b> {{ $subscription->mail }}<br>
+     <b>Email</b> {{ $subscription->customer->mail }}<br>
 
     </p></p>
     </b>
