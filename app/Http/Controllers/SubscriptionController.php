@@ -106,7 +106,7 @@ class SubscriptionController extends Controller
              'marital_status'=> 'required:customers',
              'place_birth'=> 'required:customers',
              'place_residence'=> 'required:customers',
-             'phone1'=> 'required',
+             'phone1'=> 'required|unique:customers',
              'phone2'=> ':customers',
              'mail'=> ':customers',
              'folder'=> ':customers',
@@ -287,44 +287,56 @@ class SubscriptionController extends Controller
         $connectedagent = User::where('username',Auth::user()->username)->first();
          //proforma document
          $date = date("Y-m-d H:i:s");
-        $custom = json_encode($Subscription);
-        $designation = "Paiement de la souscription N°".$Subscription['folder'];
-        $params = [
-            "cpm_amount" =>$Subscription['premium'],
-            "cpm_designation" => $designation ,
-            "cpm_trans_id" => $Subscription['folder'],
-            "cpm_trans_date" => $date,
-            "cpm_language" => "fr",
-            "cpm_version" => "V1",
-            "cpm_page_action" => "PAYMENT",
-            "cpm_payment_config" =>"SINGLE" ,
-            "cpm_currency" => "CFA",
-            "cpm_site_id" => "448173",
-            "apikey" => "13013879545bdc3a5579f458.42836232",
-            "cpm_custom" => json_encode($Subscription),
-        ];
-        $client = new Client();
-                $response = $client->request("POST","https://api.cinetpay.com/v1/?method=getSignatureByPost",
-                [
-                    'verify' => false,
-                    'headers' => [
-                        'Content-Type'     => 'application/x-www-form-urlencoded',
-                    ],
-                    'form_params' => $params
-                ]);
 
-                $reponse = \GuzzleHttp\json_decode($response->getBody());
-                $signature = $reponse;
-                $params["notify_url"] = route("paiementmobile");
-                $params["return_url"] = route("documentmobilepayment");
-                $params["cancel_url"] = route("subscription.recapitulatif");
-                $params["debug"] = 1;
-                $params["signature"] = $signature;
-                unset( $params["cpm_trans_date"]);
-        //dd($params);
-        foreach ($params as $key => $value){
-        $_POST[$key] = $value;
-        }
+         if (Agent::where('username',$connectedagent->username)->first()->agency->partner->paymode == 1) {
+             # code...
+             $params = [];
+             try {
+                 //code...
+             $custom = json_encode($Subscription);
+             $designation = "Paiement de la souscription N°".$Subscription['folder'];
+             $params = [
+                 "cpm_amount" =>$Subscription['premium'],
+                 "cpm_designation" => $designation ,
+                 "cpm_trans_id" => $Subscription['folder'],
+                 "cpm_trans_date" => $date,
+                 "cpm_language" => "fr",
+                 "cpm_version" => "V1",
+                 "cpm_page_action" => "PAYMENT",
+                 "cpm_payment_config" =>"SINGLE" ,
+                 "cpm_currency" => "CFA",
+                 "cpm_site_id" => "448173",
+                 "apikey" => "13013879545bdc3a5579f458.42836232",
+                 "cpm_custom" => json_encode($Subscription),
+             ];
+             $client = new Client();
+                     $response = $client->request("POST","https://api.cinetpay.com/v1/?method=getSignatureByPost",
+                     [
+                         'verify' => false,
+                         'headers' => [
+                             'Content-Type'     => 'application/x-www-form-urlencoded',
+                         ],
+                         'form_params' => $params
+                     ]);
+
+                     $reponse = \GuzzleHttp\json_decode($response->getBody());
+                     $signature = $reponse;
+                     $params["notify_url"] = route("paiementmobile");
+                     $params["return_url"] = route("documentmobilepayment");
+                     $params["cancel_url"] = route("subscription.recapitulatif");
+                     $params["debug"] = 1;
+                     $params["signature"] = $signature;
+                     unset( $params["cpm_trans_date"]);
+             //dd($params);
+             foreach ($params as $key => $value){
+             $_POST[$key] = $value;
+             }
+
+             } catch (\Throwable $th) {
+                 //throw $th;
+             }
+         }
+
 
 
         return view('pages.recapitulatif',compact('Subscription','date','connectedagent'));
@@ -389,8 +401,14 @@ class SubscriptionController extends Controller
             $newsubscription->customer_id = $customer->id;
             $newsubscription->agent_id = $Subscription['agent_id'];
             $newsubscription->save();
+            $pack->product_id = 1;
+            try {
+                //code...
+                $pack->product_id = Product::where("type_id",$Subscription['equipment'])->where("label_id",$Subscription['mark'])->where("model_id",$Subscription['model'])->first()->id;
 
-            $pack->product_id = $newsubscription->equipment;
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
             $pack->subscription_id = $newsubscription->id;
             $pack->save();
 
@@ -419,9 +437,9 @@ class SubscriptionController extends Controller
             //throw $th;
             Log::warning('Erreur de souscription : '.json_encode($newsubscription));
             Log::warning('Erreur de souscription : '.json_encode($th));
-            return back()->with('error','Erreur de souscription ');
+            return redirect(route('subscription.customer'))->with('error','Erreur de souscription ');
         }
-        return back()->with('error','Erreur de souscription ');
+        return redirect(route('subscription.customer'))->with('error','Erreur de souscription ');
 
     }
 
@@ -536,8 +554,8 @@ class SubscriptionController extends Controller
                             $newsubscription->customer_id = $customer->id;
                             $newsubscription->agent_id = $Subscription->agent_id;
                             $newsubscription->save();
-                $pack->product_id = $newsubscription->equipment;
-                            $pack->subscription_id = $newsubscription->id;
+                            $pack->product_id = Product::where("type_id",$Subscription->equipment)->where("label_id",$Subscription->mark)->where("model_id",$Subscription->model)->first()->id;
+                            ;
                             $pack->save();
                              $newsubscription->equipment = $pack->id;
             $newsubscription->save();
@@ -553,7 +571,6 @@ class SubscriptionController extends Controller
                 $pdf-> loadView("models.document", compact('newsubscription'));
 
                 $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
-              Mail::send(new newSubscription($newsubscription));
 
             } catch (\Throwable $th) {
                 Log::alert(json_encode($th));
@@ -563,6 +580,7 @@ class SubscriptionController extends Controller
 
             }
 
+            Mail::send(new newSubscription($newsubscription));
 
 
 
@@ -586,7 +604,7 @@ class SubscriptionController extends Controller
     {
         //
         $Subscription = $request->session()->get('Subscription');
-        $subscription = Subscription::where('code',$Subscription['folder']);
+        $subscription = Subscription::where('code',$Subscription['folder'])->first();
          return view('pages.recu',compact('subscription'));
     }
 

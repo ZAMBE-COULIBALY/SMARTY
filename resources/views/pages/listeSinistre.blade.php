@@ -48,7 +48,7 @@
                                     <tbody>
                                         <td>{{ $item->folder }}  </td>
                                         <td>{{ $item->name }}  {{ $item->subscription->customer->first_name}}</td>
-                                        <td>{{ $item->type1 }}, {{ $item->type2 }}</td>
+                                        <td>{{ $item->type1 }}</td>
                                         <td>{{ $item->created_at }}</td>
                                         <td>
                                             <center>

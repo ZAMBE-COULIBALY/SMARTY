@@ -56,10 +56,10 @@
             </tr>
             <tr>
             <td>Nature : </td>
-            <td> {{$sinister->subscription->equipment}}</td>
+            <td> {{$sinister->subscription->pack->first()->product->type->label}}</td>
             <tr>
                 <td>Marque :</td>
-                <td>{{$sinister->subscription->mark}}</td>
+                <td>{{$sinister->subscription->pack->first()->product->label->label}}</td>
             </tr>
             <tr>
                 <td>Numéro identifiant (IMEI) :</td>
@@ -82,7 +82,7 @@
 
             <tr>
                 <td> BON N°: </td>
-                <td></td>
+                <td>{{ $sinister->id}}</td>
             </tr>
             <tr>
                 <td> Emis par:

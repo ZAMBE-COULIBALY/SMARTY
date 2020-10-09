@@ -63,11 +63,11 @@
                         </tr>
                         <tr>
                             <td>Nature : </td>
-                            <td>  {{$sinister->subscription->equipment}} </td>
+                            <td>  {{$sinister->subscription->pack->first()->product->type->label }} </td>
                         </tr>
                         <tr>
                             <td>Marque :</td>
-                            <td>{{$sinister->subscription->mark}}</td>
+                            <td>{{$sinister->subscription->pack->first()->product->label->label }}</td>
                         </tr>
                         <tr>
                             <td>Numéro identifiant (IMEI) :</td>
@@ -106,26 +106,16 @@
                             </span>
                         @enderror
                     </div>
-                    @if ($sinister->subscription->equipment == 1)
-                        <div class="checkbox">
-                            <label for="SMARTPHONES">SMARTPHONES TABLETTES & WIFI</label><br/>
+                    <div class="checkbox">
+                        <label readonly for="choix1">SINISTRE {{$sinister->subscription->pack->first()->product->type->label}}</label><br/>
+                    @foreach ($clmtypes as $item)
+                        @if ($sinister->subscription->pack->first()->product->type->hasAttribute($item->code,'CLM-TYP'))
+                        <input disabled {{ ((in_array($item->code, explode("-",$sinister->type1))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="bris_ecran" value={{$item->code}} > {{$item->label}} <br/>
 
-                            <input disabled {{ (in_array(1,explode(",",$sinister->type1))) ? "checked" : "" }} type="checkbox" name="choix1[]" id="bris_ecran" value="1" > Bris d’Ecran <br/>
-                            <input disabled {{ (in_array(2,explode(",",$sinister->type1))) ? "checked" : "" }}type="checkbox" name="choix1[]" id="oxydation" value="2"> Oxydation <br/>
-                            <input disabled {{ (in_array(3,explode(",",$sinister->type1))) ? "checked" : "" }}type="checkbox" name="choix1[]" id="pannes_mecaniques" value="3"> Pannes mécaniques et logicielles <br/>
-                            <input disabled {{ (in_array(4,explode(",",$sinister->type1))) ? "checked" : "" }}type="checkbox" name="choix1[]"id="panne_electrique" value="4"> Panne électrique (uniquement pour les wifi)  <br/>
-                        </div> <br>
-                    @else
-                        <div class="checkbox">
-                            <label for="ELECTROMENAGERS">APPAREILS ELECTROMENAGERS</label><br/>
+                        @endif
+                     @endforeach
+                    </div> <br>
 
-                            <input disabled {{ (in_array(1,explode(",",$sinister->type2))) ? "checked" : "" }} type="checkbox" name="choix2[]" id="incendie" value="1" > Incendie <br/>
-                            <input disabled {{ (in_array(2,explode(",",$sinister->type2))) ? "checked" : "" }} type="checkbox" name="choix2[]" id="dommages" value="2"> Dommages électriques <br/>
-                            <input disabled {{ (in_array(3,explode(",",$sinister->type2))) ? "checked" : "" }} type="checkbox" name="choix2[]" id="degats" value="3"> Dégâts des eaux <br/>
-                            <input disabled {{ (in_array(4,explode(",",$sinister->type2))) ? "checked" : "" }} type="checkbox" name="choix2[]" id="accidentels" value="3"> Bris accidentels <br/>
-                            <input disabled {{ (in_array(4,explode(",",$sinister->type2))) ? "checked" : "" }} type="checkbox" name="choix2[]" id="vol" value="4"> Vol à domicile avec effraction et/ou holdup <br/>
-                        </div>
-                    @endif
             </div>
 
             <div class="col-md-6">
