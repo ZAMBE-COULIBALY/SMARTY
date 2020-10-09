@@ -19,4 +19,19 @@ class Vocabulary extends Model
         # code...
         return json_decode($this->attribute)->$code;
     }
+
+
+    public function hasAttribute($attribute,$type)
+    {
+        # code...
+        if(null !== $this->attribute)
+        {
+                if (collect($this->attribute($type))->contains($attribute)) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
 }
