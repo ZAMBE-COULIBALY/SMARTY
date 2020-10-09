@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use Illuminate\Support\Str;
-
+use Illuminate\Validation\Rule;
 
 class SinisterController extends Controller
 {
@@ -144,7 +144,7 @@ class SinisterController extends Controller
             'description' => 'required|max:750',
             'contract' => 'required|image',
             'vouchers' => 'required|image',
-            'type1' => 'sometimes|required',
+            'type1' => 'required|filled',
         ]);
             try {
             //code...

@@ -176,7 +176,7 @@ menu-open active
                                                                         <label for="choix1">SINISTRE {{$subscription->pack->first()->product->type->label}}</label><br/>
                                                                     @foreach ($clmtypes as $item)
                                                                         @if ($subscription->pack->first()->product->type->hasAttribute($item->code,'CLM-TYP'))
-                                                                        <input{{ (old('choix1') && (in_array($item->code, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="bris_ecran" value={{$item->code}} > {{$item->label}} <br/>
+                                                                        <input {{ (old('choix1') && (in_array($item->code, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="bris_ecran" value={{$item->code}} > {{$item->label}} <br/>
 
                                                                         @endif
                                                                      @endforeach
