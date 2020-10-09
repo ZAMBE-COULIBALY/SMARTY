@@ -15,17 +15,17 @@
                     <div class="card-header p-0 pt-1" style="background-color:#120d74; ">
                         <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link {{ isset($histosubcription) ? '' : 'active'}}" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="false">HISTORIQUE</a>
+                                <a class="nav-link {{ ($errors->any()) ? '' : 'active'}}" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="false">HISTORIQUE</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link   {{ isset($histosubcription) ? 'active' : ''}} " id="custom-content-above-other-tab" data-toggle="pill" href="#custom-content-above-other" role="tab" aria-controls="custom-content-above-other" aria-selected="true" disabled >NOUVELLE SOUSCRIPTION</a>
+                                <a class="nav-link  {{ (($errors->any())) ? 'active' : ''}}  " id="custom-content-above-other-tab" data-toggle="pill" href="#custom-content-above-other" role="tab" aria-controls="custom-content-above-other" aria-selected="true" disabled >NOUVELLE SOUSCRIPTION</a>
                             </li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content" id="custom-content-above-tabContent">
 
-                          <div class="tab-pane fade show  {{ isset($histosubcription) ? '' : 'active'}}" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
+                          <div class="tab-pane fade show {{ ($errors->any()) ? '' : 'show active'}}" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                 <div class="tab-custom-content">
                                     <p class="lead mb-0">Liste des souscriptions
 
@@ -89,7 +89,7 @@
 
                             </div>
 
-                            <div class="tab-pane fade  " id="custom-content-above-other" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
+                            <div class="tab-pane {{ (($errors->any())) ? 'show active' : ''}}" id="custom-content-above-other" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
                                 <div class="tab-custom-content">
                                     <p class="lead mb-0">INFORMATION CLIENT
                                     </p>
