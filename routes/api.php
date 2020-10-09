@@ -33,3 +33,8 @@ Route::get('/vocabulary/allVocbularySons/{vocabulary}',[
     "uses" => "VocabularyController@allForOneVocabulary"
 ]);
 
+Route::get('/vocabulary/allForOneVocabularyFromPartner/{vocabulary}/{level}/{partner}',[
+    "as" => "vocabularies.allForOneVocabularyFromPartner",
+    "uses" => "VocabularyController@allForOneVocabularyFromPartner"
+]);
+
