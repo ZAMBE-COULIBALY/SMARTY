@@ -145,11 +145,11 @@ class SinisterController extends Controller
             'type1' => 'sometimes|required',
             'type2' => 'sometimes|required',
         ]);
-try {
-    //code...
-    $contract = $paramters['contract'];
-    $vouchers = $paramters['vouchers'];
-        if (null !== $request->file('contract') && null !== $request->file('vouchers')) {
+        try {
+            //code...
+            $contract = $paramters['contract'];
+            $vouchers = $paramters['vouchers'];
+            if (null !== $request->file('contract') && null !== $request->file('vouchers')) {
             # code...
 
             $contract = "contract-".$subscription->code."-". time() . '.' . $request->file('contract')->getClientOriginalExtension();
@@ -161,17 +161,17 @@ try {
 
 
         }
-        $code = Str::random(14);
-    Sinister::create([
-        'code'=> $code,
-        'folder' =>$subscription->code,
-        'description'=>$paramters['description'],
-        'contract'=>$contract,
-        'vouchers'=>$vouchers,
-        'state'=>"0",
-        'type1'=>(isset($paramters['choix1']))  ? collect($paramters['choix1'])->implode('-'): "",
-        'type2'=> (isset($paramters['choix2'])) ? collect($paramters['choix2'])->implode('-') : "",
-    ]);
+            $code = Str::random(14);
+            Sinister::create([
+                'code'=> $code,
+                'folder' =>$subscription->code,
+                'description'=>$paramters['description'],
+                'contract'=>$contract,
+                'vouchers'=>$vouchers,
+                'state'=>"0",
+                'type1'=>(isset($paramters['choix1']))  ? collect($paramters['choix1'])->implode('-'): "",
+                'type2'=> (isset($paramters['choix2'])) ? collect($paramters['choix2'])->implode('-') : "",
+            ]);
 
    $sinister = Sinister::where("code",$code)->first();
     $agent = Agent::where("username",Auth::user()->username);
