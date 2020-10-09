@@ -447,17 +447,24 @@ class SubscriptionController extends Controller
             Log::info('Création pdf document ok '.now());
 
             Log::info('Création send mail start '.now());
-
-            Mail::send(new newSubscription($newsubscription));
-
+            try {
+                //code...
+                Mail::send(new newSubscription($newsubscription));
             Log::info('Création send mail ok '.now());
+
+            } catch (\Throwable $th) {
+                //throw $th;
+                Log::warning('Erreur de mail : '.json_encode($Subscription));
+
+            }
+
 
             return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$newsubscription->code. ') effectuée avec succès.');
 
         } catch (\Throwable $th) {
             //throw $th;
             Log::warning('Erreur de souscription : '.json_encode($Subscription));
-            Log::warning('Erreur de souscription : '.json_encode($th));
+            Log::warning('Erreur : '.json_encode($th));
             return redirect(route('subscription.customer'))->with('error','Erreur de souscription ');
         }
         return redirect(route('subscription.customer'))->with('error','Erreur de souscription ');
