@@ -7,9 +7,9 @@
 
 <p style="border: 5px; margin-top:8%; font-size:14px; font-family: Arial, Helvetica, sans-serif;margin-left:3%; ">
    <b> RESERVE A NSIA ASSRANCES </b><br>
-   <b>Numéro de police</b>  {{$subscription->code}}  <b>Numéro du client</b> {{$subscription->customer->id}} <br>
+   <b>Numéro de police</b>  {{$newsubscription->code}}  <b>Numéro du client</b> {{$newsubscription->customer->id}} <br>
 
-   <b>Nom du conseiller</b> {{$subscription->agent->firstname.' '.$subscription->agent->lastname}} <b>Code</b> {{ $subscription->agent->agency->partner->code }} <b>Revendeur</b>  {{ $subscription->agent->agency->label }}<br>
+   <b>Nom du conseiller</b> {{$newsubscription->agent->firstname.' '.$newsubscription->agent->lastname}} <b>Code</b> {{ $newsubscription->agent->agency->partner->code }} <b>Revendeur</b>  {{ $newsubscription->agent->agency->label }}<br>
 </p>
 
 <p style="margin-top:-3%">
@@ -27,19 +27,19 @@
 
 <p style="margin-top:1%">
 <p style="border: 5px; margin-top:8%; font-size:14px;  font-family: Arial, Helvetica, sans-serif; line-height:25px; margin-left:3%; ">
- <b>  2. ASSURE      </b>               {{ $subscription->customer->gender }} <br>
+ <b>  2. ASSURE      </b>               {{ $newsubscription->customer->gender }} <br>
 
- <b> Nom </b> {{ $subscription->customer->name }} <b>Prénoms</b> {{ $subscription->customer->first_name }} <br>
+ <b> Nom </b> {{ $newsubscription->customer->name }} <b>Prénoms</b> {{ $newsubscription->customer->first_name }} <br>
 
- <b>Date de Naissance</b> {{ $subscription->customer->birth_date }}  <b>Lieu de Naissance</b>  {{ $subscription->customer->place_birth }} <br>
+ <b>Date de Naissance</b> {{ $newsubscription->customer->birth_date }}  <b>Lieu de Naissance</b>  {{ $newsubscription->customer->place_birth }} <br>
 
- <b>Situation Matrimoniale:</b>		{{  $subscription->customer->marital_status }}<br>
+ <b>Situation Matrimoniale:</b>		{{  $newsubscription->customer->marital_status }}<br>
 
- <b>Lieu de Résidence :</b>    {{ $subscription->customer->place_residence }} <br>
+ <b>Lieu de Résidence :</b>    {{ $newsubscription->customer->place_residence }} <br>
 
- <b>Adresse Postale Personnelle</b>   {{ $subscription->customer->mailing_address }}  <b>Cellulaire</b> {{ $subscription->customer->phone1}} / {{ $subscription->customer->phone2 }}<br>
+ <b>Adresse Postale Personnelle</b>   {{ $newsubscription->customer->mailing_address }}  <b>Cellulaire</b> {{ $newsubscription->customer->phone1}} / {{ $newsubscription->customer->phone2 }}<br>
 
- <b>Email</b> {{ $subscription->customer->mail }}<br>
+ <b>Email</b> {{ $newsubscription->customer->mail }}<br>
 
 </p></p>
 </b>
@@ -59,12 +59,12 @@
         </thead>
     <tbody>
             <tr>
-                <td> {{ $subscription->pack->product->type->label }}</td>
-                <td> {{ $subscription->pack->product->label->label }}</td>
-                <td> {{ $subscription->pack->product->model->label }}</td>
-                <td> {{ $subscription->numberIMEI }}</td>
-                <td> {{ round( $subscription->price )}}</td>
-                <td> {{ round( $subscription->price )}}</td>
+                <td> {{ $newsubscription->equipment }}</td>
+                <td> {{ $newsubscription->mark }}</td>
+                <td> {{ $newsubscription->model }}</td>
+                <td> {{ $newsubscription->numberIMEI }}</td>
+                <td> {{ round( $newsubscription->price )}}</td>
+                <td> {{ round( $newsubscription->price )}}</td>
             </tr>
     </tbody>
     </table>
@@ -98,7 +98,7 @@
                          </center>
                     </td>
                     <td colspan="3">
-                        {{ $subscription->date_subscription }}
+                        {{ $newsubscription->date_subscription }}
                     </td>
             </tr>
             <tr >
@@ -111,13 +111,13 @@
 
             </td>
                 <td>
-                    {{ round( $subscription->price) }}
+                    {{ round( $newsubscription->price) }}
                 </td>
                 <td style="background-color:rgba(190, 190, 190, 0.267) ">
                   <p>  Prime  Total TTC </p>
                 </td>
                 <td>
-                    {{  round( $subscription->price*0.10) }}
+                    {{  round( $newsubscription->price*0.10) }}
                 </td>
             </tr>
 
@@ -135,7 +135,7 @@
     </p>
 
     <p style="margin-top:1%; font-size:14px; font-family: Arial, Helvetica, sans-serif; margin-left:3%; ">
-        Fait à Abidjan  le {{ $subscription->date_subscription }} <br>
+        Fait à Abidjan  le {{ $newsubscription->date_subscription }} <br>
 
               Visa du Souscripteur	       		   		                                                                              Visa de l’Assureur
 

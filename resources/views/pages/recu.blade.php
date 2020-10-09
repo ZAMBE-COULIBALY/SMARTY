@@ -34,7 +34,7 @@ menu-open active
 
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <object  data="{{ asset('storage/received/'.$subscription->first_name.$subscription->phone1.'.pdf') }}"  type="application/pdf" width="100%" height="875">
+                                                <object  data="{{ asset('storage/received/'.$subscription->customer->first_name.$subscription->customer->phone1.'.pdf') }}"  type="application/pdf" width="100%" height="875">
                                                 </object>
                                             </div>
                                             <div class="col-md-4">

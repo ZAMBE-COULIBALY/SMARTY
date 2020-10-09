@@ -586,7 +586,7 @@ class SubscriptionController extends Controller
     {
         //
         $Subscription = $request->session()->get('Subscription');
-        $subscription = Subscription::where('code',$Subscription['folder']);
+        $subscription = Subscription::where('code',$Subscription['folder'])->first();
          return view('pages.recu',compact('subscription'));
     }
 

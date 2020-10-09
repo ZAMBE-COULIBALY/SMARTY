@@ -70,7 +70,9 @@ class SinisterController extends Controller
     {
         //
 // dd($subscription->agent);
-        return view('pages.declareSinister',compact('subscription',$subscription));
+    $clmtypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","CLM-TYP")->first()->id);
+
+        return view('pages.declareSinister',compact('subscription',"clmtypes"));
     }
 
 
