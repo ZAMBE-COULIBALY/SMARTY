@@ -65,7 +65,7 @@
                 <label>TYPE DE DEGATS</label>
                 <select name="clmtyp[]" id="clmtyp[]" multiple class="form-control  @error('clmtyp') is-invalid @enderror select2bs4NE" style="width: 100%;">
                   @foreach ($clmtypes as $item)
-                    <option value="{{$item->code}}" {{ (isset($type) && $type->hasAttribute($item->code,"CLM-TYP"))? 'selected' : '' }}>{{$item->label}}</option>
+                    <option value="{{$item->code}}" {{ (isset($category) && $category->hasAttribute($item->code,"CLM-TYP"))? 'selected' : '' }}>{{$item->label}}</option>
                   @endforeach
                 </select>
                 @error('clmtyp')
