@@ -76,23 +76,24 @@
             </tr>
             <tr>
                 <td colspan="2" style="color: red; ">
-                <b> NB: CE BON VALABLE NE PEUT ETRE ECHANGE CONTRE DE L&#039ESPECES </b>
+                <b> {{ __("NB: CE BON VALABLE NE PEUT ETRE ECHANGE CONTRE DE L'ESPECES") }} </b>
                 </td>
             </tr>
 
             <tr>
                 <td> BON N°: </td>
-                <td>{{ $sinister->id}}</td>
+                <td>{{ str_pad($sinister->id,6,STR_PAD_LEFT)}}</td>
             </tr>
             <tr>
                 <td> Emis par:
                 </td>
-                <td> Pour NSIA ASSURANCES
+                <td>
+                    GESTIONNAIRE SINISTRES
                 </td>
             </tr>
             <tr>
-                <td>Le  </td>
-                <td> à </td>
+                <td>Le  {{ date($sinister->updated_at) }}</td>
+                <td> à  ABIDJAN</td>
             </tr>
         </table>
     </body>

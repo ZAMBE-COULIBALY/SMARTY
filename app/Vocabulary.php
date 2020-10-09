@@ -23,6 +23,8 @@ class Vocabulary extends Model
     }
 
 
+
+
     public function hasAttribute($attribute,$type)
     {
         # code...

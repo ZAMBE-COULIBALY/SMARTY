@@ -706,11 +706,6 @@ class SubscriptionController extends Controller
                 Auth::login($user);
                 Session::Put("success",'Souscription ('.$subscription->code. ') effectuée avec succès.');
 
-                $pdf =  App::make('dompdf.wrapper');
-
-                $pdf-> loadView("models.document", compact('subscription'));
-
-                $pdf-> save(storage_path().'/app/public/received/'.$subscription->first_name.$subscription->phone1.'.pdf');
 
                       return view('pages.recu',compact('subscription'));
 
