@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
@@ -40,5 +41,74 @@ class Subscription extends Model
     {
         # code...
         return $this->hasMany("App\Pack","subscription_id","id");
+    }
+
+
+    public function currentValue()
+    {
+        # code...
+        $currentValue = $this->price;
+        $currentInterval = now()->diffInDays($this->created_at);
+        switch ($this->pack->first()->product->category->attribute("ASS-TYP")) {
+            case 'DP':
+                # code...
+                if ($currentInterval > 365) {
+                    # code...
+                    $currentValue = 0;
+                }
+                elseif($currentInterval > 180)
+                {
+                    $currentValue = 0.5 * $currentValue;
+                } elseif ($currentInterval > 90) {
+                    # code...
+                    $currentValue = 0.7 * $currentValue;
+
+                }
+                return $currentValue;
+                break;
+
+            default:
+                # code...
+                return $currentValue;
+
+                break;
+        }
+        return $currentValue;
+
+
+    }
+
+    public function currentState()
+    {
+        # code...
+        $currentValue = $this->price;
+        $currentInterval = now()->diffInDays($this->created_at);
+        switch ($this->pack->first()->product->category->attribute("ASS-TYP")) {
+            case 'DP':
+                # code...
+                if ($currentInterval > 365) {
+                    # code...
+                    $currentValue = 0;
+                }
+                elseif($currentInterval > 180)
+                {
+                    $currentValue = 0.5 * $currentValue;
+                } elseif ($currentInterval > 90) {
+                    # code...
+                    $currentValue = 0.7 * $currentValue;
+
+                }
+                return $currentValue;
+                break;
+
+            default:
+                # code...
+                return $currentValue;
+
+                break;
+        }
+        return $currentValue;
+
+
     }
 }

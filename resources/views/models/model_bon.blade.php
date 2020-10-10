@@ -59,7 +59,7 @@
             <td> {{$sinister->subscription->pack->first()->product->type->label}}</td>
             <tr>
                 <td>Marque :</td>
-                <td>{{$sinister->subscription->pack->first()->product->label->label}}</td>
+                <td>{{$sinister->subscription->pack->first()->product->label->label." ".$sinister->subscription->pack->first()->product->model->label}}</td>
             </tr>
             <tr>
                 <td>Numéro identifiant (IMEI) :</td>
@@ -67,12 +67,12 @@
             </tr>
             <tr>
                 <td>VALEUR DE SOUSCRIPTION :</td>
-                <td>{{$sinister->subscription->price}}</td>
+                <td>{{round($sinister->subscription->price)}} FCFA</td>
             </tr>
 
             <tr>
-                <td>BON D&#039INDEMNISATION SMARTY D&#039UNE VALEUR DE :</td>
-                <td>{{$sinister->subscription->premium}}</td>
+                <td style="width: 50%">{{ __("VALEUR D'INDEMNISATION :")}}</td>
+                <td>{{ round($sinister->subscription->currentValue())}}</td>
             </tr>
             <tr>
                 <td colspan="2" style="color: red; ">
@@ -82,7 +82,7 @@
 
             <tr>
                 <td> BON N°: </td>
-                <td>{{ str_pad($sinister->id,6,STR_PAD_LEFT)}}</td>
+                <td>{{ str_pad($sinister->id,6,"0",STR_PAD_LEFT)}}</td>
             </tr>
             <tr>
                 <td> Emis par:
@@ -92,8 +92,8 @@
                 </td>
             </tr>
             <tr>
-                <td>Le  {{ date($sinister->updated_at) }}</td>
-                <td> à  ABIDJAN</td>
+                <td>Le  {{ date_format($sinister->updated_at,"d/m/Y") }} à  {{ date_format($sinister->updated_at,"H:i") }}</td>
+                <td> </td>
             </tr>
         </table>
     </body>
