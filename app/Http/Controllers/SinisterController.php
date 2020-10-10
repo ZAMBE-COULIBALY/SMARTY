@@ -69,8 +69,8 @@ class SinisterController extends Controller
     public function create(Subscription $subscription)
     {
         //
-// dd($subscription->agent);
-    $clmtypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","CLM-TYP")->first()->id);
+        // dd($subscription->agent);
+        $clmtypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","CLM-TYP")->first()->id);
 
         return view('pages.declareSinister',compact('subscription',"clmtypes"));
     }
@@ -144,7 +144,7 @@ class SinisterController extends Controller
             'description' => 'required|max:750',
             'contract' => 'required|image',
             'vouchers' => 'required|image',
-            'type1' => 'required|filled',
+            'choix1' => 'required|filled',
         ]);
             try {
             //code...

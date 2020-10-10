@@ -107,9 +107,9 @@
                         @enderror
                     </div>
                     <div class="checkbox">
-                        <label readonly for="choix1">SINISTRE {{$sinister->subscription->pack->first()->product->type->label}}</label><br/>
+                        <label readonly for="choix1">SINISTRE {{$sinister->subscription->pack->first()->product->category->label}}</label><br/>
                     @foreach ($clmtypes as $item)
-                        @if ($sinister->subscription->pack->first()->product->type->hasAttribute($item->code,'CLM-TYP'))
+                        @if ($sinister->subscription->pack->first()->product->category->hasAttribute($item->code,'CLM-TYP'))
                         <input disabled {{ ((in_array($item->code, explode("-",$sinister->type1))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="bris_ecran" value={{$item->code}} > {{$item->label}} <br/>
 
                         @endif

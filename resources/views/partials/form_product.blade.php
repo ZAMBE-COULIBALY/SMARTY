@@ -17,7 +17,7 @@
         <div class="form-group col-md-3">
             <div class="form-group">
                 <label>Type</label>
-                <select name="type" id="type" class="form-control select2bs4NE" style="width: 100%;">
+                <select name="type" id="type" class="form-control select2bs4" style="width: 100%;">
                   {{--  @foreach ($types as $item)
                     <option value="{{$item->id}}" {{ (isset($product) && $product->type->id == $item->id)? 'selected' : '' }}>{{$item->label}}</option>
                   @endforeach  --}}

@@ -14,7 +14,7 @@ menu-open active
                         <div class="card-header p-0 pt-1 " style="background-color:#120d74; ">
                             <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="true">NOUVEL BON </a>
+                                        <a class="nav-link active" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="true">DOCUMENT </a>
                                     </li>
                             </ul>
                         </div>
@@ -22,7 +22,7 @@ menu-open active
                                 <div class="tab-content" id="custom-content-above-tabContent">
                                     <div class="tab-pane fade show active" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                         <div class="tab-custom-content">
-                                            <p class="lead mb-0" >BON D&#039INDEMNISATION ELECTRIQUE</p>
+                                            <p class="lead mb-0" >{{ __("BON D'INDEMNISATION")}}</p>
                                                         <hr>
                                         </div>
                                         <div class="row">

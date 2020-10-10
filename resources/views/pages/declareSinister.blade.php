@@ -19,9 +19,16 @@ menu-open active
                                     </li>
                             </ul>
                         </div>
-                        @if (Session::has('error'))
-                                <div class="alert alert-success">{{ Session::get('error')}}</div>
-                            @endif
+
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
                         <div class="card-body">
                                 <div class="tab-content" id="custom-content-above-tabContent">
                                     <div class="tab-pane fade show active" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
@@ -172,17 +179,22 @@ menu-open active
                                                                  </div>
                                                                  <div class="form-group">
 
-                                                                     <div class="checkbox">
-                                                                        <label for="choix1">SINISTRE {{$subscription->pack->first()->product->type->label}}</label><br/>
-                                                                    @foreach ($clmtypes as $item)
-                                                                        @if ($subscription->pack->first()->product->type->hasAttribute($item->code,'CLM-TYP'))
-                                                                        <input {{ (old('choix1') && (in_array($item->code, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="bris_ecran" value={{$item->code}} > {{$item->label}} <br/>
+                                                                     <div class="icheck-primary">
+                                                                        <label for="choix1">SINISTRE {{$subscription->pack->first()->product->category->label}}</label><br/>
+                                                                        @foreach ($clmtypes as $item)
+                                                                            @if ($subscription->pack->first()->product->category->hasAttribute($item->code,'CLM-TYP'))
+                                                                            <input class="checkbox @error('choix1') is-invalid @enderror" {{ (old('choix1') && (in_array($item->code, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="{{$item->code}}" value={{$item->code}}> {{$item->label}} <br/>
 
-                                                                        @endif
-                                                                     @endforeach
+                                                                            @endif
+                                                                        @endforeach
+
                                                                     </div> <br>
 
-
+ @error('choix1')
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </span>
+                                                                    @enderror
 
 
                                                             </div>
