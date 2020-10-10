@@ -141,23 +141,16 @@ menu-open active
                                                         <textarea name="description" cols="100" rows="10" placeholder="Ecrivez ici votre déclaration " class="form-control"></textarea>
                                                     </div>
                                                     <div class="form-group">
-                                                            <div class="checkbox">
-                                                                <label for="SMARTPHONES">SMARTPHONES TABLETTES & WIFI</label><br/>
+                                                        <div class="icheck-primary">
+                                                            <label for="choix1">SINISTRE {{$subscription->pack->first()->product->category->label}}</label><br/>
+                                                            @foreach ($clmtypes as $item)
+                                                                @if ($subscription->pack->first()->product->category->hasAttribute($item->code,'CLM-TYP'))
+                                                                <input disabled {{ (in_array($item->code,explode("-",$sinister->type1))) ? "checked" : "" }} type="checkbox" name="choix1[]" id="{{$item->code}}" value={{$item->code}}> {{$item->label}} <br/>
 
-                                                                <input type="checkbox" name="choix1[]" id="bris_ecran" value="1" > Bris d’Ecran <br/>
-                                                                <input type="checkbox" name="choix1[]" id="oxydation" value="2"> Oxydation <br/>
-                                                                <input type="checkbox" name="choix1[]" id="pannes_mecaniques" value="3"> Pannes mécaniques et logicielles <br/>
-                                                                <input type="checkbox" name="choix1[]"id="panne_electrique" value="4"> Panne électrique (uniquement pour les wifi)  <br/>
-                                                            </div> <br>
-                                                            <div class="checkbox">
-                                                                <label for="ELECTROMENAGERS">APPAREILS ELECTROMENAGERS</label><br/>
+                                                                @endif
+                                                            @endforeach
 
-                                                                <input type="checkbox" name="choix2[]" id="incendie" value="1" > Incendie <br/>
-                                                                <input type="checkbox" name="choix2[]" id="dommages" value="2"> Dommages électriques <br/>
-                                                                <input type="checkbox" name="choix2[]" id="degats" value="3"> Dégâts des eaux <br/>
-                                                                <input type="checkbox" name="choix2[]" id="accidentels" value="3"> Bris accidentels <br/>
-                                                                <input type="checkbox" name="choix2[]" id="vol" value="4"> Vol à domicile avec effraction et/ou holdup <br/>
-                                                            </div>
+                                                        </div>
                                                     </div>
 
 
