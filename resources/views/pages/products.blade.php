@@ -197,8 +197,10 @@ menu-open active
 
                     loadLabel = function () {
                         var selectedType = $("#type").children("option:selected").val();
+                        var selectedTypetext = $("#type").children("option:selected").text();
+
                         console.log("chargement label");
-                        if(selectedType !== undefined)
+                        if(selectedType !== undefined && selectedType !== selectedTypetext)
                         {
                             loadvocabularies(selectedType,$("#label"),loadModel);
 
