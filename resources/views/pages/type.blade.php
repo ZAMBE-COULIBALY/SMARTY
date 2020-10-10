@@ -1,5 +1,5 @@
 @extends('shared.layout')
-@section('category')
+@section('type')
     active
 @endsection
 @section('administration')
@@ -18,7 +18,7 @@
             <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item">Administration</li>
-                <li class="breadcrumb-item active"><a href={{ route('category.list') }}>Categorie</a></li>
+                <li class="breadcrumb-item active"><a href={{ route('type.list') }}>Categorie</a></li>
             </ol>
             </div>
         </div>
@@ -33,10 +33,10 @@
                         <div class="card-header p-0 pt-1">
                             <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link {{ isset($category) ? '' : 'active'}}" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="true">HISTORIQUE</a>
+                                <a class="nav-link {{ isset($type) ? '' : 'active'}}" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="true">HISTORIQUE</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{ isset($category) ? 'active' : ''}}" id="custom-content-above-other-tab" data-toggle="pill" href="#custom-content-above-other" role="tab" aria-controls="custom-content-above-other" aria-selected="false" disabled >{{ Str::contains(Route::current()->getName(), 'edit') ? 'MODIFIER' : 'NOUVEAU' }}  </a>
+                                <a class="nav-link {{ isset($type) ? 'active' : ''}}" id="custom-content-above-other-tab" data-toggle="pill" href="#custom-content-above-other" role="tab" aria-controls="custom-content-above-other" aria-selected="false" disabled >{{ Str::contains(Route::current()->getName(), 'edit') ? 'MODIFIER' : 'NOUVEAU' }}  </a>
                             </li>
 
                             {{-- <li class="nav-item">
@@ -53,16 +53,15 @@
 
                             <div class="tab-content" id="custom-content-above-tabContent">
 
-                                <div class="tab-pane fade show {{ isset($category) ? '' : 'active'}}" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
+                                <div class="tab-pane fade show {{ isset($type) ? '' : 'active'}}" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                     <div class="tab-custom-content">
                                         <p class="lead mb-0">Liste des categorie de produit</p>
                                         <hr>
-                                    </div><table id="categorylist" class="table table-bordered ">
+                                    </div><table id="typelist" class="table table-bordered ">
                                         <thead>
                                         <tr>
                                             <th>CODE</th>
                                             <th>LIBELLE</th>
-                                            <th>INDEMNISATION</th>
                                             <th>TYPE DE DEGATS</th>
                                             <th>ACTIONS</th>
                                         </tr>
@@ -72,13 +71,12 @@
                                             <tr>
                                                 <td>{{$item->code }}</td>
                                                 <td>{{$item->label}}</td>
-                                                <td>{{$item->attribute("ASS-TYP")}}</td>
-                                                <td>{{ json_encode($item->attribute("CLM-TYP"))}}</td>
+                                                <td>{{json_encode($item->attribute("CLM-TYP"))}}</td>
                                                 <td>
-                                                    <a href="{{route('category.delete',$item->id) }}"  class="btn btn-danger btn-sm">
+                                                    <a href="{{route('type.delete',$item->id) }}"  class="btn btn-danger btn-sm">
                                                         <i class=" fa fa-trash"></i>
                                                     </a>
-                                                    <a href="{{route('category.edit',$item->id) }}"  class="btn btn-info btn-sm ">
+                                                    <a href="{{route('type.edit',$item->id) }}"  class="btn btn-info btn-sm ">
                                                         <i class="fa fa-pencil-alt"></i>
                                                     </a>
                                                 </td>
@@ -90,8 +88,8 @@
                                     </table>
 
                                 </div>
-                                    <div class="tab-pane fade {{ isset($category) ? 'show active' : ''}}" id="custom-content-above-other" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
-                                       @include('partials.form_category')
+                                    <div class="tab-pane fade {{ isset($type) ? 'show active' : ''}}" id="custom-content-above-other" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
+                                       @include('partials.form_type')
 
                                 </div>
 

@@ -39,6 +39,6 @@ class Subscription extends Model
     public function pack()
     {
         # code...
-        return $this->hasOne("App\Pack","subscription_id","id");
+        return $this->hasMany("App\Pack","subscription_id","id");
     }
 }

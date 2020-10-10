@@ -16,7 +16,6 @@ class CreatePacksTable extends Migration
         Schema::create('packs', function (Blueprint $table) {
             $table->foreignId('subscription_id')->references('id')->on('subscriptions');
             $table->foreignId('product_id')->references('id')->on('products');
-            $table->primary(['subscription_id', 'product_id']);
             $table->timestamps();
         });
     }

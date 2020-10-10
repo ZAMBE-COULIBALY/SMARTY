@@ -1,4 +1,4 @@
-<form class="form" method="POST"  action="{{ isset($category) ? route('category.update',$category->id) : route('category.add')}}">
+<form class="form" method="POST"  action="{{ isset($type) ? route('type.update',$type->id) : route('type.add')}}">
     @csrf
 
     <div class="row form-group">
@@ -11,7 +11,7 @@
                             <span class="fas fa-user"></span>
                         </div>
                     </div>
-                    <input type="text" {{ isset($category) ? 'readonly' : '' }} class="form-control @error('code') is-invalid @enderror" name="code" id="code" value="{{ isset($category) ? $category->code : old('code') }}" placeholder="Saisir le code de la categorie" required autocomplete="code" autofocus>
+                    <input type="text" {{ isset($type) ? 'readonly' : '' }} class="form-control @error('code') is-invalid @enderror" name="code" id="code" value="{{ isset($type) ? $type->code : old('code') }}" placeholder="Saisir le code de la categorie" required autocomplete="code" autofocus>
                     @error('code')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -25,7 +25,7 @@
 
 
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-6">
             <label for="label">Libelle</label>
             <div class="input-group">
                 <div class="input-group-append">
@@ -33,7 +33,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control @error('label') is-invalid @enderror" name="label" id="label" value="{{ isset($category) ? $category->label : old('label') }}" placeholder="Saisir le libelle de la categorie" required autocomplete="label" >
+                <input type="text" class="form-control @error('label') is-invalid @enderror" name="label" id="label" value="{{ isset($type) ? $type->label : old('label') }}" placeholder="Saisir le libelle de la categorie" required autocomplete="label" >
                 @error('label')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -43,29 +43,23 @@
 
         </div>
 
+        <div class="form-group col-md-3">
+            <div class="form-group">
+                <label>Categorie</label>
+                <select name="category" id="category" class="form-control select2bs4NE" style="width: 100%;">
+                  @foreach ($categories as $item)
+                    <option value={{$item->id}} {{ (isset($type) && $type->parent == $item->id)? 'selected' : '' }}>{{$item->label}}</option>
+                  @endforeach
+                </select>
+            </div>
+        </div>
 
         <div class="form-group col-md-3">
             <div class="input-group">
                 <label>TYPE INDEMNISATION</label>
-                <select name="asstyp" id="asstyp" class="form-control  @error('asstyp') is-invalid @enderror select2bs4NE" style="width: 100%;">
-                  @foreach ($asstypes as $item)
-                    <option value="{{$item->code}}" {{ (isset($category) && $item->code == $category->attribute("ASS-TYP"))? 'selected' : '' }}>{{$item->label}}</option>
-                  @endforeach
-                </select>
-                @error('asstyp')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-
-        </div>
-        <div class="form-group col-md-5">
-            <div class="input-group">
-                <label>TYPE DE DEGATS</label>
                 <select name="clmtyp[]" id="clmtyp[]" multiple class="form-control  @error('clmtyp') is-invalid @enderror select2bs4NE" style="width: 100%;">
                   @foreach ($clmtypes as $item)
-                    <option value="{{$item->code}}" {{ (isset($category) && $category->hasAttribute($item->code,"CLM-TYP"))? 'selected' : '' }}>{{$item->label}}</option>
+                    <option value="{{$item->code}}" {{ (isset($type) && $type->hasAttribute($item->code,"CLM-TYP"))? 'selected' : '' }}>{{$item->label}}</option>
                   @endforeach
                 </select>
                 @error('clmtyp')

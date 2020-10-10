@@ -480,3 +480,29 @@ Route::group(['prefix' => '/category', 'middleware' => ["auth","roles"], "roles"
         'uses' => 'VocabularyController@categoryUpdate'
         ]);
 });
+
+
+Route::group(['prefix' => '/type', 'middleware' => ["auth","roles"], "roles" => ["administrator","super_administrator"]], function () {
+    Route::get('/', [
+        'as'=> 'type.list',
+        'uses' => 'VocabularyController@typeIndex'
+        ]);
+
+    Route::get('/edit/{type}', [
+        'as'=> 'type.edit',
+        'uses' => 'VocabularyController@typeEdit'
+        ]);
+        Route::get('/delete/{type}', [
+            'as'=> 'type.delete',
+            'uses' => 'VocabularyController@typeDestroy'
+            ]);
+    Route::post('/new', [
+        'as'=> 'type.add',
+        'uses' => 'VocabularyController@typeStore'
+        ]);
+
+    Route::post('/update/{type}', [
+        'as'=> 'type.update',
+        'uses' => 'VocabularyController@typeUpdate'
+        ]);
+});

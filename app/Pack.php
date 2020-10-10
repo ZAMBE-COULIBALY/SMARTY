@@ -17,7 +17,7 @@ class Pack extends Model
     public function product()
     {
         # code...
-        return $this->belongsTo("App\Product");
+        return $this->belongsTo("App\Product","product_id","id");
     }
 
 

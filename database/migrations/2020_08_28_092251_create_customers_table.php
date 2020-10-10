@@ -23,7 +23,7 @@ class CreateCustomersTable extends Migration
             $table->string('place_birth');
             $table->enum('marital_status', ['Celibataire', 'Marie(e)','Divorce(e)','Veuf(ve)']);
             $table->string('place_residence');
-            $table->string('phone1')->unique();
+            $table->string('phone1');
             $table->string('phone2')->nullable();
             $table->string('mail');
             $table->string('mailing_address')->nullable();

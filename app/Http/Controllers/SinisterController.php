@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use Illuminate\Support\Str;
-
+use Illuminate\Validation\Rule;
 
 class SinisterController extends Controller
 {
@@ -69,8 +69,10 @@ class SinisterController extends Controller
     public function create(Subscription $subscription)
     {
         //
-// dd($subscription->agent);
-        return view('pages.declareSinister',compact('subscription',$subscription));
+        // dd($subscription->agent);
+        $clmtypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","CLM-TYP")->first()->id);
+
+        return view('pages.declareSinister',compact('subscription',"clmtypes"));
     }
 
 
@@ -142,26 +144,25 @@ class SinisterController extends Controller
             'description' => 'required|max:750',
             'contract' => 'required|image',
             'vouchers' => 'required|image',
-            'type1' => 'sometimes|required',
-            'type2' => 'sometimes|required',
+            'choix1' => 'required|filled',
         ]);
-        try {
+            try {
             //code...
             $contract = $paramters['contract'];
             $vouchers = $paramters['vouchers'];
-            if (null !== $request->file('contract') && null !== $request->file('vouchers')) {
-            # code...
+                if (null !== $request->file('contract') && null !== $request->file('vouchers')) {
+                    # code...
 
-            $contract = "contract-".$subscription->code."-". time() . '.' . $request->file('contract')->getClientOriginalExtension();
-            $request->file('contract')->storeAs('public/sinisters/'.$subscription->code.'/', $contract);
-
-
-            $vouchers = "vouchers-".$subscription->code."-". time() . '.' . $request->file('vouchers')->getClientOriginalExtension();
-            $request->file('vouchers')->storeAs('public/sinisters/'.$subscription->code.'/', $vouchers);
+                    $contract = "contract-".$subscription->code."-". time() . '.' . $request->file('contract')->getClientOriginalExtension();
+                    $request->file('contract')->storeAs('public/sinisters/'.$subscription->code.'/', $contract);
 
 
-        }
-            $code = Str::random(14);
+                    $vouchers = "vouchers-".$subscription->code."-". time() . '.' . $request->file('vouchers')->getClientOriginalExtension();
+                    $request->file('vouchers')->storeAs('public/sinisters/'.$subscription->code.'/', $vouchers);
+
+
+                }
+                $code = Str::random(14);
             Sinister::create([
                 'code'=> $code,
                 'folder' =>$subscription->code,
@@ -170,18 +171,17 @@ class SinisterController extends Controller
                 'vouchers'=>$vouchers,
                 'state'=>"0",
                 'type1'=>(isset($paramters['choix1']))  ? collect($paramters['choix1'])->implode('-'): "",
-                'type2'=> (isset($paramters['choix2'])) ? collect($paramters['choix2'])->implode('-') : "",
             ]);
 
-   $sinister = Sinister::where("code",$code)->first();
-    $agent = Agent::where("username",Auth::user()->username);
-        // Mail::to(explode(",",env("MAIL_SINISTERS_MANAGER")))->send(new newSinister($sinister,$agent));
-        Session::put('success','Déclaration de sinistre transmise');
-    } catch (\Throwable $th) {
-        Log::error(json_encode($th));
-        Session::put('error','Erreur lors de la déclaration de sinistre');
+        $sinister = Sinister::where("code",$code)->first();
+            $agent = Agent::where("username",Auth::user()->username);
+                // Mail::to(explode(",",env("MAIL_SINISTERS_MANAGER")))->send(new newSinister($sinister,$agent));
+                Session::put('success','Déclaration de sinistre transmise');
+            } catch (\Throwable $th) {
+                Log::error(json_encode($th));
+                Session::put('error','Erreur lors de la déclaration de sinistre');
 
-    }
+            }
 
         return redirect(route('sinister.list'));
     }
@@ -251,14 +251,18 @@ class SinisterController extends Controller
         # code...
         $sinisters = Sinister::all()->where("state",0);
         $step = "DL";
-        return view("pages.sinisters",compact("sinisters","step"));
+        $clmtypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","CLM-TYP")->first()->id);
+
+        return view("pages.sinisters",compact("sinisters","step","clmtypes"));
     }
 
     public function manageDemandDetails(Sinister $sinister)
     {
         # code...
         $step = "DD";
-        return view("pages.sinisters",compact("sinister","step"));
+        $clmtypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","CLM-TYP")->first()->id);
+
+        return view("pages.sinisters",compact("sinister","step","clmtypes"));
     }
 
     public function manageDemandState(Sinister $sinister,$state)
@@ -284,7 +288,7 @@ class SinisterController extends Controller
         } catch (\Throwable $th) {
             throw $th;
             Session::Put('error',"Erreur lors du  traitement de la demande!");
-Log::info(json_encode($th));
+            Log::info(json_encode($th));
         }
 
         return redirect()->route("sinister.manage.demandlist");

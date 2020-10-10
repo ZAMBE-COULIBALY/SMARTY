@@ -19,9 +19,16 @@ menu-open active
                                     </li>
                             </ul>
                         </div>
-                        @if (Session::has('error'))
-                                <div class="alert alert-success">{{ Session::get('error')}}</div>
-                            @endif
+
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
                         <div class="card-body">
                                 <div class="tab-content" id="custom-content-above-tabContent">
                                     <div class="tab-pane fade show active" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
@@ -94,11 +101,11 @@ menu-open active
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Nature : </td>
-                                                                            <td>  {{$subscription->pack->product->type->label }} </td>
+                                                                            <td>  {{$subscription->pack->first()->product->type->label }} </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Marque :</td>
-                                                                            <td>{{$subscription->pack->product->label->label }}</td>
+                                                                            <td>{{$subscription->pack->first()->product->label->label }}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Numéro identifiant (IMEI) :</td>
@@ -171,26 +178,23 @@ menu-open active
 
                                                                  </div>
                                                                  <div class="form-group">
-                                                                    @if ($subscription->equipment == 1)
-                                                                     <div class="checkbox">
-                                                                        <label for="SMARTPHONES">SMARTPHONES TABLETTES & WIFI</label><br/>
 
-                                                                        <input{{ (old('choix1') && (in_array(1, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="bris_ecran" value="1" > Bris d’Ecran <br/>
-                                                                        <input{{ (old('choix1') && (in_array(2, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="oxydation" value="2"> Oxydation <br/>
-                                                                        <input{{ (old('choix1') && (in_array(3, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="pannes_mecaniques" value="3"> Pannes mécaniques et logicielles <br/>
-                                                                        <input{{ (old('choix1') && (in_array(4, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]"id="panne_electrique" value="4"> Panne électrique (uniquement pour les wifi)  <br/>
+                                                                     <div class="icheck-primary">
+                                                                        <label for="choix1">SINISTRE {{$subscription->pack->first()->product->category->label}}</label><br/>
+                                                                        @foreach ($clmtypes as $item)
+                                                                            @if ($subscription->pack->first()->product->category->hasAttribute($item->code,'CLM-TYP'))
+                                                                            <input class="checkbox @error('choix1') is-invalid @enderror" {{ (old('choix1') && (in_array($item->code, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="{{$item->code}}" value={{$item->code}}> {{$item->label}} <br/>
+
+                                                                            @endif
+                                                                        @endforeach
+
                                                                     </div> <br>
-                                                                    @else
-                                                                    <div class="checkbox">
-                                                                        <label for="ELECTROMENAGERS">APPAREILS ELECTROMENAGERS</label><br/>
 
-                                                                        <input {{ (old('choix2') && (in_array(1, old('choix2'))) ) ? 'checked' : '' }} type="checkbox" name="choix2[]" id="incendie" value="1" > Incendie <br/>
-                                                                        <input {{ (old('choix2') && (in_array(2, old('choix2'))) ) ? 'checked' : ''  }} type="checkbox" name="choix2[]" id="dommages" value="2"> Dommages électriques <br/>
-                                                                        <input {{ (old('choix2') && (in_array(3, old('choix2'))) ) ? 'checked' : '' }}  type="checkbox" name="choix2[]" id="degats" value="3"> Dégâts des eaux <br/>
-                                                                        <input {{ (old('choix2') && (in_array(4, old('choix2'))) ) ? 'checked' : ''  }} type="checkbox" name="choix2[]" id="accidentels" value="3"> Bris accidentels <br/>
-                                                                        <input {{ (old('choix2') && (in_array(5, old('choix2'))) ) ? 'checked' : ''  }} type="checkbox" name="choix2[]" id="vol" value="4"> Vol à domicile avec effraction et/ou holdup <br/>
-                                                                    </div>
-                                                                     @endif
+ @error('choix1')
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </span>
+                                                                    @enderror
 
 
                                                             </div>

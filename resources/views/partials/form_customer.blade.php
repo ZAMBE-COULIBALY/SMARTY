@@ -1,4 +1,14 @@
 
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <form   method="POST" action="{{ route('subscription.postcustomer') }}">
 
             @csrf
@@ -34,7 +44,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control " name="name" id="name" value="" placeholder="Saisir le nom du client" required autocomplete="name" autofocus>
+                <input type="text" class="form-control " name="name" id="name" value="{{ old('name') }}" placeholder="Saisir le nom du client" required autocomplete="name" autofocus>
 
             </div>
         </div>
@@ -47,7 +57,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control " name="first_name" id="first_name" value="" placeholder="Saisir le libelle du client" required autocomplete="first_name" >
+                <input type="text" class="form-control " name="first_name" id="first_name" value="{{ old('first_name') }}" placeholder="Saisir le libelle du client" required autocomplete="first_name" >
 
             </div>
         </div>
@@ -59,7 +69,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control " name="mailing_address" id="mailing_address" autocomplete="address" value="" placeholder="Adresse postale du client" >
+                <input type="text" class="form-control " name="mailing_address" id="mailing_address" autocomplete="address" value="{{ old('mailing_address') }}" placeholder="Adresse postale du client" >
 
             </div>
         </div>
@@ -72,7 +82,7 @@
                                 <span class="fas fa-user"></span>
                             </div>
                         </div>
-                        <input type="date" max="{{$dat}}"   class="form-control " name="birth_date" id="birth_date"  required autocomplete="birth_date" >
+                        <input type="date" max="{{$dat}}" value="{{ old('birth_date') }}"   class="form-control " name="birth_date" id="birth_date"  required autocomplete="birth_date" >
 
                 </div>
             </div>
@@ -84,7 +94,7 @@
                             <span class="fas fa-home"></span>
                         </div>
                     </div>
-                    <input type="text" class="form-control " name="place_birth" id="place_birth" value="" placeholder="Saisir le lieu de naissance du client" required autocomplete="place_birth" >
+                    <input type="text" class="form-control " name="place_birth" id="place_birth" value="{{ old('place_birth') }}" placeholder="Saisir le lieu de naissance du client" required autocomplete="place_birth" >
 
                     </div>
             </div>
@@ -96,7 +106,7 @@
                             <span class="fas fa-home"></span>
                         </div>
                     </div>
-                    <input type="text" class="form-control "  name="place_residence" id="place_residence" value="" placeholder="Saisir le lieu de résidence du client" required autocomplete="place_residence" >
+                    <input type="text" class="form-control " value="{{ old('place_residence') }}"  name="place_residence" id="place_residence" value="" placeholder="Saisir le lieu de résidence du client" required autocomplete="place_residence" >
 
                     </div>
             </div>
@@ -122,7 +132,7 @@
                     <span class="fas fa-envelope"></span>
                 </div>
             </div>
-            <input type="email" class="form-control " name="mail" id="mail" value="" placeholder="Saisir le libelle du client" autocomplete="mail" >
+            <input type="email" class="form-control " value="{{ old('mail') }}" name="mail" id="mail" value="" placeholder="Saisir le libelle du client" autocomplete="mail" >
 
         </div>
     </div>
@@ -135,7 +145,7 @@
                     <span class="fas fa-phone"></span>
                 </div>
             </div>
-            <input type="text"  data-inputmask="'mask': ['99-99-99-99', '+999 99-99-99-99']"  class="form-control " name="phone1" id="phone1" value="" required data-mask>
+            <input type="text" value="{{ old('phone1') }}"  data-inputmask="'mask': ['99-99-99-99', '+999 99-99-99-99']"  class="form-control " name="phone1" id="phone1" value="" required data-mask>
 
         </div>
         </div>
@@ -148,7 +158,7 @@
                     <span class="fas fa-phone"></span>
                 </div>
             </div>
-            <input type="text" data-inputmask="'mask': ['99-99-99-99', '+999 99-99-99-99']" class="form-control " name="phone2" id="phone2" value="" data-mask>
+            <input type="text" value="{{ old('phone2') }}" data-inputmask="'mask': ['99-99-99-99', '+999 99-99-99-99']" class="form-control " name="phone2" id="phone2" value="" data-mask>
 
         </div>
     </div>

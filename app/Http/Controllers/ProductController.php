@@ -70,8 +70,22 @@ class ProductController extends Controller
         $product->name = $parameters["name"];
 
         $product->category_id = $parameters["category"] ;
-        $product->type_id = $parameters["type"] ;
 
+
+        if (is_numeric($parameters["type"])
+            && null !== Vocabulary::all()->where('category_id',VocabularyType::where("code","PDT-KIND")->first()->id)->where("id","=",$parameters["type"])->first())  {
+            # code...
+             $product->type_id = $parameters["type"] ;
+        } else {
+            # code...
+            $type = new Vocabulary();
+            $type->code = Str::random(5);
+            $type->label = $parameters["type"];
+            $type->type_id = VocabularyType::where("code","PDT-KIND")->first()->id;
+            $type->parent = $product->category_id;
+            $type->save();
+            $product->type_id = $type->id;
+        }
 
         if (is_numeric($parameters["label"])
             && null !== Vocabulary::all()->where('type_id',VocabularyType::where("code","PDT-LBL")->first()->id)->where("id","=",$parameters["label"])->first())  {

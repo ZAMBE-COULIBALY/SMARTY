@@ -106,7 +106,7 @@ class SubscriptionController extends Controller
              'marital_status'=> 'required:customers',
              'place_birth'=> 'required:customers',
              'place_residence'=> 'required:customers',
-             'phone1'=> 'required',
+             'phone1'=> 'required|unique:customers',
              'phone2'=> ':customers',
              'mail'=> ':customers',
              'folder'=> ':customers',
@@ -162,7 +162,7 @@ class SubscriptionController extends Controller
 
         $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.subscriptions',compact("Subscription","products","categories","types","labels","models"));
+        return view('pages.subscriptions',compact("Subscription","products","categories","types","labels","models","usr"));
 
     }
 
@@ -287,44 +287,56 @@ class SubscriptionController extends Controller
         $connectedagent = User::where('username',Auth::user()->username)->first();
          //proforma document
          $date = date("Y-m-d H:i:s");
-        $custom = json_encode($Subscription);
-        $designation = "Paiement de la souscription N°".$Subscription['folder'];
-        $params = [
-            "cpm_amount" =>$Subscription['premium'],
-            "cpm_designation" => $designation ,
-            "cpm_trans_id" => $Subscription['folder'],
-            "cpm_trans_date" => $date,
-            "cpm_language" => "fr",
-            "cpm_version" => "V1",
-            "cpm_page_action" => "PAYMENT",
-            "cpm_payment_config" =>"SINGLE" ,
-            "cpm_currency" => "CFA",
-            "cpm_site_id" => "448173",
-            "apikey" => "13013879545bdc3a5579f458.42836232",
-            "cpm_custom" => json_encode($Subscription),
-        ];
-        $client = new Client();
-                $response = $client->request("POST","https://api.cinetpay.com/v1/?method=getSignatureByPost",
-                [
-                    'verify' => false,
-                    'headers' => [
-                        'Content-Type'     => 'application/x-www-form-urlencoded',
-                    ],
-                    'form_params' => $params
-                ]);
 
-                $reponse = \GuzzleHttp\json_decode($response->getBody());
-                $signature = $reponse;
-                $params["notify_url"] = route("paiementmobile");
-                $params["return_url"] = route("documentmobilepayment");
-                $params["cancel_url"] = route("subscription.recapitulatif");
-                $params["debug"] = 1;
-                $params["signature"] = $signature;
-                unset( $params["cpm_trans_date"]);
-        //dd($params);
-        foreach ($params as $key => $value){
-        $_POST[$key] = $value;
-        }
+         if (Agent::where('username',$connectedagent->username)->first()->agency->partner->paymode == 1) {
+             # code...
+             $params = [];
+             try {
+                 //code...
+             $custom = json_encode($Subscription);
+             $designation = "Paiement de la souscription N°".$Subscription['folder'];
+             $params = [
+                 "cpm_amount" =>$Subscription['premium'],
+                 "cpm_designation" => $designation ,
+                 "cpm_trans_id" => $Subscription['folder'],
+                 "cpm_trans_date" => $date,
+                 "cpm_language" => "fr",
+                 "cpm_version" => "V1",
+                 "cpm_page_action" => "PAYMENT",
+                 "cpm_payment_config" =>"SINGLE" ,
+                 "cpm_currency" => "CFA",
+                 "cpm_site_id" => "448173",
+                 "apikey" => "13013879545bdc3a5579f458.42836232",
+                 "cpm_custom" => json_encode($Subscription),
+             ];
+             $client = new Client();
+                     $response = $client->request("POST","https://api.cinetpay.com/v1/?method=getSignatureByPost",
+                     [
+                         'verify' => false,
+                         'headers' => [
+                             'Content-Type'     => 'application/x-www-form-urlencoded',
+                         ],
+                         'form_params' => $params
+                     ]);
+
+                     $reponse = \GuzzleHttp\json_decode($response->getBody());
+                     $signature = $reponse;
+                     $params["notify_url"] = route("paiementmobile");
+                     $params["return_url"] = route("documentmobilepayment");
+                     $params["cancel_url"] = route("subscription.recapitulatif");
+                     $params["debug"] = 1;
+                     $params["signature"] = $signature;
+                     unset( $params["cpm_trans_date"]);
+             //dd($params);
+             foreach ($params as $key => $value){
+             $_POST[$key] = $value;
+             }
+
+             } catch (\Throwable $th) {
+                 //throw $th;
+             }
+         }
+
 
 
         return view('pages.recapitulatif',compact('Subscription','date','connectedagent'));
@@ -349,12 +361,17 @@ class SubscriptionController extends Controller
     {
 
         $Subscription = $request->session()->get('Subscription');
+        $customer = new Customer();
+        $newsubscription = new Subscription();
+        $pack = new Pack();
+
+        $payment = new Payment();
 
         try {
             //code...
 
 
-            $customer = new Customer();
+            Log::info('Création customer start '.now());
 
             $customer->code =  $Subscription['folder'];
             $customer->name = $Subscription['name'];
@@ -371,8 +388,9 @@ class SubscriptionController extends Controller
             $customer->mailing_address = $Subscription['mailing_address'];
             $customer->save();
 
+            Log::info('Création customer ok '.now());
+            Log::info('Création subscription start '.now());
 
-            $newsubscription = new Subscription();
             $newsubscription->code = $Subscription['folder'];
             $newsubscription->equipment = $Subscription['equipment'];
             $newsubscription->model = $Subscription['model'];
@@ -386,16 +404,30 @@ class SubscriptionController extends Controller
             $newsubscription->customer_id = $customer->id;
             $newsubscription->agent_id = $Subscription['agent_id'];
             $newsubscription->save();
+            Log::info('Création subscipriotn ok '.now());
 
-            $pack = new Pack();
-            $pack->product_id = $newsubscription->equipment;
+            Log::info('Création pack start '.now());
+
+            $pack->product_id = 1;
+            try {
+                //code...
+                $pack->product_id = Product::where("type_id",$Subscription['equipment'])->where("label_id",$Subscription['mark'])->where("model_id",$Subscription['model'])->first()->id;
+
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
             $pack->subscription_id = $newsubscription->id;
             $pack->save();
+            Log::info('Création pack ok '.now());
+
+            Log::info('Update equipment subscr start '.now());
 
             $newsubscription->equipment = $pack->id;
             $newsubscription->save();
+            Log::info('Update equipment ok '.now());
 
-            $payment = new Payment();
+            Log::info('Création payment start '.now());
+
             $payment->refsubscription = $newsubscription->code;
             $payment->paymentmethod = 1;
             $payment->refpayment = $newsubscription->code;
@@ -403,24 +435,39 @@ class SubscriptionController extends Controller
             $payment->amount = $newsubscription->premium;
 
             $payment->save();
+            Log::info('Création payment ok '.now());
+
+            Log::info('Création pdf document start '.now());
 
             $pdf =  App::make('dompdf.wrapper');
 
             $pdf-> loadView("models.document", compact('newsubscription'));
 
             $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
+            Log::info('Création pdf document ok '.now());
+
+            Log::info('Création send mail start '.now());
+            try {
+                //code...
+                Mail::send(new newSubscription($newsubscription));
+            Log::info('Création send mail ok '.now());
+
+            } catch (\Throwable $th) {
+                throw $th;
+                Log::warning('Erreur de mail : '.json_encode($Subscription));
+
+            }
 
 
-            Mail::send(new newSubscription($newsubscription));
             return redirect(route('subscription.recu'))->with('success', 'Souscription ('.$newsubscription->code. ') effectuée avec succès.');
 
         } catch (\Throwable $th) {
-            //throw $th;
-            Log::warning('Erreur de souscription : '.json_encode($newsubscription));
-            Log::warning('Erreur de souscription : '.json_encode($th));
-            return back()->with('error','Erreur de souscription ');
+            throw $th;
+            Log::warning('Erreur de souscription : '.json_encode($Subscription));
+            Log::warning('Erreur : '.json_encode($th));
+            return redirect(route('subscription.customer'))->with('error','Erreur de souscription ');
         }
-        return back()->with('error','Erreur de souscription ');
+        return redirect(route('subscription.customer'))->with('error','Erreur de souscription ');
 
     }
 
@@ -497,70 +544,82 @@ class SubscriptionController extends Controller
             }
 
             $customer = new Customer();
-
-            $customer->code = $Subscription->folder;
-            $customer->name = $Subscription->name;
-            $customer->first_name = $Subscription->first_name;
-            $customer->birth_date = $Subscription->birth_date;
-            $customer->gender = $Subscription->gender;
-            $customer->place_birth = $Subscription->place_birth;
-            $customer->marital_status = $Subscription->marital_status;
-            $customer->place_residence = $Subscription->place_residence;
-            $customer->phone1 = $Subscription->phone1;
-            $customer->phone2 = $Subscription->phone2;
-            $customer->mail = $Subscription->mail;
-            $customer->folder = $Subscription->folder;
-            $customer->mailing_address = $Subscription->mailing_address;
-            $customer->save();
-
             $newsubscription = new Subscription();
 
 
-
-            $newsubscription->code = $Subscription->folder;
-            $newsubscription->equipment = $Subscription->equipment;
-            $newsubscription->model = $Subscription->model;
-            $newsubscription->mark = $Subscription->mark;
-            $newsubscription->picture = $Subscription->picture;
-            $newsubscription->numberIMEI = $Subscription->numberIMEI;
-            $newsubscription->price = $Subscription->price;
-            $newsubscription->premium = $Subscription->premium;
-            $newsubscription->date_subscription = $Subscription->date_subscription;
-            $newsubscription->subscription_enddate = $Subscription->subscription_enddate;
-            $newsubscription->customer_id = $customer->id;
-            $newsubscription->agent_id = $Subscription->agent_id;
-            $newsubscription->save();
-
             $pack = new Pack();
-            $pack->product_id = $newsubscription->equipment;
-            $pack->subscription_id = $newsubscription->id;
-            $pack->save();
 
-            $newsubscription->equipment = $pack->id;
+
+                       $payment = new Payment();
+
+
+            try {
+                //code...
+                    $customer->code = $Subscription->folder;
+                $customer->name = $Subscription->name;
+                $customer->first_name = $Subscription->first_name;
+                $customer->birth_date = $Subscription->birth_date;
+                $customer->gender = $Subscription->gender;
+                $customer->place_birth = $Subscription->place_birth;
+                $customer->marital_status = $Subscription->marital_status;
+                $customer->place_residence = $Subscription->place_residence;
+                $customer->phone1 = $Subscription->phone1;
+                $customer->phone2 = $Subscription->phone2;
+                $customer->mail = $Subscription->mail;
+                $customer->folder = $Subscription->folder;
+                $customer->mailing_address = $Subscription->mailing_address;
+                $customer->save();
+                $newsubscription->code = $Subscription->folder;
+                            $newsubscription->equipment = $Subscription->equipment;
+                            $newsubscription->model = $Subscription->model;
+                            $newsubscription->mark = $Subscription->mark;
+                            $newsubscription->picture = $Subscription->picture;
+                            $newsubscription->numberIMEI = $Subscription->numberIMEI;
+                            $newsubscription->price = $Subscription->price;
+                            $newsubscription->premium = $Subscription->premium;
+                            $newsubscription->date_subscription = $Subscription->date_subscription;
+                            $newsubscription->subscription_enddate = $Subscription->subscription_enddate;
+                            $newsubscription->customer_id = $customer->id;
+                            $newsubscription->agent_id = $Subscription->agent_id;
+                            $newsubscription->save();
+                            $pack->product_id = Product::where("type_id",$Subscription->equipment)->where("label_id",$Subscription->mark)->where("model_id",$Subscription->model)->first()->id;
+                            ;
+                            $pack->save();
+                             $newsubscription->equipment = $pack->id;
             $newsubscription->save();
 
-            $payment = new Payment();
             $payment->refsubscription = $newsubscription->code;
             $payment->paymentmethod = 2;
             $payment->refpayment = $cpm_trans_id;
             $payment->datepayment = $cpm_payment_date;
             $payment->amount = $newsubscription->premium;
             $payment->save();
-
-
-
-
-                $pdf =  App::make('dompdf.wrapper');
+            $pdf =  App::make('dompdf.wrapper');
 
                 $pdf-> loadView("models.document", compact('newsubscription'));
 
                 $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
-              Mail::send(new newSubscription($newsubscription));
+
+            } catch (\Throwable $th) {
+                Log::alert(json_encode($th));
+                Log::alert('Paiement echoué');
+                return 0;
+
+
+            }
+
+            Mail::send(new newSubscription($newsubscription));
+
+
+
+
 
             }
             else{
                     //Le paiement a échoué
                     Log::alert('Paiement echoué');
+                    return 0;
+
                 }
 
         return 0;
@@ -573,7 +632,7 @@ class SubscriptionController extends Controller
     {
         //
         $Subscription = $request->session()->get('Subscription');
-        $subscription = Subscription::where('code',$Subscription['folder']);
+        $subscription = Subscription::where('code',$Subscription['folder'])->first();
          return view('pages.recu',compact('subscription'));
     }
 
@@ -647,11 +706,6 @@ class SubscriptionController extends Controller
                 Auth::login($user);
                 Session::Put("success",'Souscription ('.$subscription->code. ') effectuée avec succès.');
 
-                $pdf =  App::make('dompdf.wrapper');
-
-                $pdf-> loadView("models.document", compact('subscription'));
-
-                $pdf-> save(storage_path().'/app/public/received/'.$subscription->first_name.$subscription->phone1.'.pdf');
 
                       return view('pages.recu',compact('subscription'));
 
