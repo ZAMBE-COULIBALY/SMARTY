@@ -67,7 +67,7 @@
                         </tr>
                         <tr>
                             <td>Marque :</td>
-                            <td>{{$sinister->subscription->pack->first()->product->label->label }}</td>
+                            <td>{{$sinister->subscription->pack->first()->product->label->label." ".$sinister->subscription->pack->first()->product->model->label }}</td>
                         </tr>
                         <tr>
                             <td>Numéro identifiant (IMEI) :</td>
@@ -81,13 +81,17 @@
                             <td>Date fin de garantie :</td>
                             <td>{{$sinister->subscription->subscription_enddate}} </td>
                         </tr>
-                        <tr>
-                            <td>Valeur Achat :</td>
-                            <td>{{ $sinister->subscription->price}}  FCFA </td>
+                        <tr style="color: green; ">
+                            <td ><b>Valeur Achat :</b></td>
+                            <td><b>{{ $sinister->subscription->price}}  FCFA </b></td>
+                        </tr>
+                        <tr style="color: green; ">
+                            <td> <b> PRIME PAYEE :</b> </td>
+                            <td><b>{{$sinister->subscription->premium}}  FCFA  </b></td>
                         </tr>
                         <tr style="color: red; ">
-                            <td> <b> VOTRE PRIME :</b> </td>
-                            <td><b>{{$sinister->subscription->premium}}  FCFA  </b></td>
+                            <td> <b> VALEUR INDEMNISATION :</b> </td>
+                            <td><b>{{$sinister->subscription->currentValue()}}  FCFA  </b></td>
                         </tr>
                     </table>
                  </div>

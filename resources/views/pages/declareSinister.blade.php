@@ -105,7 +105,7 @@ menu-open active
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Marque :</td>
-                                                                            <td>{{$subscription->pack->first()->product->label->label }}</td>
+                                                                            <td>{{$subscription->pack->first()->product->label->label." ".$subscription->pack->first()->product->model->label }}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Numéro identifiant (IMEI) :</td>
