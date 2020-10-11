@@ -36,16 +36,17 @@
                                 </div>
                                 <table id="listsinisters" class="table table-bordered ">
                                     <thead>
-                                    <tr>
-                                        <th >Contrat</th>
-                                        <th >Nom & prénoms</th>
-                                        <th >Type sinistre</th>
-                                        <th >Date déclaration</th>
-                                        <th >Action</th>
-                                    </tr>
+                                        <tr>
+                                            <th >Contrat</th>
+                                            <th >Nom & prénoms</th>
+                                            <th >Type sinistre</th>
+                                            <th >Date déclaration</th>
+                                            <th >Action</th>
+                                        </tr>
                                     </thead>
-                            @foreach ($liste as $item)
                                     <tbody>
+                            @foreach ($listsinistres as $item)
+                                    <tr>
                                         <td>{{ $item->folder }}  </td>
                                         <td>{{ $item->name }}  {{ $item->subscription->customer->first_name}}</td>
                                         <td>{{ $item->type1 }}</td>
@@ -73,8 +74,9 @@
 
                                         </td>
 
-                                    </tbody>
+                                    </tr>
                             @endforeach
+                        </tbody>
                                 </table>
                             </div>
                         </div>

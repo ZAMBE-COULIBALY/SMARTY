@@ -56,7 +56,7 @@ class SinisterController extends Controller
         $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
 
         $validatedData = $request->validate([
-            'folder'=> 'required|exists:subscriptions,code',
+            'folder'=> ['required','exists:subscriptions,code',Rule::in(Subscription::where("state",">",0)->pluck("code"))],
         ]);
 
         $subscription = Subscription::where('code','=',$validatedData['folder'])->first();
@@ -148,8 +148,8 @@ class SinisterController extends Controller
         ]);
             try {
             //code...
-            $contract = $paramters['contract'];
-            $vouchers = $paramters['vouchers'];
+                $contract = $paramters['contract'];
+                $vouchers = $paramters['vouchers'];
                 if (null !== $request->file('contract') && null !== $request->file('vouchers')) {
                     # code...
 
@@ -162,26 +162,27 @@ class SinisterController extends Controller
 
 
                 }
+                $agent = Agent::where("username",Auth::user()->username)->first();
                 $code = Str::random(14);
-            Sinister::create([
-                'code'=> $code,
-                'folder' =>$subscription->code,
-                'description'=>$paramters['description'],
-                'contract'=>$contract,
-                'vouchers'=>$vouchers,
-                'state'=>"0",
-                'type1'=>(isset($paramters['choix1']))  ? collect($paramters['choix1'])->implode('-'): "",
-            ]);
+                $sinister = new Sinister();
+                $sinister->code = $code;
+                $sinister->folder = $subscription->code;
+                $sinister->description = $paramters['description'];
+                $sinister->contract = $contract;
+                $sinister->vouchers = $vouchers;
+                $sinister->state = 0;
+                $sinister->agent_id = $agent->id;
+                $sinister->type1 = (isset($paramters['choix1']))  ? collect($paramters['choix1'])->implode('-'): "";
+                $sinister->save();
+                $subscription->state = - 1 ;
+                $subscription->save();
+                    // Mail::to(explode(",",env("MAIL_SINISTERS_MANAGER")))->send(new newSinister($sinister,$agent));
+                    Session::put('success','Déclaration de sinistre (N°'.$sinister->code.') transmise ');
+                } catch (\Throwable $th) {
+                    Log::error(json_encode($th));
+                    Session::put('error','Erreur lors de la déclaration de sinistre');
 
-        $sinister = Sinister::where("code",$code)->first();
-            $agent = Agent::where("username",Auth::user()->username);
-                // Mail::to(explode(",",env("MAIL_SINISTERS_MANAGER")))->send(new newSinister($sinister,$agent));
-                Session::put('success','Déclaration de sinistre transmise');
-            } catch (\Throwable $th) {
-                Log::error(json_encode($th));
-                Session::put('error','Erreur lors de la déclaration de sinistre');
-
-            }
+                }
 
         return redirect(route('sinister.list'));
     }
@@ -208,8 +209,8 @@ class SinisterController extends Controller
         //
         $listsinistres = Sinister::all();
         // dd($listsinistres);
-                $Subscription = $request->session()->get('Subscription');
-        return view('pages.listeSinistre',compact('Subscription'))->with('liste', $listsinistres) ;
+                // $Subscription = $request->session()->get('Subscription');
+        return view('pages.listeSinistre',compact("listsinistres")) ;
     }
 
     /**
@@ -272,6 +273,8 @@ class SinisterController extends Controller
             //code...
             $sinister->state = $state;
             $sinister->save();
+
+            $subscription = clone $sinister->subscription;
             if ($state == 1) {
                 # code...
 
@@ -283,7 +286,12 @@ class SinisterController extends Controller
                 $pdf-> loadView("models.model_bon", compact('sinister'));
 
                 $pdf-> save(storage_path().'/app/public/voucher/'.$sinister->folder.$sinister->id.'.pdf');
+                $subscription->state = 0;
+            } else {
+                $subscription->state = 1;
+
             }
+            $subscription->save();
             Session::Put('success',"Demande traitée avec succès!");
         } catch (\Throwable $th) {
             throw $th;

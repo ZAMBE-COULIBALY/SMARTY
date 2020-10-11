@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
+use Matrix\Operators\Subtraction;
 
 use function GuzzleHttp\Promise\all;
 
@@ -47,11 +48,7 @@ class SubscriptionController extends Controller
         //
 
         $agent_id = Agent::where("username","=",Auth()->user()->username)->first()->id;
-        $hsubscriptions = DB::table('customers')
-        ->join('subscriptions', 'subscriptions.customer_id', '=', 'customers.id')
-        ->select('*')
-        ->where('subscriptions.agent_id', '=', $agent_id )
-        ->get();
+        $hsubscriptions = Subscription::all()->where('agent_id', $agent_id );
 
         $code = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->partner_id;
         $codepart=Partner::where("id",$code)->first()->code;
