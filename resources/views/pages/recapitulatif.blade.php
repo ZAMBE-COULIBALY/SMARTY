@@ -27,7 +27,7 @@ menu-open active
                                         </div>
                                         <div class="row">
                                             <div class="col-md-7">
-                                                <object data="{{ asset('storage/invoices/'.$Subscription['first_name'].'.pdf') }}"  type="application/pdf" width="100%" height="875">
+                                                <object data="{{ asset('storage/invoices/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf') }}"  type="application/pdf" width="100%" height="875">
                                                 </object>
                                             </div>
 
@@ -36,7 +36,7 @@ menu-open active
                                                 <tr>
                                                     <td style="text-align: center">
 
-                                                            <P style="font-size: 14; "><stong> MONTNAT PRIME :<?php echo $Subscription['price']*0.10 ;?> Francs CFA</strong></P> </div>
+                                                            <P style="font-size: 14; "><stong> MONTNAT PRIME :<?php echo $Subscription['premium']?> Francs CFA</strong></P> </div>
                                                     </td>
                                                 <tr>
                                                     <td style="text-align: center">
