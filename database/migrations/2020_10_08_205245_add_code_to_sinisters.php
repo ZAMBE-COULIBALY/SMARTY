@@ -17,7 +17,7 @@ class AddCodeToSinisters extends Migration
     {
         Schema::table('sinisters', function (Blueprint $table) {
             //
-            $table->string('code')->default(Str::random(14))->change();
+            $table->string('code')->default(Str::random(14));
 
         });
     }
