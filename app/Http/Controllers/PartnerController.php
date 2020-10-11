@@ -57,14 +57,27 @@ class PartnerController extends Controller
             'code' => 'required|unique:partners|max:255',
             'label' => 'required|unique:partners|max:255',
             'email' => 'required|email',
-            'rate' => 'required|numeric'
+            'rate' => 'required|numeric',
+            'logo' => 'image'
         ]);
 
+        $logo = isset($parameters['logo']) ?? '' ;
+        if (null !== $request->file('logo') ) {
+            # code...
+
+            $logo = "logo-".$parametersvalid['code']."-". time() . '.' . $request->file('logo')->getClientOriginalExtension();
+            $request->file('logo')->storeAs('public/logo/'.$parametersvalid['code'].'/', $logo);
+
+
+
+
+        }
         $partner = new Partner();
         $partner->code = $parametersvalid['code'];
         $partner->label = Str::upper(Str::lower(Str::upper($parametersvalid['label']))) ;
         $partner->email = $parametersvalid['email'];
         $partner->rate = $parametersvalid['rate'];
+        $partner->logo = $logo;
         $partner->contact = $parameters['contact'] ;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
         $partner->paymode = $parameters['paymode'];
@@ -158,13 +171,29 @@ class PartnerController extends Controller
                 'email' => 'required|email',
             // 'email' => ['required','email', Rule::notIn(Partner::all()->except($oldpartner->id)->pluck("email"))],
             'contact' => 'required',
-            'rate' => 'required|numeric'
+            'rate' => 'required|numeric',
+            'logo' => 'image'
+
         ]);
+
+            $logo = isset($parameters['logo']) ?? $partner->logo ;
+
+
+        if (null !== $request->file('logo') ) {
+            # code...
+            $logo = "logo-".$partner->code."-". time() . '.' . $request->file('logo')->getClientOriginalExtension();
+            $request->file('logo')->storeAs('public/logo/'.$partner->code.'/', $logo);
+
+
+
+
+        }
 
         $partner->label = Str::upper(Str::lower(Str::upper($parametersvalid['label']))) ;
         $partner->email = $parametersvalid['email'];
         $partner->contact = $parametersvalid['contact'];
         $partner->rate = $parametersvalid['rate'];
+        $partner->logo = $logo;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
         $partner->paymode = $parameters['paymode'];
         $partner->category = json_encode($parameters['category']);

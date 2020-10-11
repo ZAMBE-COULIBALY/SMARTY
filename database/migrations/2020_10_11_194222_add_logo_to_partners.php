@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdatePhone1FromCustomers extends Migration
+class AddLogoToPartners extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class UpdatePhone1FromCustomers extends Migration
      */
     public function up()
     {
-        Schema::table('customers', function (Blueprint $table) {
+        Schema::table('partners', function (Blueprint $table) {
             //
-            $table->string('phone1')->nullable()->change();
+            $table->string('logo')->nullable();
 
         });
     }
@@ -27,9 +27,10 @@ class UpdatePhone1FromCustomers extends Migration
      */
     public function down()
     {
-        Schema::table('customers', function (Blueprint $table) {
+        Schema::table('partners', function (Blueprint $table) {
             //
-            $table->dropColumn("phone1");
+            $table->dropColumn("logo");
+
         });
     }
 }
