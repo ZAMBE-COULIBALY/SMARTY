@@ -321,7 +321,7 @@ class SubscriptionController extends Controller
                      $params["notify_url"] = route("paiementmobile");
                      $params["return_url"] = route("documentmobilepayment");
                      $params["cancel_url"] = route("subscription.recapitulatif");
-                     $params["debug"] = 1;
+                     $params["debug"] = 0;
                      $params["signature"] = $signature;
                      unset( $params["cpm_trans_date"]);
              //dd($params);
@@ -400,6 +400,7 @@ class SubscriptionController extends Controller
             $newsubscription->subscription_enddate = $Subscription['subscription_enddate'];
             $newsubscription->customer_id = $customer->id;
             $newsubscription->agent_id = $Subscription['agent_id'];
+            $newsubscription->state = 1;
             $newsubscription->save();
             Log::info('Création subscipriotn ok '.now());
 
@@ -567,31 +568,34 @@ class SubscriptionController extends Controller
                 $customer->mailing_address = $Subscription->mailing_address;
                 $customer->save();
                 $newsubscription->code = $Subscription->folder;
-                            $newsubscription->equipment = $Subscription->equipment;
-                            $newsubscription->model = $Subscription->model;
-                            $newsubscription->mark = $Subscription->mark;
-                            $newsubscription->picture = $Subscription->picture;
-                            $newsubscription->numberIMEI = $Subscription->numberIMEI;
-                            $newsubscription->price = $Subscription->price;
-                            $newsubscription->premium = $Subscription->premium;
-                            $newsubscription->date_subscription = $Subscription->date_subscription;
-                            $newsubscription->subscription_enddate = $Subscription->subscription_enddate;
-                            $newsubscription->customer_id = $customer->id;
-                            $newsubscription->agent_id = $Subscription->agent_id;
-                            $newsubscription->save();
-                            $pack->product_id = Product::where("type_id",$Subscription->equipment)->where("label_id",$Subscription->mark)->where("model_id",$Subscription->model)->first()->id;
-                            ;
-                            $pack->save();
-                             $newsubscription->equipment = $pack->id;
-            $newsubscription->save();
+                $newsubscription->equipment = $Subscription->equipment;
+                $newsubscription->model = $Subscription->model;
+                $newsubscription->mark = $Subscription->mark;
+                $newsubscription->picture = $Subscription->picture;
+                $newsubscription->numberIMEI = $Subscription->numberIMEI;
+                $newsubscription->price = $Subscription->price;
+                $newsubscription->premium = $Subscription->premium;
+                $newsubscription->date_subscription = $Subscription->date_subscription;
+                $newsubscription->subscription_enddate = $Subscription->subscription_enddate;
+                $newsubscription->customer_id = $customer->id;
+                $newsubscription->agent_id = $Subscription->agent_id;
+                $newsubscription->state = 1;
+                $newsubscription->save();
 
-            $payment->refsubscription = $newsubscription->code;
-            $payment->paymentmethod = 2;
-            $payment->refpayment = $cpm_trans_id;
-            $payment->datepayment = $cpm_payment_date;
-            $payment->amount = $newsubscription->premium;
-            $payment->save();
-            $pdf =  App::make('dompdf.wrapper');
+                $pack->product_id = Product::where("type_id",$Subscription->equipment)->where("label_id",$Subscription->mark)->where("model_id",$Subscription->model)->first()->id;
+                ;
+                $pack->subscription_id = $newsubscription->id;
+                $pack->save();
+                $newsubscription->equipment = $pack->id;
+                $newsubscription->save();
+
+                $payment->refsubscription = $newsubscription->code;
+                $payment->paymentmethod = 2;
+                $payment->refpayment = $cpm_trans_id;
+                $payment->datepayment = $cpm_payment_date;
+                $payment->amount = $newsubscription->premium;
+                $payment->save();
+                $pdf =  App::make('dompdf.wrapper');
 
                 $pdf-> loadView("models.document", compact('newsubscription'));
 
