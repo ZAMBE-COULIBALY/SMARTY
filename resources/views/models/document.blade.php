@@ -117,7 +117,7 @@
                   <p>  Prime  Total TTC </p>
                 </td>
                 <td>
-                    {{  round( $newsubscription->price*0.10) }}
+                    {{  round( $newsubscription->premium) }}
                 </td>
             </tr>
 

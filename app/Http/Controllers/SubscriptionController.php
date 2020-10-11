@@ -166,7 +166,7 @@ class SubscriptionController extends Controller
 
     public function postequipment(Request $request)
     {
-        $agent_id = Agent::where("username","=",Auth()->user()->username)->first()->id;
+        $agent= Agent::where("username","=",Auth()->user()->username)->first();
         $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
         $pdv_id = Agency::Where("label",$libellepdv)->first()->id;
         $date_subscription= date_format(date_create(now()),'Y-m-d');
@@ -193,7 +193,7 @@ class SubscriptionController extends Controller
             $Subscription->fill([
                 'libellepdv' =>$libellepdv,
                 'pdv_id' =>$pdv_id,
-                'agent_id' =>$agent_id,
+                'agent_id' =>$agent->id,
                 'date_subscription' =>$date_subscription,
                 ]);
 
@@ -204,7 +204,7 @@ class SubscriptionController extends Controller
             $Subscription->fill($validatedData);
             $Subscription->fill([
                 'libellepdv' =>$libellepdv,
-                'agent_id' =>$agent_id,
+                'agent_id' => $agent->id,
                 'pdv_id' =>$pdv_id,
                 'date_subscription' =>$date_subscription,
                 ]);
@@ -214,7 +214,7 @@ class SubscriptionController extends Controller
         }
 
         $madate= $Subscription['date_subscription'];
-        $premium = $Subscription['price']*0.10;
+        $premium = $Subscription['price'] * $agent->agency->partner->rate / 100 ;
         list($annee,$mois,$jour)=sscanf($madate,"%d-%d-%d");
         $annee+=1;
 
@@ -270,7 +270,7 @@ class SubscriptionController extends Controller
 
        $pdf-> loadView("models.model_souscription_summary", compact('Subscription'));
 
-       $pdf-> save(storage_path().'/app/public/invoices/'.$Subscription['first_name'].'.pdf');
+       $pdf-> save(storage_path().'/app/public/invoices/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
 
 
         return redirect(route('subscription.recapitulatif'));
@@ -634,7 +634,8 @@ class SubscriptionController extends Controller
         //
         $Subscription = $request->session()->get('Subscription');
         $subscription = Subscription::where('code',$Subscription['folder'])->first();
-         return view('pages.recu',compact('subscription'));
+
+        return view('pages.recu',compact('subscription'));
     }
 
     public function documentmobilepayment(Request $request)

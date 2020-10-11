@@ -92,6 +92,8 @@
             </div>
 
         </div>
+
+
         <div class="form-group col-md-6">
             <label>Categories</label>
             <div class="select2-primary">
@@ -104,6 +106,18 @@
             </div>
         </div>
 
+        <div class="form-group col-md-3">
+            <div class="input-group">
+                <label>TAUX DE SOUSCRIPTION</label>
+                <input type="number" required step="0.1" value="{{ isset($partner) ? $partner->rate : '' }}" name="rate" id="rate">
+                @error('rate')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+        </div>
 
         <div class="form-group col-md-6">
             <label for="state" >Actif</label>

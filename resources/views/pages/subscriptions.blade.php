@@ -46,7 +46,7 @@
 <script>
     $(document).ready(function(){
       $("#price").on("input", function(){
-        $("#output").text($(this).val()*0.10);
+        $("#output").text($(this).val()*{{ $usr->partner->rate}} / 100);
       });
     });
   </script>

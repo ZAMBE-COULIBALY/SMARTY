@@ -56,13 +56,15 @@ class PartnerController extends Controller
         $parametersvalid = $request->validate([
             'code' => 'required|unique:partners|max:255',
             'label' => 'required|unique:partners|max:255',
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'rate' => 'required|numeric'
         ]);
 
         $partner = new Partner();
         $partner->code = $parametersvalid['code'];
         $partner->label = Str::upper(Str::lower(Str::upper($parametersvalid['label']))) ;
         $partner->email = $parametersvalid['email'];
+        $partner->rate = $parametersvalid['rate'];
         $partner->contact = $parameters['contact'] ;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
         $partner->paymode = $parameters['paymode'];
@@ -102,7 +104,7 @@ class PartnerController extends Controller
             $partnerManagerUser->roles()->attach(Role::where('slug',$role)->first());
         endforeach;
         $partners = Partner::all();
-//dd($pass);
+        //dd($pass);
       Mail::to($partner->email,$partner->label." Manager")
 
       ->send(new newPartner($partner,$partnerManager,$pass))  ;
@@ -155,12 +157,14 @@ class PartnerController extends Controller
                 'required','max:255', Rule::notIn(Partner::all()->except($oldpartner->id)->pluck("label"))],
                 'email' => 'required|email',
             // 'email' => ['required','email', Rule::notIn(Partner::all()->except($oldpartner->id)->pluck("email"))],
-            'contact' => 'required'
+            'contact' => 'required',
+            'rate' => 'required|numeric'
         ]);
 
         $partner->label = Str::upper(Str::lower(Str::upper($parametersvalid['label']))) ;
         $partner->email = $parametersvalid['email'];
-        $partner->contact = $parametersvalid['contact'] ;
+        $partner->contact = $parametersvalid['contact'];
+        $partner->rate = $parametersvalid['rate'];
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
         $partner->paymode = $parameters['paymode'];
         $partner->category = json_encode($parameters['category']);
@@ -182,8 +186,6 @@ class PartnerController extends Controller
         $partner = Partner::where('slug','=',$partner)->first();
         if(0 !== Agency::all()->where("partner_id","=",$partner->id)->count())
         return Redirect()->route('partners.list')->with('error','Le partenaire a des PDV et ne peut être supprimé');
-
-
 
         $partnerManagers = Manager::all()->where("partner_id",$partner->id);
         foreach ($partnerManagers as $manager) {
