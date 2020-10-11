@@ -11,6 +11,10 @@
 
    <b>Nom du conseiller</b> {{$newsubscription->agent->firstname.' '.$newsubscription->agent->lastname}} <b>Code</b> {{ $newsubscription->agent->agency->partner->code }} <b>Revendeur</b>  {{ $newsubscription->agent->agency->label }}<br>
 </p>
+<div style="position: absolute; top: 0%; right: 0%; height:100px; width: 100px; display: inline-block">
+    <img src="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}" style="max-width: 100px; max-height: 100px; height: auto; image-orientation: from-image;" alt="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}"  >
+
+</div>
 
 <p style="margin-top:-3%">
 <table  style="  border-collapse: collapse; border: 1px solid black; margin-left:20%; font-size:10px; font-family: Arial, Helvetica, sans-serif;">
