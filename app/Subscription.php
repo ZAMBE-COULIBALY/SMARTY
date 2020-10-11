@@ -81,33 +81,38 @@ class Subscription extends Model
     public function currentState()
     {
         # code...
-        $currentValue = $this->price;
+        $currentState = $this->state;
         $currentInterval = now()->diffInDays($this->created_at);
-        switch ($this->pack->first()->product->category->attribute("ASS-TYP")) {
+        if ($currentState !=0 ) {
+            # code...
+
+             switch ($this->pack->first()->product->category->attribute("ASS-TYP")) {
             case 'DP':
                 # code...
                 if ($currentInterval > 365) {
                     # code...
-                    $currentValue = 0;
+                    $currentState = 0;
                 }
                 elseif($currentInterval > 180)
                 {
-                    $currentValue = 0.5 * $currentValue;
+                    $currentState = 3;
                 } elseif ($currentInterval > 90) {
                     # code...
-                    $currentValue = 0.7 * $currentValue;
+                    $currentState = 2;
 
                 }
-                return $currentValue;
+                return $currentState;
                 break;
 
             default:
                 # code...
-                return $currentValue;
+                return $currentState;
 
                 break;
         }
-        return $currentValue;
+        }
+
+        return $currentState;
 
 
     }

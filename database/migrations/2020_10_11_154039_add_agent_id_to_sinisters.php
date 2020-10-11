@@ -3,10 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
 
-
-class AddCodeToSinisters extends Migration
+class AddAgentIdToSinisters extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +15,7 @@ class AddCodeToSinisters extends Migration
     {
         Schema::table('sinisters', function (Blueprint $table) {
             //
-            $table->string('code')->default(Str::random(14))->change();
+            $table->integer('agent_id');
 
         });
     }
@@ -31,7 +29,7 @@ class AddCodeToSinisters extends Migration
     {
         Schema::table('sinisters', function (Blueprint $table) {
             //
-            $table->dropColumn("code");
+            $table->dropColumn("agent_id");
 
         });
     }
