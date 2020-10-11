@@ -73,7 +73,7 @@ class ProductController extends Controller
 
 
         if (is_numeric($parameters["type"])
-            && null !== Vocabulary::all()->where('category_id',VocabularyType::where("code","PDT-KIND")->first()->id)->where("id","=",$parameters["type"])->first())  {
+            && null !== Vocabulary::all()->where('type_id',VocabularyType::where("code","PDT-KIND")->first()->id)->where("id","=",$parameters["type"])->first())  {
             # code...
              $product->type_id = $parameters["type"] ;
         } else {
