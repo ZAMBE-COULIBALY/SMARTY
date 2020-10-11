@@ -49,28 +49,27 @@
                                     <tbody >
 
                                     @foreach($hsubscription as $subscription)
-                                    @php
-                                         $date= date_format(date_create(now()),'d-m-Y');
-                                        $jour= date_format(date_create($subscription->date_subscription),'d-m-Y') ;
-                                        $date1=strtotime($date);
-                                        $date2 =strtotime($jour);
-                                        $resultat=$date1 - $date2;
-                                        $nbJours = ($resultat/86400);
-                                            if ($nbJours <= 90) {
-                                            $color ="p-3 mb-2 bg-success text-white";
-                                            }elseif ($nbJours >= 91 && $nbJours <=180) {
-                                                    $color ="p-3 mb-2 bg-warning text-dark";
-                                            }elseif ($nbJours >= 181 && $nbJours <365) {
-                                                            $color= "p-3 mb-2 bg-danger text-white";
-                                            }else {
-                                                                $color = "p-3 mb-2 bg-secondary text-white";
-                                            };
+                                    @switch($subscription->currentState())
+                                        @case(3)
+                                        <tr class="p-3 mb-2 bg-danger text-white">
 
-                                    @endphp
+                                            @break
+                                        @case(2)
+                                        <tr class="p-3 mb-2 bg-warning text-white">
 
-                                        <tr class="{{$color}}">
+                                            @break
+                                        @case(1)
+                                        <tr class="p-3 mb-2 bg-success text-white">
+
+                                            @break
+                                        @default
+                                        <tr class="p-3 mb-2 bg-secondary text-white">
+
+                                    @endswitch
+
+
                                         <td> {{ $subscription->code }} </td>
-                                        <td>{{ $subscription->name }} {{ $subscription->first_name }} </td>
+                                        <td>{{ $subscription->customer->name }} {{ $subscription->customer->first_name }} </td>
                                         <td>{{ $subscription->numberIMEI }} </td>
                                         <td>{{ $subscription->date_subscription }} / {{ $subscription->subscription_enddate }} </td>
                                         {{--  <td>
