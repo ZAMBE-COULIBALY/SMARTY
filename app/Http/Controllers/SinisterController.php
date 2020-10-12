@@ -207,7 +207,13 @@ class SinisterController extends Controller
     public function show(Request $request )
     {
         //
-        $listsinistres = Sinister::all();
+        $connecteduser = User::where("username",Auth::user()->username)->first();
+        if($connecteduser->hasAnyRole(['administrator','super_administrator','Claims_Manager']))
+        {
+            $listsinistres = Sinister::all();
+        } elseif ($connecteduser->hasAnyRole(['agent','agent_chief'])) {
+            $listsinistres = Sinister::all()->where('agent_id',$connecteduser->agent->id);
+        }
         // dd($listsinistres);
                 // $Subscription = $request->session()->get('Subscription');
         return view('pages.listeSinistre',compact("listsinistres")) ;

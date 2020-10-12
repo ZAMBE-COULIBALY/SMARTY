@@ -19,4 +19,10 @@ class Sinister extends Model
 
            return $this->hasOne("App\Subscription","code","folder");
        }
+
+       public function agent()
+       {
+           # code...
+           return $this->belongsTo("App\Agent");
+       }
 }
