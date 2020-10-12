@@ -38,3 +38,6 @@ Route::get('/vocabulary/allForOneVocabularyFromPartner/{vocabulary}/{level}/{par
     "uses" => "VocabularyController@allForOneVocabularyFromPartner"
 ]);
 
+Route::get('/document',[
+    "uses" => 'HomeController@doc'
+]);

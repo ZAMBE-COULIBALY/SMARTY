@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +18,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -78,5 +79,17 @@ class HomeController extends Controller
 
         return redirect()->back()->with("success","Password changed successfully !");
 
+    }
+
+    public function doc()
+    {
+        # code...
+        $pdf =  App::make('dompdf.wrapper');
+
+            $pdf-> loadView("models.document1");
+            $pdf-> save(storage_path().'/app/public/received/document.pdf');
+
+// Output the generated PDF to Browser
+            $pdf->stream(storage_path().'/app/public/received/document.pdf');
     }
 }
