@@ -1,52 +1,53 @@
-<html style="margin: 0">
+<html>
     <head>
         <TItle></TItle>
 
     </head>
- <body  style="padding: 0; background-image: url('{{ asset('dist/img/FicheNSIA.jpg') }}') ;  background-repeat: no-repeat; background-size: 100% 100%; margin:0%">
+ <body  style=" background-image: url('{{ asset('dist/img/FicheNSIA.jpg') }}'); margin:0%">
 
-<div style="margin-top:8.5%; font-size:14px; font-family: Arial, Helvetica, sans-serif;margin-left:3%; ">
-    <table style="border: solid 2px;width: 97%;">
-        <tbody style="font-size:14px; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;">
+
+<div style=" margin-top:8%;margin-left:3%; ">
+    <table style="border: solid 2px;width: 100%;">
+        <tbody style="border: solid 2px;  font-size:14px; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;">
             <tr><td colspan="10"><b> RESERVE A NSIA ASSRANCES </b></td></tr>
             <tr>
                 <td colspan="2">Numéro de police</td>
-                <td colspan="3"><b>{{$newsubscription->code}} </b></td>
+                <td colspan="3"><b>____________________________________________________</b></td>
                 <td colspan="2">Numéro du client</td>
-                <td colspan="3"><b>{{$newsubscription->customer->id}}</b></td>
+                <td colspan="3"><b>____________________________________________________</b></td>
             </tr>
             <tr>
                 <td colspan="2">Nom du conseiller</td>
-                <td colspan="3"><b>{{$newsubscription->agent->firstname.' '.$newsubscription->agent->lastname}}</b></td>
+                <td colspan="3"><b>____________________________________________________</b></td>
                 <td colspan="1">Code</td>
-                <td colspan="1"><b>{{ $newsubscription->agent->agency->partner->code }}</b></td>
+                <td colspan="1">______________</td>
                 <td colspan="1">Revendeur</td>
-                <td colspan="2"><b>{{ $newsubscription->agent->agency->label }}</b></td>
+                <td colspan="2">_______________________________</td>
             </tr>
         </tbody>
 
     </table>
 </div>
-<div style="position: absolute; top: 1%; right: 3%; height:100px; width: 100px; display: inline-block">
+<div style="position: absolute; top: 0%; right: 0%; height:100px; width: 100px; display: inline-block">
     <img src="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}" style="max-width: 100px; max-height: 100px; height: auto; image-orientation: from-image;" alt="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}"  >
 
 </div>
 
-<div style="margin-top : 0.2cm; position: relative; width: 94%; left:3%">
-<table  style="width: 100%;  border-collapse: collapse; border: 1px solid black; font-size:13px; font-family: Arial, Helvetica, sans-serif;">
+<p style="margin-top:-3%">
+<table  style="  border-collapse: collapse; border: 1px solid black; margin-left:20%; font-size:10px; font-family: Arial, Helvetica, sans-serif;">
     <tr>
-        <td style=" width: 30%; background-color:#cbcbcb; ">
+        <td style="width: 220px; background-color:#cbcbcb; ">
             Souscripteur
         </td>
-        <td style="width: 64%;">
+        <td style="width: 440px;">
 
         </td>
     </tr>
 </table>
-</div>
+</p>
 
-<div style="position: relative;  margin:0% ;width: 94%; left:3% ;">
-<p style="border: solid 1px; padding: 1%;  font-size:14px;  font-family: Arial, Helvetica, sans-serif; line-height:25px; margin-left:0%; ">
+<p style="margin-top:1%">
+<p style="border: 5px; margin-top:8%; font-size:14px;  font-family: Arial, Helvetica, sans-serif; line-height:25px; margin-left:3%; ">
  <b>  2. ASSURE      </b>               {{ $newsubscription->customer->gender }} <br>
 
  <b> Nom </b> {{ $newsubscription->customer->name }} <b>Prénoms</b> {{ $newsubscription->customer->first_name }} <br>
@@ -61,11 +62,10 @@
 
  <b>Email</b> {{ $newsubscription->customer->mail }}<br>
 
-</p>
-</p>
-</div>
+</p></p>
+</b>
 
-<div style="border: solid 1px; padding: 0.5% ; position: relative; margin:0% ;width: 93%; left:3% ;font-size:14px; font-family: Arial, Helvetica, sans-serif;">
+<p style="margin-top:1%; font-size:14px; font-family: Arial, Helvetica, sans-serif;">
   <b>  3. CARACTERISTIQUES </b> <br>
   <table  border="0.5px" style="width: 800px; margin-left:15%; border-collapse: collapse; font-size:14px; font-family: Arial, Helvetica, sans-serif;">
         <thead>
@@ -90,10 +90,10 @@
     </tbody>
     </table>
 
-</div>
+    </p>
 
-<div style="top: 1%; border: solid 1px;  padding: 0.5% ; position: relative; margin:0% ;width: 93%; left:3% ;font-size:14px; font-family: Arial, Helvetica, sans-serif;">
-    <table border="0.5px" style="width: 800px; margin-left:15%; border-collapse: collapse; font-size:14px; font-family: Arial, Helvetica, sans-serif;" >
+    <p style="margin-top:1%; font-size:14px; font-family: Arial, Helvetica, sans-serif;">
+        <table border="0.5px" style="width: 800px; margin-left:15%; border-collapse: collapse; font-size:14px; font-family: Arial, Helvetica, sans-serif;" >
             <tr>
                 <td colspan="4">
                  <b>   4. FORMULE </b>
@@ -143,7 +143,7 @@
             </tr>
 
         </table>
-</div>
+    </p>
     <p style="margin-top:1%; font-size:14px; font-family: Arial, Helvetica, sans-serif; line-height:20px; margin-left:3%; ">
       <b>  La police est constituée par :</b> <br>
 <i>
@@ -157,9 +157,13 @@
 
     <p style="margin-top:1%; font-size:14px; font-family: Arial, Helvetica, sans-serif; margin-left:3%; ">
         Fait à Abidjan  le {{ $newsubscription->date_subscription }} <br>
+
+              Visa du Souscripteur	       		   		                                                                              Visa de l’Assureur
+
+
     </p>
-<p style="height: 1050px; width: 21cm; margin: 0">
-    <img src="{{ asset('dist/img/FicheNSIA2-a.jpg') }}" width="100%" height="100%" alt="">
+<p style="height: 950px">
+    <img src="{{ asset('dist/img/FicheNSIA2.jpg') }}"alt="">
 </p>
             </body>
 </html>
