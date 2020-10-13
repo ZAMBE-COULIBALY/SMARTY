@@ -1,15 +1,23 @@
-<html>
+<html style=" padding: 0px; margin:0px">
     <head>
         <TItle></TItle>
+        <style>
+            #signature {
+                position: absolute;
+                bottom: 5cm;
+                right: 0cm;
+                height: 3cm;
+                width: 7cm;
+            }
+        </style>
     </head>
-    <body  style=" background-image: url('{{ asset('dist/img/models.jpg') }}'); margin:0%">
+    <body  style=" background-image: url('{{ asset('dist/img/model3.png') }}'); background-repeat: no-repeat; background-size: 100% 100%; margin:0%">
+<div style=" position: relative; width:800px; padding:0px; margin-left:1.5cm; top:3cm">
 
         <table  style=" width:850px;margin-left:35% color:#120d74">
             <tr>
-                <td >
 
-                </td>
-                <td style="margin-left: 80%">
+                <td colspan="2" style="text-align: center">
                     <center> <span style="font-family: Arial, Helvetica, sans-serif; color: #120d74;; font-size:16px"><H1> BON D&#039INDEMNISATION SMARTY</H1></span></center>
                 </td>
 
@@ -96,6 +104,12 @@
                 <td> </td>
             </tr>
         </table>
+</div>
+<div id="signature">
+    <p>{{__("VISA DE L'ASSUREUR")}}</p>
+    <img src={{ asset('dist/img/cachet-signature.png') }} width="100%" height="100%"/>
+
+</div>
     </body>
 </html>
 

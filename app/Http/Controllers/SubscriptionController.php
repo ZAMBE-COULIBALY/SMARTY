@@ -335,6 +335,12 @@ class SubscriptionController extends Controller
          }
 
 
+        //  $pdf =  App::make('dompdf.wrapper');
+
+        //  $pdf-> loadView("models.model_souscription_summary", compact('Subscription'));
+
+        //  $pdf-> save(storage_path().'/app/public/invoices/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
+
 
         return view('pages.recapitulatif',compact('Subscription','date','connectedagent'));
 

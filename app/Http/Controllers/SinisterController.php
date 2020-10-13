@@ -194,7 +194,11 @@ class SinisterController extends Controller
 
 
         $Subscription = $request->session()->get('subscription');
+        $pdf =  App::make('dompdf.wrapper');
 
+        $pdf-> loadView("models.model_bon", compact('sinister'));
+
+        $pdf-> save(storage_path().'/app/public/voucher/'.$sinister->folder.$sinister->id.'.pdf');
         return view('pages.bon',compact('sinister'));
     }
 
