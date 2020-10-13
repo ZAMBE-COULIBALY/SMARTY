@@ -26,7 +26,7 @@ menu-open active
                                                         <hr>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-7">
+                                            <div class="col-md-8">
                                                 <object data="{{ asset('storage/invoices/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf') }}"  type="application/pdf" width="100%" height="875">
                                                 </object>
                                             </div>
@@ -66,8 +66,8 @@ menu-open active
                                         <input type="hidden" class="form-control" placeholder="cpm_trans_date" id="cpm_trans_date" name="cpm_trans_date" value="{{$date}}">
 
                                                     <button type="submit" class="btn btn-success">PAYER LA PRIME</button>
-                                                    <a class="btn btn-danger" href="{{ route('subscription.customer') }}">ANNULE SOUSCRIPTION</a>
-                                                    <a class="btn btn-warning" href="#">IMPRIMER</a>
+                                                    <a class="btn btn-danger" href="{{ route('subscription.customer') }}">ANNULER SOUSCRIPTION</a>
+                                                    {{--  <a class="btn btn-warning" href="#">IMPRIMER</a>  --}}
                                     </form>
                                                     </td>
                                                 </tr>
