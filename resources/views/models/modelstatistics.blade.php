@@ -1,7 +1,11 @@
 <html>
     <head>
         <TItle></TItle>
-
+<style>
+    td {
+        text-align: center;
+    }
+</style>
     </head>
  <body >
     <div class="row">
@@ -13,7 +17,7 @@
                     <span style="font-family: Arial, Helvetica, sans-serif; color: #120d74;; font-size:16px;"> <H1> NSIA SMARTY</H1></span>
             </center>
             <center style="margin-top:-5% ">
-                <span style="font-family: Arial, Helvetica, sans-serif; color: #120d74;; font-size:16px;"> <h4> TABLEAU DE BORD DES SOUSCRIPTIONS </h4> </span>
+                <span style="font-family: Arial, Helvetica, sans-serif; color: #120d74; font-size:16px;"> <h4> TABLEAU DE BORD DES SOUSCRIPTIONS </h4> </span>
             </center>
         </div>
     </div>
@@ -27,7 +31,6 @@
                 <th>Noms & Prénoms</th>
                 <th>Date de naissances</th>
                 <th>Contact 1</th>
-                <th>Contact 2</th>
                 <th>Lieu résidence</th>
                 <th>Equipement</th>
                 <th>Marque</th>
@@ -41,25 +44,22 @@
         </thead>
         @foreach ($users as $item)
 
-
             <tr>
-            <td> {{ $item->folder }}</td>
-            <td> {{ $item->gender }} </td>
-            <td> {{ $item->name }} {{ $item->first_name }} </td>
-            <td> {{ $item->birth_date }} </td>
-            <td> {{ $item->phone1 }} </td>
-            <td> {{ $item->phone2 }} </td>
-            <td> {{ $item->place_residence }}</td>
-            <td> {{ $item->equipment }} </td>
-            <td> {{ $item->mark }} </td>
-            <td> {{ $item->model}} </td>
-            <td> {{ $item->numberIMEI }} </td>
-            <td> {{ $item->date_subscription }}</td>
-            <td> {{ $item->subscription_enddate }}</td>
-            <td> {{ $item->price }} </td>
-            <td> {{ $item->premium}} </td>
-
-        </tr>
+                <td> {{ $item->folder }}</td>
+                <td> {{ $item->gender }} </td>
+                <td> {{ $item->name }} {{ $item->first_name }} </td>
+                <td> {{ $item->birth_date }} </td>
+                <td> {{ $item->phone1 }} </td>
+                <td> {{ $item->place_residence }}</td>
+                <td> {{ $item->equipment }} </td>
+                <td> {{ $item->mark }} </td>
+                <td> {{ $item->model}} </td>
+                <td> {{ $item->numberIMEI }} </td>
+                <td> {{ $item->date_subscription }}</td>
+                <td> {{ $item->subscription_enddate }}</td>
+                <td> {{ $item->price }} </td>
+                <td> {{ $item->premium}} </td>
+            </tr>
 
         @endforeach
     </table>

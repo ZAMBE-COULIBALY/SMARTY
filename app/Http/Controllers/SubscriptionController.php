@@ -641,14 +641,14 @@ class SubscriptionController extends Controller
         $Subscription = $request->session()->get('Subscription');
         $subscription = Subscription::where('code',$Subscription['folder'])->first();
         $newsubscription = clone $subscription;
-        Log::info('Création pdf document start '.now());
+        // Log::info('Création pdf document start '.now());
 
-        $pdf =  App::make('dompdf.wrapper');
+        // $pdf =  App::make('dompdf.wrapper');
 
-        $pdf-> loadView("models.document", compact('newsubscription'));
+        // $pdf-> loadView("models.document", compact('newsubscription'));
 
-        $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
-        Log::info('Création pdf document ok '.now());
+        // $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
+        // Log::info('Création pdf document ok '.now());
 
         return view('pages.recu',compact('subscription'));
     }

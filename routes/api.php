@@ -41,3 +41,7 @@ Route::get('/vocabulary/allForOneVocabularyFromPartner/{vocabulary}/{level}/{par
 Route::get('/document',[
     "uses" => 'HomeController@doc'
 ]);
+
+Route::post('/stats',[
+    "uses" => 'StatistiquesController@allSubscriptionsByAgency'
+]);
