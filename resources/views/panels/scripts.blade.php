@@ -314,10 +314,13 @@ jQuery(document).ready(function(){
               "autoWidth": false,
             })
             $('#detailslist').DataTable({
-                "pageLength": 5,
-                dom: 'frtp',
+
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
                 "order": [[ 11, "desc" ]],
-                
+
                     })
 
         })

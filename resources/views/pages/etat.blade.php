@@ -35,6 +35,7 @@
 
                            <div class="row">
                                 @include('partials.form_etat')
+                                <hr>
                                 @isset($collection)
                                 <div class="col-md-12" id="details">
                                     <table class="table table-sm compact table-bordered table-striped table-responsive" id="detailslist" >
@@ -80,7 +81,7 @@
                                     </table>
                                 </div>
                                 @endisset
-                                  
+
 
                             </div>
                         </div>
