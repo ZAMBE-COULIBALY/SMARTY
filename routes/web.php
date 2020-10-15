@@ -75,10 +75,10 @@ Route::get('/customers/{id}', [
 
 // fin Liens Customers
 Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], function () {
-    Route::get('/', [
+    Route::post('/', [
         'as'=> 'statistics.show',
-        'uses' => 'CustomerController@getstatistics'
-    ]);
+        "uses" => 'StatistiquesController@allSubscriptionsByAgency'
+        ]);
         Route::get('/PDF', [
             'as'=> 'statistics.etat',
             'uses' => 'CustomerController@statisticsPDF'
@@ -91,7 +91,7 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
 
             Route::get('/etat', [
                 'as'=> 'statistics.etatpartenaire',
-                'uses' => 'CustomerController@etat'
+                'uses' => 'StatistiquesController@subscriptionsByAgency'
             ]);
 
     });

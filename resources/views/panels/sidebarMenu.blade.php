@@ -91,7 +91,7 @@
 
     @endif
     {{-- MODULE OPERATION --}}
-    @if (Auth::user()->hasAnyRole(['agent','agent_chief']))
+    @if (Auth::user()->hasAnyRole(['agent','agent_chief','manager',]))
         <li class="nav-item has-treeview @yield('operation')">
             <a href="#" class="nav-link @yield('operation')">
                 <i class="nav-icon fas fa-copy"></i>
@@ -151,7 +151,7 @@
             </a>
         </li>
         @endif
-        @if (Auth::user()->hasAnyRole(['claims_manager','agent_chief']))
+        @if (Auth::user()->hasAnyRole(['claims_manager','agent_chief','agent']))
 
         <li class="nav-item">
             <a href="{{ route('sinister.list') }}" class="nav-link @yield('listeSinistre')">

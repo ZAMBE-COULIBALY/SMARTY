@@ -28,7 +28,7 @@
     </table>
 </div>
 <div style="position: absolute; top: 1%; right: 3%; height:100px; width: 100px; display: inline-block">
-    <img src="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}" style="max-width: 100px; max-height: 100px; height: auto; image-orientation: from-image;" alt="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}"  >
+    <img src="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}" style="max-width: 100px; max-height: 100px; height: auto; image-orientation: from-image;" alt="LOGO PARTENAIRE"  >
 
 </div>
 

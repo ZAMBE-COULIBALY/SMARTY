@@ -33,6 +33,15 @@
 <!-- DataTables -->
 <script src={{ asset('plugins/datatables/jquery.dataTables.min.js') }}></script>
 <script src= {{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}></script>
+
+<script src= {{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}></script>
+<script src= {{ asset('plugins/datatables-buttons/js/buttons.flash.min.js') }}></script>
+<script src= {{ asset('plugins/jszip/jszip.min.js') }}></script>
+<script src= {{ asset('plugins/pdfmake/pdfmake.min.js') }}></script>
+<script src= {{ asset('plugins/pdfmake/vfs_fonts.js') }}></script>
+<script src= {{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}></script>
+<script src= {{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}></script>
+
 <script src={{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}></script>
 <script src= {{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}></script>
 <!-- Select2 -->
@@ -153,6 +162,32 @@ jQuery(document).ready(function(){
       $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
       //Money Euro
       $('[data-mask]').inputmask()
+
+       //Date range picker
+       $('#startdate').datetimepicker({
+        format: 'L',
+      format: 'DD/MM/YYYY',
+      defaultDate : moment(),
+      placeholder: "DATE DEBUT",
+      maxDate : moment()+1,
+
+
+    });
+    $('#enddate').datetimepicker({
+      format: 'L',
+      useCurrent: false,
+        format: 'DD/MM/YYYY',
+        maxDate : moment()+1,
+        placeholder: "DATE FIN",
+        defaultDate : moment()
+
+  });
+  $("#startdate").on("change.datetimepicker", function (e) {
+      $('#enddate').datetimepicker('minDate', e.date);
+  });
+  $("#enddate").on("change.datetimepicker", function (e) {
+      $('#startdate').datetimepicker('maxDate', e.date);
+  });
 
       //Date range picker
       $('#reservationdate').datetimepicker({
@@ -278,6 +313,15 @@ jQuery(document).ready(function(){
                 "responsive": true,
               "autoWidth": false,
             })
+            $('#detailslist').DataTable({
+
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+                "order": [[ 11, "desc" ]],
+
+                    })
 
         })
 

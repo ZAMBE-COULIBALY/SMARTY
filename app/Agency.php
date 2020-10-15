@@ -24,4 +24,11 @@ class Agency extends Model
         # code...
         return $this->hasOne('App\Agent','id','chief_id');
     }
+
+    public function agents()
+    {
+        # code...
+        return $this->hasMany('App\Agent');
+    }
+
 }

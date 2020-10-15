@@ -1,46 +1,48 @@
 
-<form  method="GET" action="{{ route('statistics.show') }}">
+<form  method="POST" action="{{ route('statistics.show') }}">
                             @csrf
-            <div class="row form-group">
-                <div class="row">
-                </div>
+                            <div class="row form-row">
+                                <div class="form-group col-md-4">
+                                    <div class="form-group">
+                                        <label>Agences</label>
+                                        <select name="agency" id="agency" class="form-control select2bs4" style="width: 100%;">
+                                          @foreach ($agencies as $item)
+                                            <option value="{{$item->id}}">{{$item->partner->label ." || ". $item->label}}</option>
+                                          @endforeach
+                                        </select>
+                                    </div>
+                                </div>
 
-                <div class="form-group col-md-3">
-                    <div class="form-group">
-                    <label>PDV</label>
-                    <select name="libellepdv" class="form-control select2bs4" style="width: 100%;">
 
-                        <option value={{$Subscription['libellepdv']}}>{{$Subscription['libellepdv']}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="date_deb">DATE DEBUT</label>
-                    <div class="input-group">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-user"></span>
-                            </div>
-                        </div>
-                        <input type="date" class="form-control" name="date_deb" id="date_deb" >
-                    </div>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="date_fin">DATE FIN</label>
-                    <div class="input-group">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-user"></span>
-                            </div>
-                        </div>
-                        <input type="date" class="form-control" name="date_fin" id="date_fin" >
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <hr>
-                <div class="form-group col-md-8 " style="text-align: right">
-                    <button type="submit" class="btn btn-primary" >valider</button>
-                </div>
-            </div>
-</form>
+                                <div class="form-group col-md-3">
+                                    <label for="startdate" class="form-control-label">DEBUT</label>
+                                    <div class="input-group date" id="startdate" name="startdate" data-target-input="nearest">
+
+                                        <input name="startdate" id="startdate" type="text" class="form-control datetimepicker-input" data-target="#startdate"/>
+                                        <div class="input-group-append" placeholder="DATE DEBUT" data-target="#startdate" data-toggle="datetimepicker">
+                                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-md-3">
+
+                                    <label for="enddate">FIN</label>
+                                    <div class="input-group date" id="enddate" name="enddate" data-target-input="nearest">
+
+                                        <input name="enddate" id="enddate" type="text" class="form-control datetimepicker-input" data-target="#enddate"/>
+                                <div class="input-group-append" placeholder="DATE FIN" data-target="#enddate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+
+                                        <button id="search" name="search" class="btn btn-default">RECHERCHER</button>
+                                    </div>
+                                </div>
+
+
+                            </form>
+
+
