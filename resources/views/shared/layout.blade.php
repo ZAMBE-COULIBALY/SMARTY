@@ -18,7 +18,7 @@
 
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition  layout-fixed text-sm">
 <div class="wrapper">
 
   @include('panels.navbar')

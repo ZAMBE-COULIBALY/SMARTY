@@ -9,6 +9,7 @@ use App\Manager;
 use App\Partner;
 use App\Role;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -61,6 +62,8 @@ class AgencyController extends Controller
             Rule::notIn(Agency::all()->where("partner_id",Manager::where("username","=",Auth()->user()->username))->pluck("label")),
             'max:255'
            ],
+           'lastnameM' => 'required|max:255',
+            'firstnameM' => 'required|max:255',
             'email' => 'required|email',
             'address' => 'required'
         ]);
@@ -80,7 +83,7 @@ class AgencyController extends Controller
         $agency->state = isset($parameters['state']) ? 1 : 0 ;
         $agency->chief_id= 0;
 
-        $date = new \DateTime(null);
+        $date = new Carbon();
         $agency->slug = Str::slug($parameters['label'].$date->format('dmYhis'));
 
         $agency->save();
@@ -99,7 +102,7 @@ class AgencyController extends Controller
         $agency->chief_id = $agencyChief->id;
         $agency->save();
 
-        $agencyChiefUser->name = $parametersvalid['label']." Chief";
+        $agencyChiefUser->name = $parameters['firstnameM'].' '.$parameters['lastnameM'];
         $agencyChiefUser->username = $agencyChief->username;
         $agencyChiefUser->email = $agency->email;
         $agencyChiefUser->state = 1;
@@ -119,7 +122,7 @@ class AgencyController extends Controller
 
         $partners = Agency::all();
        //dd($pass);
-      Mail::to($agency->email,$agency->label." Chef PDV")
+      Mail::to($agency->email,$parameters['firstnameM'].' '.$parameters['lastnameM'])
 
       ->send(new newAgency($agency,$agencyChief,$pass))  ;
 
