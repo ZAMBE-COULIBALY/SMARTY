@@ -5,7 +5,7 @@
                                 <div class="form-group col-md-4">
                                     <div class="form-group">
                                         <label>Agences</label>
-                                        <select name="agency" id="agency" class="form-control select2bs4" style="width: 100%;">
+                                        <select name="agency" id="agency" class="form-control select2bs4NE" style="width: 100%;">
                                           @foreach ($agencies as $item)
                                             <option value="{{$item->id}}">{{$item->partner->label ." || ". $item->label}}</option>
                                           @endforeach

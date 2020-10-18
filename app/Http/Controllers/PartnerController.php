@@ -10,6 +10,7 @@ use App\Role;
 use App\User;
 use App\Vocabulary;
 use App\VocabularyType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -56,6 +57,8 @@ class PartnerController extends Controller
         $parametersvalid = $request->validate([
             'code' => 'required|unique:partners|max:255',
             'label' => 'required|unique:partners|max:255',
+            'lastnameM' => 'required|max:255',
+            'firstnameM' => 'required|max:255',
             'email' => 'required|email',
             'rate' => 'required|numeric',
             'logo' => 'image'
@@ -84,7 +87,7 @@ class PartnerController extends Controller
         $partner->category = json_encode($parameters['category']);
 
 
-        $date = new \DateTime(null);
+        $date = new Carbon();
         $partner->slug = Str::slug($partner->label.$date->format('dmYhis'));
 
         $partner->admin_id = 0 ;
@@ -103,7 +106,7 @@ class PartnerController extends Controller
         $partner->save();
 
         $partnerManagerUser = new User();
-        $partnerManagerUser->name = $partner->label." Manager";
+        $partnerManagerUser->name = $parameters['firstnameM'].' '.$parameters['lastnameM'];
         $partnerManagerUser->username = $partnerManager->username;
         $partnerManagerUser->email = $partner->email;
         $partnerManagerUser->state = 1;
@@ -118,7 +121,7 @@ class PartnerController extends Controller
         endforeach;
         $partners = Partner::all();
         //dd($pass);
-      Mail::to($partner->email,$partner->label." Manager")
+      Mail::to($partner->email,$parameters['firstnameM'].' '.$parameters['lastnameM'])
 
       ->send(new newPartner($partner,$partnerManager,$pass))  ;
 

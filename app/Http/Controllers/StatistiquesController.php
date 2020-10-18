@@ -22,7 +22,7 @@ class StatistiquesController extends Controller
 
         if (User::where("username","=",Auth()->user()->username)->first()->hasRole("manager")) {
             # code...
-            $agencies = Agency::all()->where("provider_id",Manager::where("username","=",Auth()->user()->username)->first()->provider_id);
+            $agencies = Agency::all()->where("partner_id",Manager::where("username",Auth()->user()->username)->first()->partner_id);
 
         } else {
             # code...
@@ -51,7 +51,7 @@ class StatistiquesController extends Controller
 
         if (User::where("username","=",Auth()->user()->username)->first()->hasRole("manager")) {
             # code...
-            $agencies = Agency::all()->where("provider_id",Manager::where("username","=",Auth()->user()->username)->first()->provider_id);
+            $agencies = Agency::all()->where("partner_id",Manager::where("username","=",Auth()->user()->username)->first()->partner_id);
 
         } else {
             # code...

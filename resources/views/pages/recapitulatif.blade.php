@@ -43,11 +43,11 @@ menu-open active
                                                         <p>Moyen de paiement</p>
                                                         @switch($connectedagent->partner->paymode)
                                                             @case(1)
-                                                            <input type="radio" value="2" checked id="paymenttype" name="paymenttype">Mobile<br>
+                                                            <input class="form-check-input" type="radio" value="2" checked id="paymenttype" name="paymenttype">Mobile<br>
 
                                                                 @break
                                                             @case(2)
-                                                            <input type="radio" value="1" checked id="paymenttype" name="paymenttype">Caisse<br>
+                                                            <input class="form-check-input" type="radio" value="1" checked id="paymenttype" name="paymenttype">Caisse<br>
 
                                                                 @break
                                                             @default
