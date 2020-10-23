@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\ClaimsManager;
 use App\Http\Controllers\Controller;
 use App\Partner;
 use App\Providers\RouteServiceProvider;
@@ -59,7 +60,7 @@ class LoginController extends Controller
     protected function attemptLogin(Request $request)
     {
 
-        if (($request->get("username") != "adminsmarty") && ($request->get("username") != "claimsmanager") ) {
+        if (($request->get("username") != "adminsmarty") && ($request->get("username") != "claimsmanager") && ( ClaimsManager::where("username",$request->get("username"))->first() == null ) ) {
             # code...
             $this->validatePartner($request);
 
