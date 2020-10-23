@@ -7,29 +7,44 @@
                                     <div class="form-group col-md-12">
                                         <div class="form-group">
                                            <label>Selectionnez votre équipement</label>
-                                           <select name="equipment" id="equipment" class="form-control select2bs4NE" style="width: 100%;">
+                                           <select name="equipment" id="equipment" class="form-control @error('equipment') is-invalid @enderror select2bs4NE" style="width: 100%;">
                                         @foreach ($types as $item)
                                             <option value={{$item->id}}  >{{$item->label}}</option>
                                         @endforeach
                                             </select>
+                                            @error('equipment')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
                                     </div>
                                 <div class="form-group col-md-4">
                                     <div class="form-group">
                                        <label>Marque</label>
-                                       <select name="mark" id="mark" class="form-control select2bs4NE" style="width: 100%;">
+                                       <select name="mark" id="mark" class="form-control  @error('mark') is-invalid @enderror select2bs4NE" style="width: 100%;">
 
                                         </select>
+                                        @error('mark')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                                     </div>
                                 </div>
 
                             <div class="form-group col-md-4">
                                 <div class="form-group">
                                    <label>Modèle</label>
-                                   <select name="model" id="model" class="form-control select2bs4NE" style="width: 100%;">
+                                   <select name="model" id="model" class="form-control @error('model') is-invalid @enderror select2bs4NE" style="width: 100%;">
 
 
                                     </select>
+                                    @error('model')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                                 </div>
                             </div>
                             <div class="form-group col-md-4">
@@ -40,8 +55,13 @@
                                             <span class="fas fa-user"></span>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control " name="numberIMEI" id="numberIMEI" value="" placeholder="Saisir le numéro identifiant (IMEI)" required autocomplete="numberIMEI" >
+                                    <input type="text" class="form-control @error('numberIMEI') is-invalid @enderror" name="numberIMEI" id="numberIMEI" value="" placeholder="Saisir le numéro identifiant (IMEI)" required autocomplete="numberIMEI" >
                                 </div>
+                                @error('numberIMEI')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                             </div>
 
                             <div class="form-group col-md-4">
@@ -52,8 +72,13 @@
                                             <span class="fas fa-user"></span>
                                         </div>
                                     </div>
-                                    <input type="number" class="form-control " name="price" id="price" value="" placeholder="Saisir le prix d'achat" required autocomplete="price" >
+                                    <input type="number" class="form-control @error('price') is-invalid @enderror" name="price" id="price" value="" placeholder="Saisir le prix d'achat" required autocomplete="price" >
                                 </div>
+                                @error('price')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="date_subscription">Date effet de la garantie</label>
@@ -67,11 +92,16 @@
                                     <?php
                                     $date= date_format(date_create(now()),'Y-m-d');
 
-                                    echo     "<input type='text' class='form-control' name='date_subscription' id='date_subscription' value=$date style='color: red'  readonly/>" ;
+                                    echo     "<input type='text' class='form-control @error('date_subscription') is-invalid @enderror' name='date_subscription' id='date_subscription' value=$date style='color: red'  readonly/>" ;
 
                                     ?>
 
                                 </div>
+                                @error('date_subscription')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="subscription_enddate">Date fin de la garantie</label>
@@ -105,6 +135,7 @@
                                     ?>
 
                                 </div>
+                              
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="picture">Photo équipement</label>
@@ -114,8 +145,13 @@
                                             <span class="fas fa-edit"></span>
                                         </div>
                                     </div>
-                                    <input type="file" class="form-control " name="picture" id="picture">
+                                    <input type="file" class="form-control @error('picture') is-invalid @enderror" name="picture" id="picture">
                                 </div>
+                                @error('picture')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                             </div>
 
                             <div class="form-group col-md-9"></div>
