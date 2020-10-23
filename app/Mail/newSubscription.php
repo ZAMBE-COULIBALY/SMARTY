@@ -42,8 +42,8 @@ class newSubscription extends Mailable
         return $this
                     ->view('emails.newSubscription')
                     ->from(config('mail.from.address', 'portail.smarty@gmail.com'),config('mail.from.name', 'portail.smarty@gmail.com'))
-                    ->attach(storage_path().'/app/public/received/'.$this->subscription->customer->first_name.$this->subscription->customer->phone1.'.pdf',[
-                        'as' => 'proforma.pdf',
+                    ->attach(storage_path().'/app/public/invoices/'.$this->subscription['first_name'].$this->subscription['phone1'].'.pdf',[
+                        'as' => 'CP NSIA SMARTY.pdf',
                         'mime' =>  'application/pdf',
                     ])
                     // ->attach(storage_path().'/app/public/certificate/'.$this->subscription['attestationcode'].'.pdf',[

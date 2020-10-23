@@ -138,7 +138,29 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
                 'uses' => 'SinisterController@show'
         ]);
 
+        Route::group(['prefix' => '/managers','as' => 'sinister.claimsManager.'], function () {
+Route::get('/', [
+            'as'=> 'list',
+            'uses' => 'ClaimsManagerController@index'
+    ]);
 
+    Route::post('/add', [
+        'as'=> 'add',
+        'uses' => 'ClaimsManagerController@store'
+]);
+
+Route::get('/edit/{claimsManager}', [
+    'as'=> 'edit',
+    'uses' => 'ClaimsManagerController@edit'
+]);
+
+Route::post('/update/{claimsManager}', [
+    'as'=> 'update',
+    'uses' => 'ClaimsManagerController@update'
+]);
+
+
+        });
 
 
         });

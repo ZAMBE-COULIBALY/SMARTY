@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -15,12 +16,12 @@ class UserSeeder extends Seeder
     public function run()
     {
         //
-        $date = new DateTime(null);
+        $date = new Carbon();
         DB::table('users')->insert([
             'name' => 'Admin Smarty',
             'username' => 'adminsmarty',
             'email' => 'armandperise@gmail.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('Nsia2020'),
             'slug' => Str::slug('adminsmarty'.$date->format('dmYhis')),
             'state' => true,
 
@@ -30,7 +31,7 @@ class UserSeeder extends Seeder
             'name' => 'Sinitre MANAGER',
             'username' => 'claimsmanager',
             'email' => 'armandperise@gmail.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('Nsia2020'),
             'slug' => Str::slug('claimsmanager'.$date->format('dmYhis')),
             'state' => true,
 

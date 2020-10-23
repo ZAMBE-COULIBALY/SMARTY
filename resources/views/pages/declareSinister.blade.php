@@ -179,12 +179,16 @@ menu-open active
                                                                  </div>
                                                                  <div class="form-group">
 
-                                                                     <div class="icheck-primary">
+                                                                     <div class="icheck-danger">
                                                                         <label for="choix1">SINISTRE {{$subscription->pack->first()->product->category->label}}</label><br/>
                                                                         @foreach ($clmtypes as $item)
                                                                             @if ($subscription->pack->first()->product->category->hasAttribute($item->code,'CLM-TYP'))
-                                                                            <input class="checkbox @error('choix1') is-invalid @enderror" {{ (old('choix1') && (in_array($item->code, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="{{$item->code}}" value={{$item->code}}> {{$item->label}} <br/>
-
+                                                                            <div class="icheck-danger d-inline">
+                                                                                <input class="checkbox @error('choix1') is-invalid @enderror" {{ (old('choix1') && (in_array($item->code, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="{{$item->code}}" value={{$item->code}}>
+                                                                                <label for={{$item->code}}>
+                                                                                    {{$item->label}}
+                                                                                </label>
+                                                                              </div>
                                                                             @endif
                                                                         @endforeach
 

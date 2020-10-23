@@ -122,7 +122,7 @@
             </ul>
         </li>
     @endif
-    @if (Auth::user()->hasAnyRole(['agent','agent_chief','claims_manager']))
+    @if (Auth::user()->hasAnyRole(['agent','agent_chief','claims_manager',"administrator","super_administrator"]))
 
       <li class="nav-item has-treeview @yield('sinister_menu')">
       <a href="#" class="nav-link @yield('sinister_menu')">
@@ -139,6 +139,15 @@
             <a href="{{ route('sinister.search') }}" class="nav-link @yield('sinister_decla')">
               <i class="far fa-circle nav-icon"></i>
               <p>DECLARATION</p>
+            </a>
+        </li>
+        @endif
+        @if (Auth::user()->hasAnyRole(['administrator','super_administrator']))
+
+        <li class="nav-item">
+            <a href="{{ route('sinister.claimsManager.list') }}" class="nav-link @yield('sinisters_claimsManager')">
+              <i class="far fa-circle nav-icon"></i>
+              <p>GESTIONNAIRES</p>
             </a>
         </li>
         @endif

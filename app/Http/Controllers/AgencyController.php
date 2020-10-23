@@ -90,8 +90,8 @@ class AgencyController extends Controller
 
 
         $agencyChief->code     = $agency->code.str_pad(Agency::all()->where("partner_id",$agency->partner->id)->count(),3,"0",STR_PAD_LEFT);
-        $agencyChief->lastname= "Chief";
-        $agencyChief->firstname= $parametersvalid['label'];
+        $agencyChief->lastname= $parameters['lastnameM'];
+        $agencyChief->firstname= $parameters['firstnameM'];
         $agencyChief->username=  "chief@".Str::slug($parametersvalid['label'],"_");
         $agencyChief->contact= $parameters['contact'];
         $agencyChief->agency_id= $agency->id;

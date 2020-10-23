@@ -90,7 +90,7 @@ class VocabularySeeder extends Seeder
         DB::table('vocabularies')->insert(
             [
             'code' => 'PML',
-            'label' => "PANNE MECANIQUE ET LOGICIELLE",
+            'label' => "PANNES MECANIQUES OU LOGICIELLES",
             "type_id" => VocabularyType::where("code","CLM-TYP")->first()->id,
             "created_at" => now()
             ]);
