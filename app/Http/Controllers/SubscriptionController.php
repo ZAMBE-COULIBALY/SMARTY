@@ -452,7 +452,7 @@ class SubscriptionController extends Controller
 
             $pdf-> loadView("models.document", compact('newsubscription'));
 
-            $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
+            $pdf-> save(storage_path().'/app/public/received/'.$customer->first_name.$customer->phone1.'.pdf');
             Log::info('Création pdf document ok '.now());
 
             Log::info('Création send mail start '.now());

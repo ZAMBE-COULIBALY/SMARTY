@@ -114,7 +114,7 @@
                         <label readonly for="choix1">SINISTRE {{$sinister->subscription->pack->first()->product->category->label}}</label><br/>
                     @foreach ($clmtypes as $item)
                         @if ($sinister->subscription->pack->first()->product->category->hasAttribute($item->code,'CLM-TYP'))
-                        <div class="icheck-danger d-inline">
+                        <div class="icheck-danger">
                             <input disabled {{ ((in_array($item->code, explode("-",$sinister->type1))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id={{$item->code}} value={{$item->code}} >
                             <label for={{$item->code}}>
                                 {{$item->label}}

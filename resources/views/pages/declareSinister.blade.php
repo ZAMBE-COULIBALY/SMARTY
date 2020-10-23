@@ -183,7 +183,7 @@ menu-open active
                                                                         <label for="choix1">SINISTRE {{$subscription->pack->first()->product->category->label}}</label><br/>
                                                                         @foreach ($clmtypes as $item)
                                                                             @if ($subscription->pack->first()->product->category->hasAttribute($item->code,'CLM-TYP'))
-                                                                            <div class="icheck-danger d-inline">
+                                                                            <div class="icheck-danger">
                                                                                 <input class="checkbox @error('choix1') is-invalid @enderror" {{ (old('choix1') && (in_array($item->code, old('choix1'))) ) ? 'checked' : '' }} type="checkbox" name="choix1[]" id="{{$item->code}}" value={{$item->code}}>
                                                                                 <label for={{$item->code}}>
                                                                                     {{$item->label}}

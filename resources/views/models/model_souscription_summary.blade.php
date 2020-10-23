@@ -64,7 +64,7 @@
                 <td> <?php echo $Subscription['equipmentLibelle'] ?></td>
                 <tr>
                     <td>Marque :</td>
-                    <td><?php echo $Subscription['marquelibelle']?></td>
+                    <td><?php echo $Subscription['marquelibelle']. " ".$Subscription['modellibelle']?></td>
                 </tr>
                 <tr>
                     <td>Numéro identifiant (IMEI) :</td>
