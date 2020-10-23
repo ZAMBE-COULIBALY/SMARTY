@@ -107,7 +107,7 @@ class AgentController extends Controller
 
                 ->send(new newAgent($agent,$agent->agency,$pass))  ;
 
-                Session::Put('success',"L'agent a été correctement modifié");
+                Session::Put('success',"L'agent a été correctement créé");
 
         } catch (\Throwable $th) {
             Log::info("Erreur lors de la création de l'agent. agent: ". json_encode($agent). " | ".now());

@@ -6,6 +6,7 @@ use App\Agency;
 use App\Agent;
 use App\Subscription;
 use App\Customer;
+use App\Mail\newProforma;
 use App\Mail\newSubscription;
 use App\payments;
 use App\Manager;
@@ -103,7 +104,7 @@ class SubscriptionController extends Controller
              'marital_status'=> 'required:customers',
              'place_birth'=> 'required:customers',
              'place_residence'=> 'required:customers',
-             'phone1'=> 'required|unique:customers',
+             'phone1'=> 'required:customers',
              'phone2'=> ':customers',
              'mail'=> ':customers',
              'folder'=> ':customers',
@@ -333,14 +334,18 @@ class SubscriptionController extends Controller
                  //throw $th;
              }
          }
+         
+         try {
+            //code...
+            Mail::to($Subscription["mail"], "Souscripteur ".$Subscription['first_name']." ".$Subscription['name'])
+            ->send(new newProforma($Subscription));
+        Log::info('Proforma send mail ok '.now());
 
+        } catch (\Throwable $th) {
+            throw $th;
+            Log::warning('Erreur de mail : '.json_encode($Subscription));
 
-        //  $pdf =  App::make('dompdf.wrapper');
-
-        //  $pdf-> loadView("models.model_souscription_summary", compact('Subscription'));
-
-        //  $pdf-> save(storage_path().'/app/public/invoices/'.$Subscription['first_name'].$Subscription['phone1'].'.pdf');
-
+        }
 
         return view('pages.recapitulatif',compact('Subscription','date','connectedagent'));
 
@@ -453,7 +458,8 @@ class SubscriptionController extends Controller
             Log::info('Création send mail start '.now());
             try {
                 //code...
-                Mail::send(new newSubscription($newsubscription));
+                Mail::to($customer->mail, "Souscripteur .$customer->first_name. .$customer->first_name")
+                ->send(new newSubscription($newsubscription));
             Log::info('Création send mail ok '.now());
 
             } catch (\Throwable $th) {
@@ -607,6 +613,7 @@ class SubscriptionController extends Controller
 
                 $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
 
+                
             } catch (\Throwable $th) {
                 Log::alert(json_encode($th));
                 Log::alert('Paiement echoué');
@@ -614,8 +621,16 @@ class SubscriptionController extends Controller
 
 
             }
-
-            Mail::send(new newSubscription($newsubscription));
+                try {
+                    //code...
+                    Mail::to($customer->mail, "Souscripteur .$customer->first_name. .$customer->first_name")
+                    ->send(new newSubscription($newsubscription));
+                Log::info('Création send mail ok '.now());
+    
+                } catch (\Throwable $th) {
+                    Log::warning('Erreur de mail : '.json_encode($Subscription));
+    
+                }
 
 
 

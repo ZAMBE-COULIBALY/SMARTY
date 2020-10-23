@@ -13,6 +13,8 @@ use App\Customer;
 use App\Subscription;
 use App\Agency;
 use App\Agent;
+use App\ClaimsManager;
+use App\Mail\newAgent;
 use App\Mail\newSinister;
 use App\payments;
 use App\Manager;
@@ -21,6 +23,8 @@ use App\Product;
 use App\Role;
 use App\Vocabulary;
 use App\VocabularyType;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -311,5 +315,7 @@ class SinisterController extends Controller
 
         return redirect()->route("sinister.manage.demandlist");
 
-}
+    }
+
+
 }

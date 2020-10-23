@@ -5,9 +5,9 @@
     </head>
  <body  style="padding: 0; background-image: url('{{ asset('dist/img/FicheNSIA.jpg') }}') ;  background-repeat: no-repeat; background-size: 100% 100%; margin:0%">
 
-<div style="margin-top:8.5%; font-size:14px; font-family: Arial, Helvetica, sans-serif;margin-left:3%; ">
+<div style="margin-top:8.5%; font-size:14px; font-family: Arial;margin-left:3%; ">
     <table style="border: solid 2px;width: 97%;">
-        <tbody style="font-size:14px; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;">
+        <tbody style="font-size:14px; font-family: Arial; border-collapse: collapse;">
             <tr><td colspan="10"><b> RESERVE A NSIA ASSRANCES </b></td></tr>
             <tr>
                 <td colspan="2">Numéro de police</td>
@@ -28,12 +28,14 @@
     </table>
 </div>
 <div style="position: absolute; top: 1%; right: 3%; height:100px; width: 100px; display: inline-block">
-    <img src="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}" style="max-width: 100px; max-height: 100px; height: auto; image-orientation: from-image;" alt="LOGO PARTENAIRE"  >
+   @if ($newsubscription->agent->agency->partner->logo != "")
+           <img src="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}" style="max-width: 100px; max-height: 100px; height: auto; image-orientation: from-image;" alt=""  >
+   @endif
 
 </div>
 
 <div style="margin-top : 0.2cm; position: relative; width: 94%; left:3%">
-<table  style="width: 100%;  border-collapse: collapse; border: 1px solid black; font-size:13px; font-family: Arial, Helvetica, sans-serif;">
+<table  style="width: 100%;  border-collapse: collapse; border: 1px solid black; font-size:13px; font-family: Arial;">
     <tr>
         <td style=" width: 30%; background-color:#cbcbcb; ">
             Souscripteur
@@ -46,7 +48,7 @@
 </div>
 
 <div style="position: relative;  margin:0% ;width: 94%; left:3% ;">
-<p style="border: solid 1px; padding: 1%;  font-size:14px;  font-family: Arial, Helvetica, sans-serif; line-height:25px; margin-left:0%; ">
+<p style="border: solid 1px; padding: 1%;  font-size:14px;  font-family: Arial; line-height:25px; margin-left:0%; ">
  <b>  2. ASSURE      </b>               {{ $newsubscription->customer->gender }} <br>
 
  <b> Nom </b> {{ $newsubscription->customer->name }} <b>Prénoms</b> {{ $newsubscription->customer->first_name }} <br>
@@ -65,9 +67,9 @@
 </p>
 </div>
 
-<div style="border: solid 1px; padding: 0.5% ; position: relative; margin:0% ;width: 93%; left:3% ;font-size:14px; font-family: Arial, Helvetica, sans-serif;">
+<div style="border: solid 1px; padding: 0.5% ; position: relative; margin:0% ;width: 93%; left:3% ;font-size:14px; font-family: Arial;">
   <b>  3. CARACTERISTIQUES </b> <br>
-  <table  border="0.5px" style="width: 800px; margin-left:15%; border-collapse: collapse; font-size:14px; font-family: Arial, Helvetica, sans-serif;">
+  <table  border="0.5px" style="width: 800px; margin-left:15%; border-collapse: collapse; font-size:14px; font-family: Arial;">
         <thead>
             <tr style="background-color:rgba(190, 190, 190, 0.267) ">
                 <th>Type d’Appareil</th>
@@ -92,8 +94,8 @@
 
 </div>
 
-<div style="top: 1%; border: solid 1px;  padding: 0.5% ; position: relative; margin:0% ;width: 93%; left:3% ;font-size:14px; font-family: Arial, Helvetica, sans-serif;">
-    <table border="0.5px" style="width: 800px; margin-left:15%; border-collapse: collapse; font-size:14px; font-family: Arial, Helvetica, sans-serif;" >
+<div style="top: 1%; border: solid 1px;  padding: 0.5% ; position: relative; margin:0% ;width: 93%; left:3% ;font-size:14px; font-family: Arial;">
+    <table border="0.5px" style="width: 800px; margin-left:15%; border-collapse: collapse; font-size:14px; font-family: Arial;" >
             <tr>
                 <td colspan="4">
                  <b>   4. FORMULE </b>
@@ -108,7 +110,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                 <b>  4. GARANTIE  </b>
+                 <b>  5. GARANTIE  </b>
                 </td>
             </tr>
 
@@ -118,13 +120,21 @@
                      <b>   Date d’effet de la garantie</b>
                          </center>
                     </td>
-                    <td colspan="3">
+                    <td >
                         {{ $newsubscription->date_subscription }}
+                    </td>
+                    <td style="background-color:rgba(190, 190, 190, 0.267) ">
+                        <center>
+                     <b>   Date de fin de la garantie</b>
+                         </center>
+                    </td>
+                    <td >
+                        {{ $newsubscription->subscription_enddate }}
                     </td>
             </tr>
             <tr >
                 <td colspan="4">
-                 <b>   5. PRIMES   </b>
+                 <b>   6. PRIMES   </b>
                 </td>
             <tr>
                 <td style="background-color:rgba(190, 190, 190, 0.267) ">
@@ -144,7 +154,7 @@
 
         </table>
 </div>
-    <p style="margin-top:1%; font-size:14px; font-family: Arial, Helvetica, sans-serif; line-height:20px; margin-left:3%; ">
+    <p style="margin-top:1%; font-size:14px; font-family: Arial; line-height:20px; margin-left:3%; ">
       <b>  La police est constituée par :</b> <br>
 <i>
      Les Conventions spéciales  extraites des Conditions Générales n°217 du 02 Avril 2001 et  Les présentes Conditions Particulières
@@ -155,7 +165,7 @@
     </i>
     </p>
 
-    <p style="margin-top:1%; font-size:14px; font-family: Arial, Helvetica, sans-serif; margin-left:3%; ">
+    <p style="margin-top:1%; font-size:14px; font-family: Arial; margin-left:3%; ">
         Fait à Abidjan  le {{ $newsubscription->date_subscription }} <br>
     </p>
 <p style="height: 1050px; width: 21cm; margin: 0">

@@ -313,6 +313,10 @@ jQuery(document).ready(function(){
                 "responsive": true,
               "autoWidth": false,
             })
+            $('#claimsManagerlist').DataTable({
+                "responsive": true,
+              "autoWidth": false,
+            })
             $('#detailslist').DataTable({
 
         dom: 'Bfrtip',
