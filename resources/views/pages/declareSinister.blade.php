@@ -33,16 +33,16 @@ menu-open active
                                 <div class="tab-content" id="custom-content-above-tabContent">
                                     <div class="tab-pane fade show active" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                         <div class="tab-custom-content">
-                                            <p class="lead mb-0">DECLARATION</p>
+                                            <p class="lead mb-0">DECLARATION | <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                        <label for=""> SOUSCRIPTION N°</label><strong style="color: brown">{{$subscription->code}}</strong>
+                                                    </button></p>
                                                         <hr>
                                         </div>
                                         <div class="row">
                                             <div class="row col-md 4">
                                                 <form method="POST" enctype="multipart/form-data" action="{{ route('sinister.store',['subscription' => $subscription->id]) }}" >
                                                     @csrf
-                                                    <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                                        <label for=""> Souscription N°</label><strong style="color: brown">{{$subscription->code}}</strong>
-                                                    </button>
+                                                    
 
                                                      <div class="collapse" id="collapseExample">
                                                          <div class="card card-body">

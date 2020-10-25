@@ -27,7 +27,7 @@
 
                 <div class="form-group">
                 <label>Civilité</label>
-                <select name="gender" class="form-control select2bs4" style="width: 100%;">
+                <select name="gender" class="form-control select2bs4NE" style="width: 100%;">
                                     <option value="Monsieur" >Monsieur</option>
                                     <option value="Madame" >Madame</option>
                                     <option value="Mademoiselle" >Mademoiselle</option>
@@ -82,7 +82,7 @@
                                 <span class="fas fa-user"></span>
                             </div>
                         </div>
-                        <input type="date" max="{{$dat}}" value="{{ old('birth_date') }}"   class="form-control " name="birth_date" id="birth_date"  required autocomplete="birth_date" >
+                        <input type="date" max="{{$dat}}" value="{{ old('birth_date') }}"   class="form-control " name="birth_date" id="birth_date"  required autocomplete="birthday" >
 
                 </div>
             </div>
@@ -94,7 +94,7 @@
                             <span class="fas fa-home"></span>
                         </div>
                     </div>
-                    <input type="text" class="form-control " name="place_birth" id="place_birth" value="{{ old('place_birth') }}" placeholder="Saisir le lieu de naissance du client" required autocomplete="place_birth" >
+                    <input type="text" class="form-control " name="place_birth" id="place_birth" value="{{ old('place_birth') }}" placeholder="Saisir le lieu de naissance du client" required autocomplete="birthplace" >
 
                     </div>
             </div>
@@ -106,7 +106,7 @@
                             <span class="fas fa-home"></span>
                         </div>
                     </div>
-                    <input type="text" class="form-control " value="{{ old('place_residence') }}"  name="place_residence" id="place_residence" value="" placeholder="Saisir le lieu de résidence du client" required autocomplete="place_residence" >
+                    <input type="text" class="form-control " value="{{ old('place_residence') }}"  name="place_residence" id="place_residence" value="" placeholder="Saisir le lieu de résidence du client" required autocomplete="home" >
 
                     </div>
             </div>
@@ -132,7 +132,7 @@
                     <span class="fas fa-envelope"></span>
                 </div>
             </div>
-            <input type="email" class="form-control " value="{{ old('mail') }}" name="mail" id="mail" value="" placeholder="Saisir le libelle du client" autocomplete="mail" >
+            <input type="email" class="form-control " value="{{ old('mail') }}" name="mail" id="mail" value="" placeholder="Saisir l'adresse email du client" autocomplete="email" >
 
         </div>
     </div>

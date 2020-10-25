@@ -97,7 +97,7 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
     });
 
     // sinister
- Route::group(['prefix' => '/sinister'], function () {
+ Route::group(['prefix' => '/sinister', 'middleware' => ["auth","roles"]], function () {
         Route::get('/', [
             'as'=> 'sinister.search',
             'uses' => 'SinisterController@index'

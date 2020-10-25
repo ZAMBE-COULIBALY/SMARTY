@@ -3,7 +3,7 @@
         <TItle></TItle>
 
     </head>
- <body  style="padding: 0; background-image: url('{{ asset('dist/img/FicheNSIA.jpg') }}') ;  background-repeat: no-repeat; background-size: 100% 100%; margin:0%">
+ <body  style="padding: 0; background-image: url('{{ asset('dist/img/FicheNSIA1.jpg') }}') ;  background-repeat: no-repeat; background-size: 100% 100%; margin:0%">
 
 <div style="margin-top:8.5%; font-size:14px; font-family: Arial;margin-left:3%; ">
     <table style="border: solid 2px;width: 97%;">
@@ -29,7 +29,7 @@
 </div>
 <div style="position: absolute; top: 1%; right: 3%; height:100px; width: 100px; display: inline-block">
    @if ($newsubscription->agent->agency->partner->logo != "")
-           <img src="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}" style="max-width: 100px; max-height: 100px; height: auto; image-orientation: from-image;" alt=""  >
+           <img src="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}" style="max-width: 100px; max-height: 100px; image-orientation: from-image;" alt=""  >
    @endif
 
 </div>
