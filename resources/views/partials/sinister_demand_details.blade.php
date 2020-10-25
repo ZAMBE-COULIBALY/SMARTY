@@ -1,5 +1,6 @@
-<p class="lead mb-0">TRAITEMENT DE DEMANDE   <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        <H4><label for="">SOUSCRIPTION N°</label><strong style="color: brown">{{$sinister->subscription->code}}</strong></H4>
+<p class="lead mb-0">TRAITEMENT DE DEMANDE   
+    <button class="btn btn-flat" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <H6><label for="">SOUSCRIPTION N°</label><strong style="color: brown">{{$sinister->subscription->code}}</strong></H4>
     </button>
 </p>
 
