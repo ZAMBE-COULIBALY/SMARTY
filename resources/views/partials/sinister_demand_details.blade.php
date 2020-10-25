@@ -129,10 +129,14 @@
             <div class="col-md-6">
                <div class="row">
                     <div class="col-md-6">
-                        <img class="img-fluid" style="width: 100%; height: 200px" src="{{ asset('storage/sinisters/'.$sinister->folder.'/'.$sinister->contract) }}" alt="">
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-contract">
+                            <img class="img-fluid" style="width: 100%; height: 200px" src="{{ asset('storage/sinisters/'.$sinister->folder.'/'.$sinister->contract) }}" alt="">
+                        </button>
                     </div>
                     <div class="col-md-6">
-                        <img class="img-fluid" style="width: 100%; height: 200px" src="{{ asset('storage/sinisters/'.$sinister->folder.'/'.$sinister->vouchers) }}" alt="">
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-vouchers">
+                            <img class="img-fluid" style="width: 100%; height: 200px" src="{{ asset('storage/sinisters/'.$sinister->folder.'/'.$sinister->vouchers) }}" alt="">
+                        </button>
                     </div>
                 </div>
 
@@ -159,3 +163,48 @@
     <div class="form-group col-md-12 " style="text-align: right; ">
         <hr>
     </div>
+    <div class="modal fade" id="modal-contract">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Default Modal</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+      <div class="modal fade" id="modal-voucher">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Default Modal</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
