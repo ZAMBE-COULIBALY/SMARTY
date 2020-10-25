@@ -1,5 +1,5 @@
 <p class="lead mb-0">TRAITEMENT DE DEMANDE   <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        <label for=""> Souscription N°</label><strong style="color: brown">{{$sinister->subscription->code}}</strong>
+        <H4><label for="">SOUSCRIPTION N°</label><strong style="color: brown">{{$sinister->subscription->code}}</strong></H4>
     </button>
 </p>
 
@@ -164,7 +164,7 @@
         <hr>
     </div>
     <div class="modal fade" id="modal-contract">
-        <div class="modal-lg modal-dialog modal-dialog-centered">
+        <div class="modal-lg modal-dialog-scrollable modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">CONTRAT</h4>
@@ -184,7 +184,7 @@
       <!-- /.modal -->
 
       <div class="modal fade" id="modal-vouchers">
-        <div class="modal-lg modal-dialog modal-dialog-centered">
+        <div class="modal-lg modal-dialog-scrollable modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">PIECES</h4>
