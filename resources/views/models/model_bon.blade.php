@@ -107,7 +107,7 @@
 </div>
 <div id="signature">
     <p>{{__("VISA DE L'ASSUREUR")}}</p>
-    <img src={{ asset('dist/img/cachet-signature.png') }} width="100%" height="100%"/>
+    <img src={{ asset('dist/img/cachet-signature.jpg') }} width="100%" height="100%"/>
 
 </div>
     </body>
