@@ -1,10 +1,10 @@
-<p class="lead mb-0">TRAITEMENT DE DEMANDE
+<p class="lead mb-0">TRAITEMENT DE DEMANDE   <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <label for=""> Souscription N°</label><strong style="color: brown">{{$sinister->subscription->code}}</strong>
+    </button>
 </p>
 
 <hr>
-    <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        <label for=""> Souscription N°</label><strong style="color: brown">{{$sinister->subscription->code}}</strong>
-    </button>
+  
 
      <div class="collapse" id="collapseExample">
          <div class="card card-body">
