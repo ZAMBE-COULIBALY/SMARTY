@@ -31,7 +31,7 @@
                     @if (isset($pass))
                         echo $pass;
                     @endif
-                    <div class="card card-purple  shadow-sm ">
+                    <div class="card card-warning  shadow-sm ">
                         <div class="card-header p-0 pt-1">
                             <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
                             <li class="nav-item">

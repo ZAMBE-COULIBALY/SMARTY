@@ -334,7 +334,6 @@ class SubscriptionController extends Controller
                  //throw $th;
              }
          }
-         
          try {
             //code...
             Mail::to($Subscription["mail"], "Souscripteur ".$Subscription['first_name']." ".$Subscription['name'])

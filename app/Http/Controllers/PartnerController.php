@@ -64,15 +64,12 @@ class PartnerController extends Controller
             'logo' => 'image'
         ]);
 
-        $logo = isset($parameters['logo']) ?? '' ;
+        $logo = isset($parameters['logo']) ? $parameters['logo'] : '' ;
         if (null !== $request->file('logo') ) {
             # code...
 
             $logo = "logo-".$parametersvalid['code']."-". time() . '.' . $request->file('logo')->getClientOriginalExtension();
             $request->file('logo')->storeAs('public/logo/'.$parametersvalid['code'].'/', $logo);
-
-
-
 
         }
         $partner = new Partner();
@@ -179,7 +176,7 @@ class PartnerController extends Controller
 
         ]);
 
-            $logo = isset($parameters['logo']) ?? $partner->logo ;
+            $logo = isset($parameters['logo']) ? $parameters['logo'] : $partner->logo ;
 
 
         if (null !== $request->file('logo') ) {

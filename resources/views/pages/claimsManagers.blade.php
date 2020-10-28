@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 col-sm-12">
-                    <div class="card card-purple  shadow-sm ">
+                    <div class="card card-warning  shadow-sm ">
                         <div class="card-header p-0 pt-1">
                             <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
                             <li class="nav-item">

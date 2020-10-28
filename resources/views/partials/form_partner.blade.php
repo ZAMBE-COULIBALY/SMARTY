@@ -16,7 +16,7 @@
                                 <span class="fas fa-user"></span>
                             </div>
                         </div>
-                        <input {{ isset($partner) ? "disabled" : ""}} type="text" class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($partner) ? $partner->code : '' }}" placeholder="Saisir le code du partenaire" required autocomplete="code" autofocus>
+                        <input {{ isset($partner) ? "disabled" : ""}} type="text" class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($partner) ? $partner->code : old('code') }}" placeholder="Saisir le code du partenaire" required autocomplete="code" autofocus>
 
                     </div>
                     @error('Code')
