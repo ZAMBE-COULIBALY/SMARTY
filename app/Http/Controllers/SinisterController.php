@@ -79,6 +79,7 @@ class SinisterController extends Controller
             });
         }
         $subscriptions = $subscriptions->get();
+        // dd($subscriptions->first()->currentState());
         return view('pages.searchSinister', compact('subscriptions'));
         // return redirect()->route("sinister.create",$subscription->id);
      }

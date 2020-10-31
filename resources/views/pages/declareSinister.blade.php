@@ -33,7 +33,7 @@ menu-open active
                                 <div class="tab-content" id="custom-content-above-tabContent">
                                     <div class="tab-pane fade show active" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                         <div class="tab-custom-content">
-                                            <p class="lead mb-0">DECLARATION | <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                            <p class="lead mb-0">DECLARATION | <button class="btn btn-flat btn-outline" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                                         <label for=""> SOUSCRIPTION N°</label><strong style="color: brown">{{$subscription->code}}</strong>
                                                     </button></p>
                                                         <hr>

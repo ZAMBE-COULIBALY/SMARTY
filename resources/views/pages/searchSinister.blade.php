@@ -87,7 +87,7 @@
                                         <td>{{ $subscription->date_subscription }} / {{ $subscription->subscription_enddate }}</td>
                                         <td>
                                             <center>
-                                               @if ($subscription->state>=1)
+                                               @if ($subscription->currentState() >=1)
                                                    
                                                    <a href={{ route('sinister.create',$subscription->id) }}  class="btn btn-info btn-sm ">
                                                     <i class="fa fa-pencil-alt"> VOIR</i>
