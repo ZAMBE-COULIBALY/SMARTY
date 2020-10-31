@@ -82,8 +82,8 @@ class Subscription extends Model
     {
         # code...
         $currentState = $this->state;
-        $currentInterval = now()->diffInDays($this->created_at);
-        if ($currentState !=0 ) {
+        $currentInterval = now()->diffInDays(Carbon::parse($this->date_subscription));
+        if ($currentState >=  0 ) {
             # code...
 
              switch ($this->pack->first()->product->category->attribute("ASS-TYP")) {

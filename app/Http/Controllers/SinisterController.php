@@ -6,26 +6,15 @@ use App\Sinister;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\database\Query\Builder;
 use Illuminate\Support\Facades\App;
 use App\User;
 use App\Customer;
 use App\Subscription;
 use App\Agency;
 use App\Agent;
-use App\ClaimsManager;
-use App\Mail\newAgent;
-use App\Mail\newSinister;
-use App\payments;
-use App\Manager;
-use App\Partner;
-use App\Product;
-use App\Role;
 use App\Vocabulary;
 use App\VocabularyType;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Database\Eloquent\Builder ;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -43,9 +32,8 @@ class SinisterController extends Controller
     public function index(Request $request)
     {
         //
-        $Subscription = $request->session()->get('Subscription');
 
-        return view('pages.searchSinister', compact('Subscription'));
+        return view('pages.searchSinister');
     }
 
     /**
@@ -57,16 +45,42 @@ class SinisterController extends Controller
     public function statment(Request $request)
     {
         //
-        $libellepdv = Agency::Where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id)->first()->label;
+        $agency = Agent::where("username","=",Auth()->user()->username)->first()->agency;
+        $paramaters =$request->except('_token');
+        // $validatedData = $request->validate([
+        //     'folder'=> ['required','exists:subscriptions,code',Rule::in(Subscription::where("state",">",0)->pluck("code"))],
+        // ]);
 
-        $validatedData = $request->validate([
-            'folder'=> ['required','exists:subscriptions,code',Rule::in(Subscription::where("state",">",0)->pluck("code"))],
-        ]);
+        $subscriptions = Subscription::whereIn('agent_id',$agency->agents->pluck("id"));
+        if (isset($paramaters['folder'])) {
+            # code...
+            $subscriptions = $subscriptions->where('code',$paramaters['folder']);
 
-        $subscription = Subscription::where('code','=',$validatedData['folder'])->first();
-
-
-        return redirect()->route("sinister.create",$subscription->id);
+        }
+        
+        if (isset($paramaters['firstname'])) {
+            # code...
+            $subscriptions =  $subscriptions->whereHas('customer', function (Builder $query) use ($paramaters) {
+                $query->where('first_name', 'like', "%".$paramaters["firstname"]."%");
+            });
+        }
+        
+        if (isset($paramaters['lastname'])) {
+            # code...
+            $subscriptions = $subscriptions->whereHas('customer', function (Builder $query) use ($paramaters) {
+                $query->where('name', 'like', "%".$paramaters["lastname"]."%");
+            });
+        }
+        
+        if (isset($paramaters['contact'])) {
+            # code...
+            $subscriptions = $subscriptions->whereHas('customer', function (Builder $query) use ($paramaters) {
+                $query->where('phone1', 'like', "%".$paramaters["contact"]."%");
+            });
+        }
+        $subscriptions = $subscriptions->get();
+        return view('pages.searchSinister', compact('subscriptions'));
+        // return redirect()->route("sinister.create",$subscription->id);
      }
 
 
@@ -142,7 +156,7 @@ class SinisterController extends Controller
     {
         //
 
-        $paramters =$request->except('_token');
+        $parameters =$request->except('_token');
 
         $parametersvalid = $request->validate([
             'description' => 'required|max:750',
@@ -152,8 +166,8 @@ class SinisterController extends Controller
         ]);
             try {
             //code...
-                $contract = $paramters['contract'];
-                $vouchers = $paramters['vouchers'];
+                $contract = $parameters['contract'];
+                $vouchers = $parameters['vouchers'];
                 if (null !== $request->file('contract') && null !== $request->file('vouchers')) {
                     # code...
 
@@ -171,12 +185,12 @@ class SinisterController extends Controller
                 $sinister = new Sinister();
                 $sinister->code = $code;
                 $sinister->folder = $subscription->code;
-                $sinister->description = $paramters['description'];
+                $sinister->description = $parameters['description'];
                 $sinister->contract = $contract;
                 $sinister->vouchers = $vouchers;
                 $sinister->state = 0;
                 $sinister->agent_id = $agent->id;
-                $sinister->type1 = (isset($paramters['choix1']))  ? collect($paramters['choix1'])->implode('-'): "";
+                $sinister->type1 = (isset($parameters['choix1']))  ? collect($parameters['choix1'])->implode('-'): "";
                 $sinister->save();
                 $subscription->state = - 1 ;
                 $subscription->save();

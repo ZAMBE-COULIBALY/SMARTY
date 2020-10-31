@@ -5,7 +5,7 @@
     </head>
  <body  style="padding: 0; background-image: url('{{ asset('dist/img/FicheNSIA1.jpg') }}') ;  background-repeat: no-repeat; background-size: 100% 100%; margin:0%">
 
-<div style="margin-top:8.5%; font-size:14px; font-family: Arial;margin-left:3%; ">
+<div style="margin-top:10 %; font-size:14px; font-family: Arial;margin-left:3%; ">
     <table style="border: solid 2px;width: 97%;">
         <tbody style="font-size:14px; font-family: Arial; border-collapse: collapse;">
             <tr><td colspan="10"><b> RESERVE A NSIA ASSRANCES </b></td></tr>
@@ -152,7 +152,7 @@
 
         </table>
 </div>
-    <p style="margin-top:1%; font-size:14px; font-family: Arial; line-height:20px; margin-left:3%; ">
+    <p style="margin-top:2%; font-size:14px; font-family: Arial; text-align: justify; line-height:20px; margin-left:3%;margin-right:3%; ">
       <b>  La police est constituée par :</b> <br>
 <i>
      Les Conventions spéciales  extraites des Conditions Générales n°217 du 02 Avril 2001 et  Les présentes Conditions Particulières

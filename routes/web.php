@@ -107,7 +107,10 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
                 'uses' => 'SinisterController@index'
         ]);
 
-        Route::POST('/statment', [
+        Route::any('users/{id}', function ($id) {
+            
+        });
+        Route::any('/statment', [
             'as'=> 'sinister.statment',
             'uses' => 'SinisterController@statment'
             ]);

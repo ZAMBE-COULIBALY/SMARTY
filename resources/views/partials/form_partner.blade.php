@@ -30,13 +30,19 @@
                     <label for="logo">Logo</label>
 
                     <div class="custom-file">
+                      
                         <input type="file" class="custom-file-input form-control @error('logo') is-invalid @enderror" value="{{ isset($partner) ? $partner->logo : '' }}" name="logo" id="logo" >
                         <label class="custom-file-label" for="logo">Charger le logo (image png)</label>
                         @error('logo')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
-                        @enderror
+                        @enderror  
+                        @if (isset($partner) && isset($partner->logo))
+                        <span class="">
+                        <strong>{{ isset($partner) ? $partner->logo : '' }}</strong>
+                    </span>
+                    @endif
                     </div>
                 </div>
                 <div class="form-group col-md-6">
