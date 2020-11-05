@@ -39,4 +39,9 @@
   {{--  <link rel="stylesheet" href={{ asset('plugins/file-uploaders/dropzone.min.css') }} >  --}}
 
 
-
+  <style>
+    input.transparent-input{
+       background-color:rgba(0,0,0,0) !important;
+       border:none !important;
+    }
+</style>

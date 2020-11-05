@@ -48,13 +48,19 @@ class Subscription extends Model
     {
         # code...
         $currentValue = $this->price;
-        $currentInterval = now()->diffInDays($this->created_at);
+        $currentInterval = now()->diffInDays(Carbon::parse($this->date_subscription));
+        if ($this->state == 0) {
+            # code...
+            $currentInterval =  Carbon::parse($this->sinisters->where("state",1)->first()->created_at)->diffInDays(Carbon::parse($this->date_subscription));
+
+        }
         switch ($this->pack->first()->product->category->attribute("ASS-TYP")) {
             case 'DP':
                 # code...
                 if ($currentInterval > 365) {
                     # code...
                     $currentValue = 0;
+                    
                 }
                 elseif($currentInterval > 180)
                 {
@@ -86,30 +92,30 @@ class Subscription extends Model
         if ($currentState >=  0 ) {
             # code...
 
-             switch ($this->pack->first()->product->category->attribute("ASS-TYP")) {
-            case 'DP':
-                # code...
-                if ($currentInterval > 365) {
+            switch ($this->pack->first()->product->category->attribute("ASS-TYP")) {
+                case 'DP':
                     # code...
-                    $currentState = 0;
-                }
-                elseif($currentInterval > 180)
-                {
-                    $currentState = 3;
-                } elseif ($currentInterval > 90) {
+                    if ($currentInterval > 365) {
+                        # code...
+                        $currentState = 0;
+                    }
+                    elseif($currentInterval > 180)
+                    {
+                        $currentState = 3;
+                    } elseif ($currentInterval > 90) {
+                        # code...
+                        $currentState = 2;
+
+                    }
+                    return $currentState;
+                    break;
+
+                default:
                     # code...
-                    $currentState = 2;
+                    return $currentState;
 
-                }
-                return $currentState;
-                break;
-
-            default:
-                # code...
-                return $currentState;
-
-                break;
-        }
+                    break;
+            }
         }
 
         return $currentState;
