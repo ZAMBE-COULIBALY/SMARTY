@@ -51,7 +51,8 @@ active
 </style>
 @endsection
 @section('content')
-
+    @if (Auth::user()->hasAnyRole(['administrator','super_administrator']))
+        
 <section class="content-header">
     <div class="container-fluid">
     <div class="row mb-2">
@@ -233,6 +234,13 @@ active
             <!-- /.row -->
         </div>
     </section> 
+    @else
+    <div class="content flex-center">
+        <div class="title m-b-md links">
+            <a href="" > <strong>NSIA ASSURANCE SMARTY</strong></a>
+        </div>
+    </div>
+    @endif
 @endsection
 
 
