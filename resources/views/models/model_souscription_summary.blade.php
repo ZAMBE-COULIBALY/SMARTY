@@ -15,7 +15,7 @@ margin: 0cm;
 </style>
     </head>
     
- <body  style=" background-image: url('{{ asset('dist/img/model3n.png') }}'); background-repeat: no-repeat; background-size: 100% 100%; padding: 0px; margin:0px">
+ <body  style=" background-image: url('{{ asset('dist/img/model3n.jpg') }}'); background-repeat: no-repeat; background-size: 100% 100%; padding: 0px; margin:0px">
     <div style=" position: relative; width:800px; padding:0px; margin-left:1.5cm; top:2cm">
     <table  >
             <tr>
