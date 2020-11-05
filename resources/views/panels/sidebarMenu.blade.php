@@ -4,7 +4,7 @@
     <!-- Add icons to the links using the .nav-icon class
          with font-awesome or any other icon font library -->
     
-       @if (Auth::user()->hasAnyRole(['administrator','super_administrator']))
+       {{--  @if (Auth::user()->hasAnyRole(['administrator','super_administrator']))  --}}
 
          <li class="nav-item has-treeview @yield('dashboardM')">
             <a href="{{asset('/')}}" class="nav-link @yield('dashboard')">
@@ -15,7 +15,7 @@
                 </p>
             </a>
         </li>
-        @endif
+        {{--  @endif  --}}
 
     @if (Auth::user()->hasAnyRole(['administrator','super_administrator','manager','agent_chief']))
 
