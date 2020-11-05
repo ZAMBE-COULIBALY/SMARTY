@@ -1,10 +1,22 @@
 <html style=" padding: 0px; margin:0px">
     <head>
         <TItle></TItle>
-
+<style>
+    signature {
+        position: fixed; 
+        bottom: 3cm; 
+        right: 1cm;
+        height: 2.5cm;
+        width:  7cm;
+margin: 0cm;
+        /** Extra personal styles **/
+     
+    }
+</style>
     </head>
- <body  style=" background-image: url('{{ asset('dist/img/model3.png') }}'); background-repeat: no-repeat; background-size: 100% 100%; padding: 0px; margin:0px">
-<div style=" position: relative; width:800px; padding:0px; margin-left:1.5cm; top:2cm">
+    
+ <body  style=" background-image: url('{{ asset('dist/img/model3n.png') }}'); background-repeat: no-repeat; background-size: 100% 100%; padding: 0px; margin:0px">
+    <div style=" position: relative; width:800px; padding:0px; margin-left:1.5cm; top:2cm">
     <table  >
             <tr>
                 <td> </td>

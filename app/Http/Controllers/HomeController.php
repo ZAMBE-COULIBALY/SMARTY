@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Subscription;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -91,5 +94,98 @@ class HomeController extends Controller
 
 // Output the generated PDF to Browser
             $pdf->stream(storage_path().'/app/public/received/document.pdf');
+    }
+
+
+    public function dashboardData()
+    {
+        # code...
+
+        $subscription100 = 0;
+        $subscription70 = 0;
+        $subscription50 = 0;
+        $subscriptionWin = 0;
+        $subscriptionFull = 0;
+        $subscriptionLost = 0;
+        $subscriptions = Subscription::all();
+
+        foreach ($subscriptions->where("subscription_enddate",">",now()->floorday())->where("state","<>",0) as $subscription ) {
+            # code...
+            switch ($subscription->currentState()) {
+                case 1:
+                    # code...
+                    $subscription100 = $subscription100 + $subscription->currentValue();
+
+                    break;
+            
+                case 2:
+                    # code...
+                    $subscription70 = $subscription70 + $subscription->currentValue();
+
+                    break;
+                case 3:
+                    # code...
+                    $subscription50 = $subscription50 + $subscription->currentValue();
+
+                    break;
+                    case 1:
+                        # code...
+                        $subscription100 = $subscription100 + $subscription->currentValue();
+    
+                        break;
+                default:
+                    # code...
+                    break;
+            }
+        }
+        foreach ($subscriptions->where("state",0) as $subscription ) {
+            $subscriptionLost = $subscriptionLost + $subscription->currentValue();
+
+        }
+      
+
+        $subscriptionFull = $subscription100  + $subscription70 + $subscription50;
+
+        $subscriptionWin = $subscriptions->where("state","<>",0)->where("subscription_enddate","<",now()->floorday())->sum("premium");
+
+        $data = [
+            "general" => [ 
+                "subscriptionFull" => $subscriptionFull,
+                "subscription100" => $subscription100,
+                "subscription70" => $subscription70,
+                "subscription50" => $subscription50, 
+                "subscriptionWin" => $subscriptionWin, 
+                "subscriptionLost" => $subscriptionLost, 
+                ]
+           
+        ];
+
+
+
+        /// Data Chart Global Monthly Subscription count
+
+        
+        
+        $subscriptions = Subscription::whereBetween("date_subscription",[now()->copy()->firstOfYear()->floorDay(),now()->copy()->addDay(1)->floorDay()->addSecond(-1)])->select(DB::raw('count(id) as `data`'),DB::raw("DATE_FORMAT(date_subscription, '%m') new_date"))
+        ->groupBy('new_date')->get();
+
+        $cpt = ["01" => 0,"02" => 0,"03" => 0,"04" => 0,"05" => 0,"06" => 0,"07" => 0,"08" => 0,"09" => 0,"10" => 0,"11" => 0,"12" => 0];
+        foreach ($subscriptions as $subscription ) {
+            $cpt[$subscription->new_date] = $cpt[$subscription->new_date] + $subscription->data;
+        }
+        $cpt1 = [];
+        foreach ($cpt as $key => $value) {
+            # code...
+            array_push($cpt1,(integer)$value);
+        }
+        $month = now()->month;
+        $data["globalMonthlySubCount"] =  array_slice($cpt1,0,(integer)$month);
+        /// Data Chart Global Monthly Subscription count
+
+
+
+
+        // return
+        return response()->json($data);
     }
 }

@@ -45,3 +45,7 @@ Route::get('/document',[
 Route::post('/stats',[
     "uses" => 'StatistiquesController@allSubscriptionsByAgency'
 ]);
+
+Route::get('/dashboardData',[
+    "uses" => "HomeController@dashboardData"
+]);
