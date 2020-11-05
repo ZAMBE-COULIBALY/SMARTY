@@ -90,7 +90,7 @@
                                                @if ($subscription->currentState() >=1)
                                                    
                                                    <a href={{ route('sinister.create',$subscription->id) }}  class="btn btn-info btn-sm ">
-                                                    <i class="fa fa-pencil-alt"> VOIR</i>
+                                                    <i class="fa fa-pencil-alt"> DECLARER</i>
                                                 </a>
                                             @endif
      
