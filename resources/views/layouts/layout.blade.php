@@ -73,7 +73,7 @@ active
                 <div class="col-md-8 col-sm-8">
                     <div class="card card-primary  shadow-sm ">
                         <div class="card-header  p-0 pt-1">
-                            <strong><h5>PREVISIONEL</h5></strong> 
+                            <strong><h5>PREVISIONNEL</h5></strong> 
                         </div>
                         <div class="card-body">
                             <div class="row">
