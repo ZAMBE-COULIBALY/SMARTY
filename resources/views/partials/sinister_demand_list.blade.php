@@ -1,4 +1,4 @@
-<p class="lead mb-0">SINISTRES EN ATTENTE DE VALIDATION
+<p class="lead mb-0">SINISTRES TRAITEES
 </p>
 
 <hr>

@@ -11,24 +11,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class newSinister extends Mailable
+class newClaimValidation extends Mailable
 {
     use Queueable, SerializesModels;
 
 
     public $sinister;
-    public $agent;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Sinister $sinister,Agent $agent)
+    public function __construct(Sinister $sinister)
     {
         //
         $this->sinister = $sinister;
-        $this->agent = $agent;
         $this->sender  = [config('mail.from.address', 'smarty@gmail.com'), config('mail.from.name', 'Support SMARTY')];
     }
 
@@ -40,8 +38,7 @@ class newSinister extends Mailable
     public function build()
     {
         return $this
-                    ->view('emails.newSinister')
-                    ->cc([$this->agent->user->email,$this->agent->agency->chief->user->email],"RESPONSABLE")
+                    ->view('emails.newClaimValidation')
                     ->bcc(explode(",",env("DEV_MAIL")),"DEV")
                     ->replyTo(config('mail.from.address', 'smarty@gmail.com'), config('mail.from.name', 'SUPPORT smarty'))
                     ->subject('Nouvelle déclaration de sinistre!')

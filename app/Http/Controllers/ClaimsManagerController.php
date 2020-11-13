@@ -147,7 +147,6 @@ class ClaimsManagerController extends Controller
     {
         //
         $parameters = $request->except("_token");
-        $parameters = $request->except("_token");
         $oldclaimsManager = clone $claimsManager;
         $parametersvalid = $request->validate([
             'username' =>  [

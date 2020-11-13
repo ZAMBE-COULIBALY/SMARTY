@@ -209,7 +209,7 @@
             </div>
         </div>
         @if (!(isset($partner) ))
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="card ">
 
             <div class="card-body row">
@@ -231,7 +231,7 @@
                     </span>
                     @enderror
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-7">
                     <label for="firstnameM">Prenom(s) manager</label>
                     <div class="input-group">
                         <div class="input-group-append">
@@ -249,15 +249,52 @@
                     @enderror
                 </div>
             </div>
+            </div>
         </div>
         @endif
+        <div class="col-md-6">
+            <div class="card ">
 
+            <div class="card-body row">
+
+                <div class="form-group col-md-8">
+                    <div class="input-group">
+                        <label>COMMERCIAL</label>
+                        <select name="intermediary" id="intermediary" class="form-control form-control-sm  @error('intermediary') is-invalid @enderror select2bs4NE" style="width: 100%;">
+                           @foreach ($intermediaries as $item)
+                          <option value={{$item->id}} {{ (isset($partner) && $partner->intermediary_id == $item->id)? 'selected' : '' }}>{{$item->code}}-{{$item->firstname}} {{$item->lastname}}</option>
+
+                           @endforeach
+                        </select>
+                        @error('asstyp')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                </div>
+                <div class="form-group col-md-4">
+                    <label>TAUX COMMISSION</label> 
+                            <div class="input-group-sm">
+                                 
+                                 <input type="number" min="0" required step="0.1" class="form-control form-control-sm" value="{{ isset($partner) ? $partner->intcomrate : '' }}" name="intcomrate" id="intcomrate">
+                                 
+                                 @error('intcomrate')
+                                     <span class="invalid-feedback" role="alert">
+                                         <strong>{{ $message }}</strong>
+                                     </span>
+                                 @enderror
+                             </div>
+                </div>
+            </div>
+        </div>
+        </div>
     </div>
 
 
 
 
 
-    </div>
     <button type="submit" class="btn btn-primary">ENREGISTRER</button>
 </form>

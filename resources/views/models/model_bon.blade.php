@@ -95,8 +95,8 @@
             <tr>
                 <td> Emis par:
                 </td>
-                <td>
-                    GESTIONNAIRE SINISTRES
+                <td style="text-transform: uppercase ">
+                    {{ $sinister->claimsManager->firstname . ' '. $sinister->claimsManager->lastname  }}
                 </td>
             </tr>
             <tr>

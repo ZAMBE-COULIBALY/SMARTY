@@ -25,7 +25,19 @@
                             </td>
                         </tr>
                         <tr style="text-align: left";>
-                            <td>FORMULE PREMIUM : </td>
+                            <td>FORMULE @switch($sinister->subscription->formula)
+                                @case("1")
+                                    ECO
+                                    @break
+                                    @case("2")
+                                    STANDARD
+                                    @break
+                                    @case("3")
+                                    PREMIUM
+                                    @break
+                                @default
+                                STANDARD
+                            @endswitch : </td>
                             <td>NOUVELLE SOUSCRIPTION</td>
                         </tr>
                         <tr>

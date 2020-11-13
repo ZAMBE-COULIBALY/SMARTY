@@ -48,6 +48,10 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Manager','username','username');
     }
+    public function claimsManager()
+    {
+        return $this->hasOne('App\ClaimsManager','username','username');
+    }
 
     public function partner()
     {

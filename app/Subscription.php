@@ -54,6 +54,7 @@ class Subscription extends Model
             $currentInterval =  Carbon::parse($this->sinisters->where("state",1)->first()->created_at)->diffInDays(Carbon::parse($this->date_subscription));
 
         }
+        
         switch ($this->pack->first()->product->category->attribute("ASS-TYP")) {
             case 'DP':
                 # code...
@@ -61,17 +62,26 @@ class Subscription extends Model
                     # code...
                     $currentValue = 0;
                     
-                }
-                elseif($currentInterval > 180)
-                {
-                    $currentValue = 0.5 * $currentValue;
-                } elseif ($currentInterval > 90) {
-                    # code...
-                    $currentValue = 0.7 * $currentValue;
+                } else {
+                    if ($this->formula == 1) {
+                        # code...
+                        $currentValue = 0.25 * $currentValue;
+
+                    } elseif ($this->formula == 2) {
+                      
+                        if($currentInterval > 180)
+                        {
+                            $currentValue = 0.5 * $currentValue;
+                        } elseif ($currentInterval > 90) {
+                            # code...
+                            $currentValue = 0.7 * $currentValue;
+
+                        }
+                    }
 
                 }
                 return $currentValue;
-                break;
+                    break;
 
             default:
                 # code...
@@ -99,6 +109,7 @@ class Subscription extends Model
                         # code...
                         $currentState = 0;
                     }
+                    
                     elseif($currentInterval > 180)
                     {
                         $currentState = 3;

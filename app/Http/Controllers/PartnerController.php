@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Agency;
+use App\Intermediary;
 use App\Mail\newPartner;
 use App\Manager;
 use App\Partner;
@@ -29,8 +30,9 @@ class PartnerController extends Controller
     {
         //
         $partners = Partner::all();
+        $intermediaries = Intermediary::all();
         $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
-        return view('pages.partners',compact('partners','categories'));
+        return view('pages.partners',compact('partners','categories','intermediaries'));
     }
 
     /**
@@ -81,6 +83,8 @@ class PartnerController extends Controller
         $partner->rate = $parametersvalid['rate'];
         $partner->rate2 = $parametersvalid['rate2'];
         $partner->rate3 = $parametersvalid['rate3'];
+        $partner->intermediary_id = $parameters['intermediary'];
+        $partner->intcomrate = $parameters['intcomrate'];
         $partner->logo = $logo;
         $partner->contact = $parameters['contact'] ;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
@@ -152,8 +156,9 @@ class PartnerController extends Controller
         //
         $partners = Partner::all();
         $partner = Partner::where("slug","=",$partner)->first();
+        $intermediaries = Intermediary::all();
         $categories = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
-        return view('pages.partners',compact('partners','partner','categories'));
+        return view('pages.partners',compact('partners','partner','categories','intermediaries'));
     }
 
     /**
@@ -201,6 +206,8 @@ class PartnerController extends Controller
         $partner->rate = $parametersvalid['rate'];
         $partner->rate2 = $parametersvalid['rate2'];
         $partner->rate3 = $parametersvalid['rate3'];
+        $partner->intermediary_id = $parameters['intermediary'];
+        $partner->intcomrate = $parameters['intcomrate'];
         $partner->logo = $logo;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
         $partner->paymode = $parameters['paymode'];

@@ -70,124 +70,89 @@ active
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
-                <div class="col-md-8 col-sm-8">
-                    <div class="card card-primary  shadow-sm ">
-                        <div class="card-header  p-0 pt-1">
-                            <strong><h5>PREVISIONNEL</h5></strong> 
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                
-                                <div class="col-md-3 col-sm-6">
-                                    <!-- small box -->
-                                    <div class="small-box bg-danger">
-                                        <div class="inner">
-                                            <h4 id="subscription100"></h4>
-
-                                            <h7>INDEMNISATION 100%</h7>
-                                        </div>
-                                        {{--  <div class="icon">
-                                            <i class="ion ion-bag"></i>
-                                        </div>  --}}
-                                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                                    </div>
-                                </div>
-                                    <!-- ./col -->
-                                    <div class="col-md-3 col-sm-6">
-                                        <!-- small box -->
-                                        <div class="small-box bg-warning">
-                                        <div class="inner">
-                                            <h4 id="subscription70"></h4>
-
-                                            <h7>INDEMNISATION 70%</h7>
-                                        </div>
-                                        {{--  <div class="icon">
-                                            <i class="ion ion-stats-bars"></i>
-                                        </div>  --}}
-                                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                                        </div>
-                                    </div>
-                                    <!-- ./col -->
-                                    <div class="col-md-3 col-sm-6">
-                                        <!-- small box -->
-                                        <div class="small-box bg-info">
-                                        <div class="inner">
-                                            <h4 id="subscription50"></h4>
-
-                                            <h7>INDEMNISATION 50%</h7>
-                                        </div>
-                                        {{--  <div class="icon">
-                                            <i class="ion ion-person-add"></i>
-                                        </div>  --}}
-                                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                                        </div>
-                                    </div>
-                                    <!-- ./col -->
-                                    <div class="col-md-3 col-sm-6">
-                                        <!-- small box -->
-                                        <div class="small-box bg-secondary">
-                                            <div class="inner">
-                                                <h4 id="subscriptionFull"></h4>
-
-                                                <h7>TOTAL</h7>
-                                            </div>
-                                            {{--  <div class="icon"> 
-                                                <i class="ion ion-pie-graph"></i>
-                                            </div>  --}}
-                                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-4">
-                                        <div class="card card-primary  shadow-sm ">
-                                            <div class="card-header  p-0 pt-1">
-                                               <STrong><h5>REEL</h5></STrong> 
-                                            </div>
-
-                                            <div class="card-body">
-                                                <div class="row"> 
-                                    <div class="col-md-6 col-sm-6">
-                                        <!-- small box -->
+                <div class="col-md-12 col-sm-12">
+                       
+                                <div class="row justify-content-around"> 
+                                    <div class="col-md-3 col-sm-3">
+                                            <!-- small box -->
                                         <div class="small-box bg-success">
                                             <div class="inner">
-                                                <h4 id="subscriptionWin"></h4>
+                                                <h2 id="subscriptionWin"></h2>
 
-                                                <h7>GAIN SMARTY</h7>
+                                                <h4>GAIN SMARTY</h4>
                                             </div>
-                                            {{--  <div class="icon"> 
-                                                <i class="ion ion-pie-graph"></i>
-                                            </div>  --}}
-                                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                                        </div>
+                                                {{--  <div class="icon"> 
+                                                    <i class="ion ion-pie-graph"></i>
+                                                </div>  --}}
+                                            {{--           <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>--}}                                        </div>
                                     </div>
-                                 <!-- ./col --> 
-                                 <div class="col-md-6 col-sm-6">
+                                    <!-- ./col --> 
+                                    <div class="col-md-3 col-sm-3">
                                     <!-- small box -->
-                                    <div class="small-box bg-primary">
+                                    <div class="small-box bg-red">
                                         <div class="inner">
-                                            <h4 id="subscriptionLost"></h4>
+                                            <h2 id="subscriptionLost"></h2>
 
-                                            <h7>INDEMNISATIONS</h7>
+                                            <h4>INDEMNISATIONS</h4>
                                         </div>
                                         {{--  <div class="icon"> 
                                             <i class="ion ion-pie-graph"></i>
                                         </div>  --}}
-                                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                            {{--           <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>--}}                                    </div>
+                                </div>
+                                <!-- ./col -->
+                                <!-- ./col --> 
+                                <div class="col-md-3 col-sm-3">
+                                <!-- small box -->
+                                <div class="small-box bg-primary">
+                                    <div class="inner">
+                                        <h2 id="subscriptionCurPrime"></h2>
+
+                                        <h4>TOTAL PRIME</h4>
                                     </div>
+                                    {{--  <div class="icon"> 
+                                        <i class="ion ion-pie-graph"></i>
+                                    </div>  --}}
+                                        {{--           <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>--}}                                    </div>
                                 </div>
-                             <!-- ./col -->
-                                 
+                                    <!-- ./col -->
+                                    <!-- ./col --> 
+                                    <div class="col-md-3 col-sm-3">
+                                    <!-- small box -->
+                                    <div class="small-box bg-orange">
+                                        <div class="inner">
+                                            <h2 id="subscriptionCurWon"></h2>
+
+                                            <h4>GAINS COURANTS</h4>
+                                        </div>
+                                        {{--  <div class="icon"> 
+                                            <i class="ion ion-pie-graph"></i>
+                                        </div>  --}}
+                                            {{--           <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>--}}                                    </div>
                                 </div>
-                            </div>
+                                <!-- ./col -->
+                        
+                                </div>
                         </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6 col-sm-6">
+                            
+                        <!-- PIE CHART -->
+                        <div class="card card-danger">
+                        <div class="card-header">
+                            <h3 class="card-title">INDEMNISATIONS PREVISIONNELLES</h3>
+
+                           
+                        </div>
+                        <div class="card-body">
+                            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                        <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                            
+            </div>
+
+            <div class="col-md-6 col-sm-6">
                     <div class="card">
                         <div class="card-header border-0">
                           <div class="d-flex justify-content-between">
@@ -228,7 +193,6 @@ active
                       </div>
                       <!-- /.card -->
           
-                </div>
             </div>
 
             <!-- /.row -->
@@ -285,6 +249,9 @@ active
                      $("#subscriptionFull").text(separateur(data.general.subscriptionFull));
                      $("#subscriptionWin").text(separateur(data.general.subscriptionWin));
                      $("#subscriptionLost").text(separateur(data.general.subscriptionLost));
+                     $("#subscriptionCurPrime").text(separateur(data.general.subscriptionCurPrime ));
+
+                     $("#subscriptionCurWon").text(separateur(data.general.subscriptionCurPrime - data.general.subscriptionLost));
                       j = data.globalMonthlySubCount;
                       j = Object.values(j);
                     console.log(Math.max(...j));
@@ -357,8 +324,35 @@ active
                                 })
                          
                     
-                    
-    
+                                var donutData        = {
+                                    labels: [
+                                        'INDEMNISATIONS 100%',
+                                        'INDEMNISATIONS 70%',
+                                        'INDEMNISATIONS 50%',
+                                        'INDEMNISATIONS 25%',
+                                      
+                                    ],
+                                    datasets: [
+                                      {
+                                        data: [data.general.subscription100,data.general.subscription70,data.general.subscription50,data.general.subscription25],
+                                        backgroundColor : ['#f56954',  '#f39c12', '#00c0ef','#00a65a', '#3c8dbc', '#d2d6de'],
+                                      }
+                                    ]
+                                  }
+                                var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+                                var pieData        = donutData;
+                                var pieOptions     = {
+                                  maintainAspectRatio : true,
+                                  responsive : true,
+                                }
+                                //Create pie or douhnut chart
+                                // You can switch between pie and douhnut using the method below.
+                                var pieChart = new Chart(pieChartCanvas, {
+                                  type: 'pie',
+                                  data: pieData,
+                                  options: pieOptions
+                                })
+                            
                  });
 
 

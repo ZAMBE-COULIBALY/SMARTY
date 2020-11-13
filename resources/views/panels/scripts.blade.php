@@ -317,9 +317,15 @@ jQuery(document).ready(function(){
               "autoWidth": false,
             })
             $('#claimsManagerlist').DataTable({
-                "responsive": true,
-              "autoWidth": false,
-            })
+              "responsive": true,
+            "autoWidth": false,
+          })
+          $('#intermediarylist').DataTable({
+            "responsive": true,
+          "autoWidth": false,
+        })
+
+            
             $('#detailslist').DataTable({
 
         dom: 'Bfrtip',

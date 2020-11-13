@@ -33,9 +33,9 @@ menu-open active
                                 <div class="tab-content" id="custom-content-above-tabContent">
                                     <div class="tab-pane fade show active" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                         <div class="tab-custom-content">
-                                            <p class="lead mb-0">DECLARATION | <button class="btn btn-flat btn-outline" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                                        <label for=""> SOUSCRIPTION N°</label><strong style="color: brown">{{$subscription->code}}</strong>
-                                                    </button></p>
+                                            <p class="lead mb-0">DECLARATION |  <button class="btn btn-sm btn-flat btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <H8><strong>SOUSCRIPTION N°</strong><strong style="color: brown">{{$subscription->code}}</strong></H6>
+                                            </button></p>
                                                         <hr>
                                         </div>
                                         <div class="row">
@@ -48,7 +48,7 @@ menu-open active
                                                          <div class="card card-body">
                                                              <div class="row">
                                                                  <div class="col-md-6">
-                                                                    <table  class="table table-striped">
+                                                                    <table class="table table-sm table-striped">
                                                                         <tr>
                                                                             <td> </td>
                                                                             <td style="text-align: center">
@@ -62,7 +62,19 @@ menu-open active
                                                                             </td>
                                                                         </tr>
                                                                         <tr style="text-align: left";>
-                                                                            <td>FORMULE PREMIUM : </td>
+                                                                            <td>FORMULE  @switch($subscription->formula)
+                                                                                @case("1")
+                                                                                    ECO
+                                                                                    @break
+                                                                                    @case("2")
+                                                                                    STANDARD
+                                                                                    @break
+                                                                                    @case("3")
+                                                                                    PREMIUM
+                                                                                    @break
+                                                                                @default
+                                                                                STANDARD
+                                                                            @endswitch  : </td>
                                                                             <td>NOUVELLE SOUSCRIPTION</td>
                                                                         </tr>
                                                                         <tr>
