@@ -61,6 +61,8 @@ class PartnerController extends Controller
             'firstnameM' => 'required|max:255',
             'email' => 'required|email',
             'rate' => 'required|numeric',
+            'rate2' => 'numeric',
+            'rate3' => 'numeric',
             'logo' => 'image'
         ]);
 
@@ -77,6 +79,8 @@ class PartnerController extends Controller
         $partner->label = Str::upper(Str::lower(Str::upper($parametersvalid['label']))) ;
         $partner->email = $parametersvalid['email'];
         $partner->rate = $parametersvalid['rate'];
+        $partner->rate2 = $parametersvalid['rate2'];
+        $partner->rate3 = $parametersvalid['rate3'];
         $partner->logo = $logo;
         $partner->contact = $parameters['contact'] ;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
@@ -172,6 +176,8 @@ class PartnerController extends Controller
             // 'email' => ['required','email', Rule::notIn(Partner::all()->except($oldpartner->id)->pluck("email"))],
             'contact' => 'required',
             'rate' => 'required|numeric',
+            'rate2' => 'numeric',
+            'rate3' => 'numeric',
             'logo' => 'image'
 
         ]);
@@ -193,6 +199,8 @@ class PartnerController extends Controller
         $partner->email = $parametersvalid['email'];
         $partner->contact = $parametersvalid['contact'];
         $partner->rate = $parametersvalid['rate'];
+        $partner->rate2 = $parametersvalid['rate2'];
+        $partner->rate3 = $parametersvalid['rate3'];
         $partner->logo = $logo;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
         $partner->paymode = $parameters['paymode'];

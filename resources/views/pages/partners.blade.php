@@ -123,3 +123,49 @@
     </section>
 @endsection
 
+@section('script')
+    <script>
+    $(function() {
+        function getMaxValueForRequest(requester,currentItemAmount) {
+            
+            requester.prop('max', currentItemAmount.val());
+            
+        }
+          
+          function getMinValueForRequest(requester,currentItemAmount) {
+            
+            requester.prop('min', currentItemAmount.val());
+           
+          }
+          
+          // init once to set
+          getMinValueForRequest($("#rate"),$("#rate2"))
+          getMinValueForRequest($("#rate3"),$("#rate"))
+          getMaxValueForRequest($("#rate"),$("#rate"))
+          getMaxValueForRequest($("#rate2"),$("#rate3"))
+
+          
+          // listen for changes
+          $("#rate2").change(function() {
+            getMinValueForRequest($("#rate"),$(this))
+
+          
+           // getMinValueForRequest($("#rate3"),$("#rate2")) 
+
+          })
+
+          $("#rate").change(function() {
+            getMinValueForRequest($("#rate3"),$(this))
+            getMaxValueForRequest($("#rate2"),$(this))
+            getMaxValueForRequest($(this),$("#rate3"))
+
+          })
+
+          $("#rate3").change(function() {
+            getMaxValueForRequest($("#rate"),$(this))
+          })
+
+    })
+        
+    </script>
+@endsection

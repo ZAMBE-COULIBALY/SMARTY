@@ -185,7 +185,8 @@ class SubscriptionController extends Controller
                 'subscription_enddate'=> ':subscriptions',
                 'agent_id'=> ':subscriptions',
                 'customer_id'=> ':subscriptions',
-
+                'formula'=> 'required',
+                
         ]);
 
         if(empty($request->session()->get('Subscription'))){
@@ -208,14 +209,35 @@ class SubscriptionController extends Controller
                 'agent_id' => $agent->id,
                 'pdv_id' =>$pdv_id,
                 'date_subscription' =>$date_subscription,
+                'formula' =>$validatedData["formula"],
                 ]);
 
             $request->session()->put('Subscription', $Subscription)  ;
 
         }
+        switch ($validatedData["formula"]) {
+            case '1':
+                # code...
+                $rate =  $agent->user->partner->rate2;
+                break;
+            case '2':
+                # code...
+                $rate =  $agent->user->partner->rate;
 
+                break;
+            case '3':
+                # code...
+                $rate =  $agent->user->partner->rate3;
+
+                break;
+            default:
+                # code...
+                $rate =  $agent->user->partner->rate;
+
+                break;
+        }
         $madate= $Subscription['date_subscription'];
-        $premium = $Subscription['price'] * $agent->agency->partner->rate / 100 ;
+        $premium = $Subscription['price'] * $rate / 100 ;
         list($annee,$mois,$jour)=sscanf($madate,"%d-%d-%d");
         $annee+=1;
 
@@ -262,7 +284,9 @@ class SubscriptionController extends Controller
             'equipmentLibelle' =>$equipmentLibelle,
             'marquelibelle' =>$marquelibelle,
             'modellibelle' =>$modellibelle,
+            'formula' => $rate,
             ]);
+            $Subscription['formula'] = $rate;
 
         $request->session()->put('Subscription', $Subscription)  ;
         //dd($Subscription);
@@ -373,7 +397,6 @@ class SubscriptionController extends Controller
         $pack = new Pack();
 
         $payment = new Payment();
-
         try {
             //code...
 
@@ -411,6 +434,7 @@ class SubscriptionController extends Controller
             $newsubscription->customer_id = $customer->id;
             $newsubscription->agent_id = $Subscription['agent_id'];
             $newsubscription->state = 1;
+            $newsubscription->formula = $Subscription['formula'];
             $newsubscription->save();
             Log::info('Création subscipriotn ok '.now());
 
@@ -591,6 +615,7 @@ class SubscriptionController extends Controller
                 $newsubscription->customer_id = $customer->id;
                 $newsubscription->agent_id = $Subscription->agent_id;
                 $newsubscription->state = 1;
+                $newsubscription->formula = $Subscription->formula;
                 $newsubscription->save();
 
                 $pack->product_id = Product::where("type_id",$Subscription->equipment)->where("label_id",$Subscription->mark)->where("model_id",$Subscription->model)->first()->id;

@@ -102,7 +102,20 @@
               <tr>
                 <td colspan="4" style="background-color:rgba(190, 190, 190, 0.267) ">
                     <center>
-                    <b>  Formule PREMIUM</b>
+                    <b>  Formule
+                         @switch($newsubscription->formula)
+                        @case(1)
+                            STANDARD
+                            @break
+                            @case(2)
+                            ECO
+                            @break
+                            @case(3)
+                            PREMIUM
+                            @break
+                        @default
+                        PREMIUM
+                    @endswitch </b>
                     </center>
                 </td>
             </tr>
