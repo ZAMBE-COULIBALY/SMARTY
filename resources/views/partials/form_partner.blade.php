@@ -9,14 +9,14 @@
 
             <div class="card-body row">
                 <div class="form-group col-md-6">
-                    <label for="code">Code</label>
+                    <label for="code">CODE</label>
                     <div class="input-group">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-user"></span>
                             </div>
                         </div>
-                        <input {{ isset($partner) ? "disabled" : ""}} type="text" class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($partner) ? $partner->code : old('code') }}" placeholder="Saisir le code du partenaire" required autocomplete="code" autofocus>
+                        <input {{ isset($partner) ? "disabled" : ""}} type="text" class="form-control form-control-sm @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($partner) ? $partner->code : old('code') }}" placeholder="CODE DU PARTENAIRE" required autocomplete="code" autofocus>
 
                     </div>
                     @error('Code')
@@ -27,12 +27,12 @@
                 </div>
                 <div class="form-group col-md-6">
 
-                    <label for="logo">Logo</label>
+                    <label for="logo">LOGO</label>
 
                     <div class="custom-file">
                       
-                        <input type="file" class="custom-file-input form-control @error('logo') is-invalid @enderror" value="{{ isset($partner) ? $partner->logo : '' }}" name="logo" id="logo" >
-                        <label class="custom-file-label" for="logo">Charger le logo (image png)</label>
+                        <input type="file" class="custom-file-input form-control-sm form-control @error('logo') is-invalid @enderror" value="{{ isset($partner) ? $partner->logo : '' }}" name="logo" id="logo" >
+                        <label class="custom-file-label" for="logo">CHARGER LE LOGO (IMAGE png)</label>
                         @error('logo')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -46,14 +46,14 @@
                     </div>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="label">libelle</label>
+                    <label for="label">LIBELLE</label>
                     <div class="input-group">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-user"></span>
                             </div>
                         </div>
-                        <input type="text" class="form-control @error('label') is-invalid @enderror" name="label" id="label" value="{{ isset($partner) ? $partner->label : '' }}" placeholder="Saisir le libelle du partenaire" required autocomplete="label" >
+                        <input type="text" class="form-control form-control-sm @error('label') is-invalid @enderror" name="label" id="label" value="{{ isset($partner) ? $partner->label : '' }}" placeholder="LIBELLE DU PARTENAIRE" required autocomplete="label" >
 
                     </div>
                     @error('label')
@@ -64,14 +64,14 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label for="email">Email</label>
+                    <label for="email">EMAIL</label>
                     <div class="input-group">
                         <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
                         </div>
                         </div>
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ isset($partner) ? $partner->email : '' }}" placeholder="Saisir le libelle du partenaire" required autocomplete="email" autofocus>
+                        <input type="email" class="form-control form-control-sm @error('email') is-invalid @enderror" name="email" id="email" value="{{ isset($partner) ? $partner->email : '' }}" placeholder="LIBELLE DU PARTENAIRE" required autocomplete="email" autofocus>
 
                     </div>
                     @error('email')
@@ -82,14 +82,14 @@
                 </div>
 
                 <div class="form-group col-md-4">
-                    <label for="contact">contact</label>
+                    <label for="contact">CONTACT</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text">
                                 <span class="fas fa-phone"></span>
                             </div>
                         </div>
-                        <input type="text"  data-inputmask="'mask': ['99-99-99-99', '+999 99-99-99-99']"  class="form-control @error('contact') is-invalid @enderror" name="contact" id="contact" value="{{ isset($partner) ? $partner->contact : '' }}" required data-mask>
+                        <input type="text"  data-inputmask="'mask': ['99-99-99-99', '+999 99-99-99-99']"  class="form-control form-control-sm @error('contact') is-invalid @enderror" name="contact" id="contact" value="{{ isset($partner) ? $partner->contact : '' }}" required data-mask>
 
                     </div>
                     @error('contact')
@@ -98,10 +98,16 @@
                         </span>
                     @enderror
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="state" >Actif</label>
+                <div class="form-group offset-md-2 col-md-3">
+                    <label for="state" >ACTIF</label>
                     <div class="input-group">
                         <input type="checkbox" name="state" id="state" {{ isset($partner) ? (($partner->state) ? 'checked' : '') : 'checked'}} data-bootstrap-switch data-off-color="danger" data-on-color="success">
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="formula" >MULTI FORMULE</label>
+                    <div class="input-group">
+                        <input type="checkbox" name="formula" id="formula" {{ isset($partner) ? (($partner->formula) ? 'checked' : '') : 'checked'}} data-bootstrap-switch data-off-color="danger" data-on-color="success">
                     </div>
                 </div>
             </div>
@@ -116,7 +122,7 @@
                     <div class="form-group col-md-12">
                         <div class="input-group">
                             <label>MODE DE PAIEMENT</label>
-                            <select name="paymode" id="paymode" class="form-control  @error('paymode') is-invalid @enderror select2bs4NE" style="width: 100%;">
+                            <select name="paymode" id="paymode" class="form-control form-control-sm  @error('paymode') is-invalid @enderror select2bs4NE" style="width: 100%;">
                                 <option value=1 {{ (isset($partner) && $partner->paymode == 1)? 'selected' : '' }}>MOBILE BANKING</option>
                                 <option value=2 {{ (isset($partner) && $partner->paymode == 2)? 'selected' : '' }}>CAISSE</option>
                             </select>
@@ -131,10 +137,10 @@
 
 
                     <div class="form-group col-md-12">
-                        <label>Categories</label>
+                        <label>CATEGORIES</label>
                         <div class="select2-primary">
 
-                            <select name='category[]' class="form-control select2" multiple="multiple" data-dropdown-css-class="select2-primary" data-placeholder="Sélectionner les categories" style="width: 100%;" required>
+                            <select name='category[]' class="form-control form-control-sm select2" multiple="multiple" data-dropdown-css-class="select2-primary" data-placeholder="SELECTIONNER LES CATEGORIES" style="width: 100%;" required>
                                 @foreach ($categories as $item)
                                     <option value={{ $item->code }}  {{ (isset($partner) && $partner->hasCategory($item->code)) ? 'selected' : ''}}>{{$item->label}}</option>
                                 @endforeach
@@ -142,23 +148,60 @@
                         </div>
                     </div>
 
-                    <div class="form-group col-md-12">
-                            <label>TAUX DE SOUSCRIPTION</label>
-                        <div class="input-group">
-                            <input type="number" required step="0.1" value="{{ isset($partner) ? $partner->rate : '' }}" name="rate" id="rate">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <span>%</span>
-                                </div>
+                   
+                <div class="form-group col-md-12">
+                    <label>TAUX DE SOUSCRIPTION</label>
+                    <div class="row">
+                        <div class="col-md-3 text-center justify-content-center align-self-center form-group">
+                            <label>ECO</label> 
+                            <div class="input-group-sm">
+                                 
+                                 <input type="number" required max="{{ isset($partner) ? $partner->rate2 : '' }}" step="0.1" class="form-control form-control-sm" value="{{ isset($partner) ? $partner->rate2 : '' }}" name="rate2" id="rate2">
+                                 
+                                 @error('rate2')
+                                     <span class="invalid-feedback" role="alert">
+                                         <strong>{{ $message }}</strong>
+                                     </span>
+                                 @enderror
+                             </div>
+                         </div>
+                         <div class="col-md-3 text-center justify-content-center align-self-center form-group">
+                            <label>STANDARD</label> 
+                            <div class="input-group-sm">
+                                 
+                                 <input type="number" min="{{ isset($partner) ? $partner->rate : '' }}" required step="0.1" class="form-control form-control-sm" value="{{ isset($partner) ? $partner->rate : '' }}" name="rate" id="rate">
+                                 
+                                 @error('rate')
+                                     <span class="invalid-feedback" role="alert">
+                                         <strong>{{ $message }}</strong>
+                                     </span>
+                                 @enderror
+                             </div>
+                         </div>
+                         <div class="col-md-3 text-center justify-content-center align-self-center form-group">
+                            <label>PREMIUM</label> 
+                            <div class="input-group-sm">
+                                 
+                                 <input type="number" required max="20" step="0.1" min="{{ isset($partner) ? $partner->rate2 : '' }}" max="{{ isset($partner) ? $partner->rate3 : '' }}" class="form-control form-control-sm" value="{{ isset($partner) ? $partner->rate3 : '' }}" name="rate3" id="rate3">
+                                 
+                                 @error('rate3')
+                                     <span class="invalid-feedback" role="alert">
+                                         <strong>{{ $message }}</strong>
+                                     </span>
+                                 @enderror
+                             </div>
+                         </div>
+                        <div class="col-md-2 text-center justify-content-center align-self-center">
+                            <div class="input-group-text">
+                                <span class="fa fa-percent"></span>
                             </div>
-                            @error('rate')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
-
                     </div>
+                    
+               
+
+            </div>
+            
 
 
                 </div>
@@ -166,7 +209,7 @@
             </div>
         </div>
         @if (!(isset($partner) ))
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="card ">
 
             <div class="card-body row">
@@ -179,7 +222,7 @@
                                 <span class="fas fa-user"></span>
                             </div>
                         </div>
-                        <input type="text" class="form-control " name="lastnameM" id="lastnameM" value="{{ old('lastnameM')}}" placeholder="Saisir le nom du manager" required autocomplete="lastnameM" autofocus>
+                        <input type="text" class="form-control form-control-sm" name="lastnameM" id="lastnameM" value="{{ old('lastnameM')}}" placeholder="Saisir le nom du manager" required autocomplete="lastnameM" autofocus>
 
                     </div>
                     @error('lastnameM')
@@ -188,7 +231,7 @@
                     </span>
                     @enderror
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-7">
                     <label for="firstnameM">Prenom(s) manager</label>
                     <div class="input-group">
                         <div class="input-group-append">
@@ -196,7 +239,7 @@
                                 <span class="fas fa-user"></span>
                             </div>
                         </div>
-                        <input type="text" class="form-control " name="firstnameM" id="firstnameM" value="{{ old('firstnameM')}}" placeholder="Saisir le(s) prenom(s) du manager" required autocomplete="firstnameM" autofocus>
+                        <input type="text" class="form-control form-control-sm"  name="firstnameM" id="firstnameM" value="{{ old('firstnameM')}}" placeholder="Saisir le(s) prenom(s) du manager" required autocomplete="firstnameM" autofocus>
 
                     </div>
                     @error('firstnameM')
@@ -206,15 +249,52 @@
                     @enderror
                 </div>
             </div>
+            </div>
         </div>
         @endif
+        <div class="col-md-6">
+            <div class="card ">
 
+            <div class="card-body row">
+
+                <div class="form-group col-md-8">
+                    <div class="input-group">
+                        <label>COMMERCIAL</label>
+                        <select name="intermediary" id="intermediary" class="form-control form-control-sm  @error('intermediary') is-invalid @enderror select2bs4NE" style="width: 100%;">
+                           @foreach ($intermediaries as $item)
+                          <option value={{$item->id}} {{ (isset($partner) && $partner->intermediary_id == $item->id)? 'selected' : '' }}>{{$item->code}}-{{$item->firstname}} {{$item->lastname}}</option>
+
+                           @endforeach
+                        </select>
+                        @error('asstyp')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                </div>
+                <div class="form-group col-md-4">
+                    <label>TAUX COMMISSION</label> 
+                            <div class="input-group-sm">
+                                 
+                                 <input type="number" min="0" required step="0.1" class="form-control form-control-sm" value="{{ isset($partner) ? $partner->intcomrate : '' }}" name="intcomrate" id="intcomrate">
+                                 
+                                 @error('intcomrate')
+                                     <span class="invalid-feedback" role="alert">
+                                         <strong>{{ $message }}</strong>
+                                     </span>
+                                 @enderror
+                             </div>
+                </div>
+            </div>
+        </div>
+        </div>
     </div>
 
 
 
 
 
-    </div>
     <button type="submit" class="btn btn-primary">ENREGISTRER</button>
 </form>

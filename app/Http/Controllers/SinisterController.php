@@ -12,6 +12,9 @@ use App\Customer;
 use App\Subscription;
 use App\Agency;
 use App\Agent;
+use App\ClaimsManager;
+use App\Mail\newClaimValidation;
+use App\Mail\newSinister;
 use App\Vocabulary;
 use App\VocabularyType;
 use Illuminate\Database\Eloquent\Builder ;
@@ -195,9 +198,10 @@ class SinisterController extends Controller
                 $sinister->save();
                 $subscription->state = - 1 ;
                 $subscription->save();
-                    // Mail::to(explode(",",env("MAIL_SINISTERS_MANAGER")))->send(new newSinister($sinister,$agent));
+                   Mail::to(explode(",",env("MAIL_SINISTERS_MANAGER")),"SINISTRES MANAGER")->send(new newSinister($sinister,$agent));
                     Session::put('success','Déclaration de sinistre (N°'.$sinister->code.') transmise ');
                 } catch (\Throwable $th) {
+                    throw $th;
                     Log::error(json_encode($th));
                     Session::put('error','Erreur lors de la déclaration de sinistre');
 
@@ -218,6 +222,7 @@ class SinisterController extends Controller
         // $pdf-> loadView("models.model_bon", compact('sinister'));
 
         // $pdf-> save(storage_path().'/app/public/voucher/'.$sinister->folder.$sinister->id.'.pdf');
+        
         return view('pages.bon',compact('sinister'));
     }
 
@@ -230,12 +235,15 @@ class SinisterController extends Controller
     public function show(Request $request )
     {
         //
+        
         $connecteduser = User::where("username",Auth::user()->username)->first();
-        if($connecteduser->hasAnyRole(['administrator','super_administrator','Claims_Manager']))
+        if($connecteduser->hasAnyRole(['administrator','super_administrator']) || $connecteduser->username == "claimsmanager")
         {
             $listsinistres = Sinister::all();
         } elseif ($connecteduser->hasAnyRole(['agent','agent_chief'])) {
             $listsinistres = Sinister::all()->where('agent_id',$connecteduser->agent->id);
+        } elseif ($connecteduser->hasAnyRole(['claims_manager'])) {
+            $listsinistres = Sinister::all()->where('claimsManager_id',$connecteduser->claimsManager->id);
         }
         // dd($listsinistres);
                 // $Subscription = $request->session()->get('Subscription');
@@ -301,7 +309,9 @@ class SinisterController extends Controller
         try {
             //code...
             $sinister->state = $state;
+            $sinister->claimsManager_id = ClaimsManager::where("username",Auth::user()->username)->first()->id;
             $sinister->save();
+            Mail::to($sinister->agent->user->email,"AGENT EMETTEUR")->send(new newClaimValidation($sinister));
 
             $subscription = clone $sinister->subscription;
             if ($state == 1) {

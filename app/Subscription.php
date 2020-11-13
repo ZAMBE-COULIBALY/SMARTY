@@ -10,7 +10,7 @@ class Subscription extends Model
     //
 
     protected $fillable = [
-     'libellepdv','pdv_id','dat','equipmentLibelle','marquelibelle','modellibelle','agent_id','premium','subscription_enddate','date_deb','date_fin','equipmentLibelle','modellibelle','marquelibelle', 'customer_id','folder', 'mailing_address','equipment','model','mark','numberIMEI','picture', 'price', 'date_subscription','code','name', 'first_name', 'birth_date', 'gender', 'place_birth','place_residence','marital_status',  'phone1','phone2', 'mail',
+     'libellepdv','pdv_id','dat','formula','equipmentLibelle','marquelibelle','modellibelle','agent_id','premium','subscription_enddate','date_deb','date_fin','equipmentLibelle','modellibelle','marquelibelle', 'customer_id','folder', 'mailing_address','equipment','model','mark','numberIMEI','picture', 'price', 'date_subscription','code','name', 'first_name', 'birth_date', 'gender', 'place_birth','place_residence','marital_status',  'phone1','phone2', 'mail',
     ];
 
     public function customer()
@@ -54,6 +54,7 @@ class Subscription extends Model
             $currentInterval =  Carbon::parse($this->sinisters->where("state",1)->first()->created_at)->diffInDays(Carbon::parse($this->date_subscription));
 
         }
+        
         switch ($this->pack->first()->product->category->attribute("ASS-TYP")) {
             case 'DP':
                 # code...
@@ -61,17 +62,26 @@ class Subscription extends Model
                     # code...
                     $currentValue = 0;
                     
-                }
-                elseif($currentInterval > 180)
-                {
-                    $currentValue = 0.5 * $currentValue;
-                } elseif ($currentInterval > 90) {
-                    # code...
-                    $currentValue = 0.7 * $currentValue;
+                } else {
+                    if ($this->formula == 1) {
+                        # code...
+                        $currentValue = 0.25 * $currentValue;
+
+                    } elseif ($this->formula == 2) {
+                      
+                        if($currentInterval > 180)
+                        {
+                            $currentValue = 0.5 * $currentValue;
+                        } elseif ($currentInterval > 90) {
+                            # code...
+                            $currentValue = 0.7 * $currentValue;
+
+                        }
+                    }
 
                 }
                 return $currentValue;
-                break;
+                    break;
 
             default:
                 # code...
@@ -99,6 +109,7 @@ class Subscription extends Model
                         # code...
                         $currentState = 0;
                     }
+                    
                     elseif($currentInterval > 180)
                     {
                         $currentState = 3;

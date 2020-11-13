@@ -1,5 +1,5 @@
 @extends('shared.layout')
-@section('partner')
+@section('intermediary')
     active
 @endsection
 @section('administration')
@@ -11,14 +11,14 @@
         <div class="row mb-2">
             <div class="col-sm-6">
             <h1>
-                PARTENAIRES
+                COMMERCIAUX PARTENAIRES
                 <small></small>
             </h1>
             </div>
             <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item">Administration</li>
-                <li class="breadcrumb-item active"><a href={{ route('partners.list') }}>PARTENAIRES</a></li>
+                <li class="breadcrumb-item active"><a href={{ route('agents.list') }}>COMMERCIAUX PARTENAIRES</a></li>
             </ol>
             </div>
         </div>
@@ -28,17 +28,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 col-sm-12">
-                    @if (isset($pass))
-                        echo $pass;
-                    @endif
                     <div class="card card-warning  shadow-sm ">
                         <div class="card-header p-0 pt-1">
                             <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link {{ isset($partner) ? '' : 'active'}}" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="true">HISTORIQUE</a>
+                                <a class="nav-link {{ isset($intermediary) ? '' : 'active'}}" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="true">HISTORIQUE</a>
                             </li>
                                <li class="nav-item">
-                                    <a class="nav-link {{ isset($partner) ? 'active' : ''}}" id="custom-content-above-other-tab" data-toggle="pill" href="#custom-content-above-other" role="tab" aria-controls="custom-content-above-other" aria-selected="false" disabled >{{ Str::contains(Route::current()->getName(), 'edit') ? 'MODIFIER' : 'NOUVEAU' }}  </a>
+                                    <a class="nav-link {{ isset($intermediary) ? 'active' : ''}}" id="custom-content-above-other-tab" data-toggle="pill" href="#custom-content-above-other" role="tab" aria-controls="custom-content-above-other" aria-selected="false" disabled >{{ Str::contains(Route::current()->getName(), 'edit') ? 'MODIFIER' : 'NOUVEAU' }}  </a>
                                 </li>
 
                             {{-- <li class="nav-item">
@@ -55,34 +52,32 @@
 
                             <div class="tab-content" id="custom-content-above-tabContent">
 
-                                <div class="tab-pane fade show {{ isset($partner) ? '' : 'active'}}" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
+                                <div class="tab-pane fade show {{ isset($intermediary) ? '' : 'active'}}" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                     <div class="tab-custom-content">
-                                        <p class="lead mb-0">Liste des partenaires</p>
+                                        <p class="lead mb-0">LISTE DES COMMERCIAUX</p>
                                         <hr>
-                                    </div><table id="partnerlist" class="table table-bordered ">
+                                    </div><table id="intermediarylist" class="table table-bordered ">
                                         <thead>
                                         <tr>
                                         <th>CODE</th>
-                                        <th>LIBELLE</th>
-                                        <th>EMAIL</th>
+                                        <th>NOM ET PRENOMS</th>
                                         <th>CONTACT</th>
-                                        <th>STATUT</th>
+                                        <th>EMAIL</th>
                                         <th>ACTIONS</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($partners as $item)
+                                            @foreach ($intermediaries as $item)
                                             <tr>
                                                 <td>{{ $item->code }}</td>
-                                                <td>{{$item->label}}</td>
-                                                <td>{{$item->email}}</td>
+                                                <td>{{$item->lastname.' '.$item->firstname}}</td>
                                                 <td>{{$item->contact}}</td>
-                                                <td>{{  ($item->state == 1) ? 'Actif' : 'Inactif'}}</td>
+                                                <td>{{$item->email}}</td>
                                                 <td>
-                                                    <a href="{{route('partners.delete',$item->slug) }}"  class="btn btn-danger btn-sm">
+                                                    {{--  <a href="{{route('agents.delete',$item->slug) }}"  class="btn btn-danger btn-sm">
                                                         <i class=" fa fa-trash"></i>
-                                                    </a>
-                                                    <a href="{{route('partners.edit',$item->slug) }}"  class="btn btn-info btn-sm ">
+                                                    </a>  --}}
+                                                    <a href="{{route('businessman.edit',$item->id) }}"  class="btn btn-info btn-sm ">
                                                         <i class="fa fa-pencil-alt"></i>
                                                     </a>
                                                 </td>
@@ -95,10 +90,10 @@
 
                                 </div>
 
-                                <div class="tab-pane fade {{ isset($partner) ? 'show active' : ''}}" id="custom-content-above-other" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
-                                       @include('partials.form_partner')
+                                    <div class="tab-pane fade {{ isset($intermediary) ? 'show active' : ''}}" id="custom-content-above-other" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
+                                       @include('partials.form_intermediary')
 
-                                </div>
+                                    </div>
 
 
 
@@ -123,49 +118,3 @@
     </section>
 @endsection
 
-@section('script')
-    <script>
-    $(function() {
-        function getMaxValueForRequest(requester,currentItemAmount) {
-            
-            requester.prop('max', currentItemAmount.val());
-            
-        }
-          
-          function getMinValueForRequest(requester,currentItemAmount) {
-            
-            requester.prop('min', currentItemAmount.val());
-           
-          }
-          
-          // init once to set
-          getMinValueForRequest($("#rate"),$("#rate2"))
-          getMinValueForRequest($("#rate3"),$("#rate"))
-          getMaxValueForRequest($("#rate"),$("#rate"))
-          getMaxValueForRequest($("#rate2"),$("#rate3"))
-
-          
-          // listen for changes
-          $("#rate2").change(function() {
-            getMinValueForRequest($("#rate"),$(this))
-
-          
-           // getMinValueForRequest($("#rate3"),$("#rate2")) 
-
-          })
-
-          $("#rate").change(function() {
-            getMinValueForRequest($("#rate3"),$(this))
-            getMaxValueForRequest($("#rate2"),$(this))
-            getMaxValueForRequest($(this),$("#rate3"))
-
-          })
-
-          $("#rate3").change(function() {
-            getMaxValueForRequest($("#rate"),$(this))
-          })
-
-    })
-        
-    </script>
-@endsection

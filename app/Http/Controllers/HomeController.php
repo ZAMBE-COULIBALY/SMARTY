@@ -104,12 +104,14 @@ class HomeController extends Controller
         $subscription100 = 0;
         $subscription70 = 0;
         $subscription50 = 0;
+        $subscription25 = 0;
         $subscriptionWin = 0;
         $subscriptionFull = 0;
         $subscriptionLost = 0;
+        $subscriptionCurPrime =Subscription::all()->where("subscription_enddate",">",now()->floorday())->sum("premium");
         $subscriptions = Subscription::all();
 
-        foreach ($subscriptions->where("subscription_enddate",">",now()->floorday())->where("state","<>",0) as $subscription ) {
+        foreach ($subscriptions->where("subscription_enddate",">",now()->floorday())->where('formula',"<>","1")->where("state","<>",0) as $subscription ) {
             # code...
             switch ($subscription->currentState()) {
                 case 1:
@@ -137,6 +139,14 @@ class HomeController extends Controller
                     # code...
                     break;
             }
+
+
+        }
+
+
+        foreach ($subscriptions->where("subscription_enddate",">",now()->floorday())->where('formula',"1")->where("state","<>",0) as $subscription ) {
+            $subscription25 = $subscription25 + $subscription->currentValue();
+
         }
         foreach ($subscriptions->where("state",0) as $subscription ) {
             $subscriptionLost = $subscriptionLost + $subscription->currentValue();
@@ -144,7 +154,7 @@ class HomeController extends Controller
         }
       
 
-        $subscriptionFull = $subscription100  + $subscription70 + $subscription50;
+        $subscriptionFull = $subscription100  + $subscription70 + $subscription50 + $subscription25;
 
         $subscriptionWin = $subscriptions->where("state","<>",0)->where("subscription_enddate","<",now()->floorday())->sum("premium");
 
@@ -154,18 +164,15 @@ class HomeController extends Controller
                 "subscription100" => $subscription100,
                 "subscription70" => $subscription70,
                 "subscription50" => $subscription50, 
+                "subscription25" => $subscription25, 
                 "subscriptionWin" => $subscriptionWin, 
                 "subscriptionLost" => $subscriptionLost, 
+                "subscriptionCurPrime" => $subscriptionCurPrime, 
                 ]
            
         ];
 
-
-
-        /// Data Chart Global Monthly Subscription count
-
-        
-        
+       
         $subscriptions = Subscription::whereBetween("date_subscription",[now()->copy()->firstOfYear()->floorDay(),now()->copy()->addDay(1)->floorDay()->addSecond(-1)])->select(DB::raw('count(id) as `data`'),DB::raw("DATE_FORMAT(date_subscription, '%m') new_date"))
         ->groupBy('new_date')->get();
 

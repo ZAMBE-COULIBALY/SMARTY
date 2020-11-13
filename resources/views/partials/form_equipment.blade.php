@@ -4,32 +4,65 @@
                             <div class="row form-group">
                                 <div class="row">
                                 </div>
-                                    <div class="form-group col-md-12">
-                                        <div class="form-group">
-                                           <label>Selectionnez votre équipement</label>
-                                           <select name="equipment" id="equipment" class="form-control @error('equipment') is-invalid @enderror select2bs4NE" style="width: 100%;">
-                                        @foreach ($types as $item)
-                                            <option value={{$item->id}}  >{{$item->label}}</option>
-                                        @endforeach
-                                            </select>
-                                            @error('equipment')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+                                <div class="form-group col-md-6">
+                                    <div class="form-group">
+                                       <label>Selectionnez votre équipement</label>
+                                       <select name="equipment" id="equipment" class="form-control @error('equipment') is-invalid @enderror select2bs4NE" style="width: 100%;">
+                                    @foreach ($types as $item)
+                                        <option value={{$item->id}}  >{{$item->label}}</option>
+                                    @endforeach
+                                        </select>
+                                        @error('equipment')
+                                            <span class="invalid-tooltip" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
-                                <div class="form-group col-md-4">
+                                </div>
+                                <div class="form-group text-center justify-content-center align-self-center col-md-6">
+                                            <label>FORMULE</label>
+                                    <div >
+                                        <div class="icheck-danger icheck-inline">
+                                            <input class="checkbox"  onchange="unchecked2_3()"  type="checkbox"  value=1 name="formula" id="formula">
+                                            <label for="formula">
+                                                ECO
+                                            </label>
+                                        </div>
+                                        <div class="icheck-danger icheck-inline">
+                                            <input class="checkbox" checked onchange="unchecked1_3()" type="checkbox" value=2 name="formula" id="formula2" >
+                                            <label for="formula2">
+                                                STANDARD
+                                            </label>
+                                        </div>
+                                            <div class="icheck-danger icheck-inline">
+                                                <input class="checkbox" onchange="unchecked1_2()" type="checkbox"  value=3 name="formula" id="formula3" >
+                                                <label for="formula3">
+                                                    PREMIUM
+                                                </label>
+                                            </div>
+                                            
+                                    </div>
+                                          
+
+                                    @error('formula')
+                                            <span class="invalid-tooltip" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+
+
+                                </div>
+                            <div class="form-group col-md-4">
                                     <div class="form-group">
                                        <label>Marque</label>
                                        <select name="mark" id="mark" class="form-control  @error('mark') is-invalid @enderror select2bs4NE" style="width: 100%;">
 
                                         </select>
                                         @error('mark')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                     </div>
                                 </div>
 
@@ -41,7 +74,7 @@
 
                                     </select>
                                     @error('model')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-tooltip" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
@@ -58,7 +91,7 @@
                                     <input type="text" class="form-control @error('numberIMEI') is-invalid @enderror" name="numberIMEI" id="numberIMEI" value="" placeholder="Saisir le numéro identifiant (IMEI)" required autocomplete="numberIMEI" >
                                 </div>
                                 @error('numberIMEI')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-tooltip" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
@@ -75,7 +108,7 @@
                                     <input type="number" class="form-control @error('price') is-invalid @enderror" name="price" id="price" value="" placeholder="Saisir le prix d'achat" required autocomplete="price" >
                                 </div>
                                 @error('price')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-tooltip" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
@@ -98,7 +131,7 @@
 
                                 </div>
                                 @error('date_subscription')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-tooltip" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
@@ -148,7 +181,7 @@
                                     <input type="file" class="form-control @error('picture') is-invalid @enderror" name="picture" id="picture">
                                 </div>
                                 @error('picture')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-tooltip" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror

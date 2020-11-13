@@ -24,5 +24,11 @@ class Sinister extends Model
        {
            # code...
            return $this->belongsTo("App\Agent");
+       }  
+       
+       public function claimsManager()
+       {
+           # code...
+           return $this->belongsTo("App\ClaimsManager","claimsManager_id","id");
        }
 }

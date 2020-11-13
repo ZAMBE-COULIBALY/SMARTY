@@ -37,6 +37,7 @@
   <link rel="stylesheet" href={{ asset('plugins/toastr/toastr.min.css') }}>
   <!-- File Uploader -->
   {{--  <link rel="stylesheet" href={{ asset('plugins/file-uploaders/dropzone.min.css') }} >  --}}
+  @yield('style')
 
 
   <style>
@@ -44,4 +45,19 @@
        background-color:rgba(0,0,0,0) !important;
        border:none !important;
     }
+
+    .nav-link .up {
+      text-transform: uppercase;
+  }
+  .card-body .input-group label{
+    text-transform: uppercase;
+}
+
+.card-body .form-group label{
+  text-transform: uppercase;
+}
+
+.card-title {
+  text-transform: uppercase;
+}
 </style>

@@ -43,18 +43,32 @@
 
 @endsection
 @section('script')
-<script>
-    $(document).ready(function(){
-      $("#price").on("input", function(){
-        $("#output").text($(this).val()*{{ $usr->partner->rate}} / 100);
-      });
-    });
-  </script>
+
   <script>
 
 
 
-    $(function () {
+    $(function () { 
+        var rate = "{{$usr->partner->rate}}";
+
+        calculRate = function() {
+          if($("#formula3").is(":checked")){
+            console.log($("#formula3").val());
+             rate ="{{$usr->partner->rate3}}"
+          } else if($("#formula").is(":checked")){
+            console.log($("#formula").val());
+            rate = "{{$usr->partner->rate2}}"
+          }  else if($("#formula2").is(":checked")){
+            console.log($("#formula2").val());
+            rate = "{{$usr->partner->rate}}"
+          } 
+          $("#output").text($("#price").val()* rate / 100);
+
+        }
+        $("#price").on("change", function(){
+            calculRate();
+        });
+
         loadvocabularies = function (parent,sons,next = null,level) {
             var partner = "{{$usr->partner_id}}";
             $.get("../api/vocabulary/allForOneVocabularyFromPartner/"+parent+"/"+level+"/"+partner,function(data){
@@ -123,6 +137,39 @@
                     //  alert("ddd");
                 })
 
+                unchecked2_3 = function () {
+                    {{-- appelle ws liste agences --}}
+                    console.log($("#formula").val());
+
+                    rate = "{{$usr->partner->rate2}}"
+                    $("#output").text($("#price").val()* rate / 100);
+
+                    $("#formula2").prop( "checked", false );
+                    $("#formula3").prop( "checked", false );
+                    //  alert("ddd");
+                }
+                unchecked1_3 = function () {
+                    {{-- appelle ws liste agences --}}
+                    console.log($("#formula2").val());
+                    rate = "{{$usr->partner->rate}}"
+
+                    $("#output").text($("#price").val()* rate / 100);
+
+                    $("#formula").prop( "checked", false );
+                    $("#formula3").prop( "checked", false );
+                    //  alert("ddd");
+                }
+                unchecked1_2 =  function () {
+                    {{-- appelle ws liste agences --}}
+                    console.log($("#formula3").val());
+                    rate = "{{$usr->partner->rate3}}"
+
+                    $("#output").text($("#price").val()* rate / 100);
+
+                    $("#formula2").prop( "checked", false );
+                    $("#formula").prop( "checked", false );
+                    //  alert("ddd");
+                }
                 $("#mark").change(function (e) {
                     {{-- appelle ws liste agences --}}
 

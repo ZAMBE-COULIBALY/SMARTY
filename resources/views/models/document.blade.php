@@ -28,7 +28,7 @@
     </table>
 </div>
 <div style="position: absolute; top: 1%; right: 3%; height:100px; width: 100px; display: inline-block">
-           <img src="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}" style="max-width: 100px; max-height: 100px; image-orientation: from-image;" alt="SMARTY"  onerror="if (this.src != '{{ asset('') }}') this.src = '{{ asset('') }}';" >
+           <img src="{{ asset('storage/logo/'.$newsubscription->agent->agency->partner->code.'/'.$newsubscription->agent->agency->partner->logo) }}" style="max-width: 100px; max-height: 100px; image-orientation: from-image;" alt="SMARTY"  onerror="if (this.src != '{{ asset('dist/img/Logo SMARTY.png') }}') this.src = '{{ asset('dist/img/Logo SMARTY.png') }}';" >
 
 </div>
 
@@ -102,7 +102,20 @@
               <tr>
                 <td colspan="4" style="background-color:rgba(190, 190, 190, 0.267) ">
                     <center>
-                    <b>  Formule PREMIUM</b>
+                    <b>  Formule
+                         @switch($newsubscription->formula)
+                        @case("1")
+                            ECO
+                            @break
+                            @case("2")
+                            STANDARD
+                            @break
+                            @case("3")
+                            PREMIUM
+                            @break
+                        @default
+                        STANDARD
+                    @endswitch </b>
                     </center>
                 </td>
             </tr>

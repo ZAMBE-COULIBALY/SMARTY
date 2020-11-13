@@ -38,7 +38,19 @@ margin: 0cm;
                     </td>
                 </tr>
                 <tr style="text-align: left";>
-                <td>FORMULE PREMIUM : </td>
+                <td>FORMULE  @switch($Subscription['formula'])
+                    @case("1")
+                        ECO
+                        @break
+                        @case("2")
+                        STANDARD
+                        @break
+                        @case("3")
+                        PREMIUM
+                        @break
+                    @default
+                    STANDARD
+                @endswitch : </td>
                 <td>NOUVELLE SOUSCRIPTION</td>
                 <tr>
                     <td>Nom & Prénoms :</td>

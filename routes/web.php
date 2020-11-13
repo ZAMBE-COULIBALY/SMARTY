@@ -142,31 +142,58 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
         ]);
 
         Route::group(['prefix' => '/managers','as' => 'sinister.claimsManager.'], function () {
-Route::get('/', [
-            'as'=> 'list',
-            'uses' => 'ClaimsManagerController@index'
-    ]);
+            Route::get('/', [
+                        'as'=> 'list',
+                        'uses' => 'ClaimsManagerController@index'
+                ]);
 
-    Route::post('/add', [
-        'as'=> 'add',
-        'uses' => 'ClaimsManagerController@store'
-]);
+                Route::post('/add', [
+                    'as'=> 'add',
+                    'uses' => 'ClaimsManagerController@store'
+            ]);
 
-Route::get('/edit/{claimsManager}', [
-    'as'=> 'edit',
-    'uses' => 'ClaimsManagerController@edit'
-]);
+            Route::get('/edit/{claimsManager}', [
+                'as'=> 'edit',
+                'uses' => 'ClaimsManagerController@edit'
+            ]);
 
-Route::post('/update/{claimsManager}', [
-    'as'=> 'update',
-    'uses' => 'ClaimsManagerController@update'
-]);
+                    Route::post('/update/{claimsManager}', [
+                        'as'=> 'update',
+                        'uses' => 'ClaimsManagerController@update'
+                    ]);
+
+
+        });
 
 
         });
 
 
+        Route::group(['prefix' => '/businessman','as' => 'businessman.'], function () {
+            Route::get('/', [
+                        'as'=> 'list',
+                        'uses' => 'IntermediaryController@index'
+                ]);
+
+                Route::post('/add', [
+                    'as'=> 'add',
+                    'uses' => 'IntermediaryController@store'
+            ]);
+
+            Route::get('/edit/{intermediary}', [
+                'as'=> 'edit',
+                'uses' => 'IntermediaryController@edit'
+            ]);
+
+                    Route::post('/update/{intermediary}', [
+                        'as'=> 'update',
+                        'uses' => 'IntermediaryController@update'
+                    ]);
+
+
         });
+
+
 
 
 
