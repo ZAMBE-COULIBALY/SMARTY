@@ -104,17 +104,17 @@
                     <center>
                     <b>  Formule
                          @switch($newsubscription->formula)
-                        @case(1)
-                            STANDARD
-                            @break
-                            @case(2)
+                        @case("1")
                             ECO
                             @break
-                            @case(3)
+                            @case("2")
+                            STANDARD
+                            @break
+                            @case("3")
                             PREMIUM
                             @break
                         @default
-                        PREMIUM
+                        STANDARD
                     @endswitch </b>
                     </center>
                 </td>

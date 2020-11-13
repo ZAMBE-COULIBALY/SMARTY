@@ -284,9 +284,9 @@ class SubscriptionController extends Controller
             'equipmentLibelle' =>$equipmentLibelle,
             'marquelibelle' =>$marquelibelle,
             'modellibelle' =>$modellibelle,
-            'formula' => $rate,
+            'formula' => $validatedData["formula"],
             ]);
-            $Subscription['formula'] = $rate;
+            $Subscription['formula'] = $validatedData["formula"];
 
         $request->session()->put('Subscription', $Subscription)  ;
         //dd($Subscription);
@@ -309,7 +309,6 @@ class SubscriptionController extends Controller
         $connectedagent = User::where('username',Auth::user()->username)->first();
          //proforma document
          $date = date("Y-m-d H:i:s");
-
          if (Agent::where('username',$connectedagent->username)->first()->agency->partner->paymode == 1) {
              # code...
              $params = [];
@@ -365,9 +364,8 @@ class SubscriptionController extends Controller
         Log::info('Proforma send mail ok '.now());
 
         } catch (\Throwable $th) {
-            throw $th;
             Log::warning('Erreur de mail : '.json_encode($Subscription));
-
+            Session::put("warning","Attention! L'envoi de la proforma par mail a échoué");
         }
 
         return view('pages.recapitulatif',compact('Subscription','date','connectedagent'));
@@ -488,6 +486,7 @@ class SubscriptionController extends Controller
             } catch (\Throwable $th) {
                 // throw $th;
                 Log::warning('Erreur de mail : '.json_encode($Subscription));
+                Session::put("warning","Attention! L'envoi de la CP par mail a échoué");
 
             }
 
