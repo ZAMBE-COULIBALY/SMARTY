@@ -18,9 +18,9 @@ class StatistiquesController extends Controller
     public function subscriptionsByAgency()
     {
         # code...
-
-
-        if (User::where("username","=",Auth()->user()->username)->first()->hasRole("manager")) {
+        if (User::where("username","=",Auth()->user()->username)->first()->hasAnyRole(["administrator","super_administrator"])) {
+            $agencies = Agency::all();
+        }elseif (User::where("username","=",Auth()->user()->username)->first()->hasRole("manager")) {
             # code...
             $agencies = Agency::all()->where("partner_id",Manager::where("username",Auth()->user()->username)->first()->partner_id);
 
@@ -29,7 +29,7 @@ class StatistiquesController extends Controller
             $agencies = Agency::all()->where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id);
 
 
-        }
+        } 
 
         return view("pages.etat", compact('agencies'));
     }
@@ -49,16 +49,19 @@ class StatistiquesController extends Controller
         $enddate = Carbon::parse(date_create_from_format("d/m/Y",$parameters["enddate"] ))->addDay(1)->floorday()->addSecond(-1);
         $agency = Agency::where("id",$parametersvalid["agency"])->first();
 
-        if (User::where("username","=",Auth()->user()->username)->first()->hasRole("manager")) {
+        if (User::where("username","=",Auth()->user()->username)->first()->hasAnyRole(["administrator","super_administrator"])) {
+            $agencies = Agency::all();
+        }elseif (User::where("username","=",Auth()->user()->username)->first()->hasRole("manager")) {
             # code...
-            $agencies = Agency::all()->where("partner_id",Manager::where("username","=",Auth()->user()->username)->first()->partner_id);
+            $agencies = Agency::all()->where("partner_id",Manager::where("username",Auth()->user()->username)->first()->partner_id);
 
         } else {
             # code...
             $agencies = Agency::all()->where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id);
 
 
-        }
+        } 
+
         $collection = Subscription::all()->whereBetween("created_at",[$startdate,$enddate])
                 ->whereIn("agent_id",$agency->agents->pluck("id"));
                 return view("pages.etat", compact('agencies','collection'));
