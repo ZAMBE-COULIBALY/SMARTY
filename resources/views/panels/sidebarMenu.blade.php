@@ -182,7 +182,7 @@
 
     @endif
 
-    @if (Auth::user()->hasAnyRole(["administrator","super_administrator"]))
+    {{--  @if (Auth::user()->hasAnyRole(["administrator","super_administrator"]))
 
       <li class="nav-item has-treeview @yield('commission_menu')">
       <a href="#" class="nav-link @yield('commission_menu')">
@@ -196,7 +196,7 @@
        
         </ul>
 
-    @endif
+    @endif  --}}
     @if (Auth::user()->hasAnyRole(['administrator','super_administrator','manager','agent_chief']))
     <li class="nav-item has-treeview @yield('commission_menu')">
         <a href="#" class="nav-link @yield('commission_menu')">
