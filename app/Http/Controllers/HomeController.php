@@ -160,14 +160,14 @@ class HomeController extends Controller
 
         $data = [
             "general" => [ 
-                "subscriptionFull" => $subscriptionFull,
-                "subscription100" => $subscription100,
-                "subscription70" => $subscription70,
-                "subscription50" => $subscription50, 
-                "subscription25" => $subscription25, 
-                "subscriptionWin" => $subscriptionWin, 
-                "subscriptionLost" => $subscriptionLost, 
-                "subscriptionCurPrime" => $subscriptionCurPrime, 
+                "subscriptionFull" => round($subscriptionFull) ,
+                "subscription100" =>  round($subscription100),
+                "subscription70" =>  round($subscription70),
+                "subscription50" =>  round($subscription50), 
+                "subscription25" =>  round($subscription25), 
+                "subscriptionWin" => round( $subscriptionWin), 
+                "subscriptionLost" =>  round($subscriptionLost), 
+                "subscriptionCurPrime" => round( $subscriptionCurPrime), 
                 ]
            
         ];
