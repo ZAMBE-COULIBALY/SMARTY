@@ -1,4 +1,3 @@
-
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white text-sm navbar-light">
     <!-- Left navbar links -->
