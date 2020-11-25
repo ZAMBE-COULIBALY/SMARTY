@@ -182,7 +182,7 @@
                             <label>PREMIUM</label> 
                             <div class="input-group-sm">
                                  
-                                 <input type="number" required  step="0.1" min="{{ isset($partner) ? $partner->rate2 : '' }}"  name="rate3" id="rate3">
+                                 <input type="number" required  step="0.1" min="{{ isset($partner) ? $partner->rate2 : '' }}" class="form-control form-control-sm" value="{{ isset($partner) ? $partner->rate : '' }}" name="rate3" id="rate3">
                                  
                                  @error('rate3')
                                      <span class="invalid-feedback" role="alert">

@@ -79,7 +79,8 @@ jQuery(document).ready(function(){
     {
     step_array = current_url.split("step=");//on récupère la clé du numéro de létape courante
     step = step_array[1];//on récupère la valeur, donc le numéro
-    switch(Number(step))//et on switche
+    //et on switche
+    switch(Number(step)) 
     {
     case 1://si on est dans le premier cas, donc en réalité le deuxième formulaire car le ?step=1 concerne la deuxième page
     jQuery("#step1").css("display", "none");
