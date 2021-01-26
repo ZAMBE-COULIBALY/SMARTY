@@ -29,8 +29,8 @@
         <div class="row" >
             <div class="col-12 col-sm-12">
 
-                <div class="card card-primary  shadow-sm ">
-                    <div class="card-header p-0 pt-1" style="background-color:#120d74; ">
+                <div class="card card-warning  shadow-sm ">
+                    <div class="card-header p-0 pt-1">
                         <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="custom-content-above-other-tab" data-toggle="pill" href="#custom-content-above-other" role="tab" aria-controls="custom-content-above-other" aria-selected="false">DECLARATION DE SINISTRE</a>
@@ -61,7 +61,7 @@
                                     <tbody >
 
                                     @foreach($subscriptions as $subscription)
-                                 
+
   @switch($subscription->currentState())
                                         @case(3)
                                         <tr class="p-3 mb-2 bg-danger text-white">
@@ -88,12 +88,12 @@
                                         <td>
                                             <center>
                                                @if ($subscription->currentState() >=1)
-                                                   
+
                                                    <a href={{ route('sinister.create',$subscription->id) }}  class="btn btn-info btn-sm ">
                                                     <i class="fa fa-pencil-alt"> DECLARER</i>
                                                 </a>
                                             @endif
-     
+
                                  </center>
                                         </td>
                                     </tr>
@@ -101,7 +101,7 @@
                                 </tbody>
                             </table>
                                 @endisset
-                               
+
                             </div>
 
                             </div>
@@ -152,12 +152,12 @@
 
         }
         })
-       
+
 
         $('#ckeckedCode').change(function() {
             if($(this).is(":checked")) {
                 $( "#folder" ).prop( "disabled", false );
-                
+
                 $( "#firstname" ).prop( "disabled", true );
                 $('#ckeckedFirstname').prop("checked",false)
 
@@ -187,7 +187,7 @@
 
             }
             }
-            
+
 
         });
          $('#ckeckedLastname').change(function() {

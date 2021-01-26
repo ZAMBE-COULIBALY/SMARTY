@@ -186,7 +186,7 @@ class SubscriptionController extends Controller
                 'agent_id'=> ':subscriptions',
                 'customer_id'=> ':subscriptions',
                 'formula'=> 'required',
-                
+
         ]);
 
         if(empty($request->session()->get('Subscription'))){
@@ -636,7 +636,7 @@ class SubscriptionController extends Controller
 
                 $pdf-> save(storage_path().'/app/public/received/'.$newsubscription->customer->first_name.$newsubscription->customer->phone1.'.pdf');
 
-                
+
             } catch (\Throwable $th) {
                 Log::alert(json_encode($th));
                 Log::alert('Paiement echoué');
@@ -649,10 +649,10 @@ class SubscriptionController extends Controller
                     Mail::to($customer->mail, "Souscripteur .$customer->first_name. .$customer->first_name")
                     ->send(new newSubscription($newsubscription));
                 Log::info('Création send mail ok '.now());
-    
+
                 } catch (\Throwable $th) {
                     Log::warning('Erreur de mail : '.json_encode($Subscription));
-    
+
                 }
 
 

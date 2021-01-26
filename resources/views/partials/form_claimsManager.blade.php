@@ -12,7 +12,7 @@
                             <span class="fas fa-user"></span>
                         </div>
                     </div>
-                    <input type="text" {{ isset($claimsManager) ? 'readonly' : '' }} class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($claimsManager) ? $claimsManager->code : '' }}" placeholder="Saisir le code du gestionnaire" required autocomplete="code" autofocus>
+                    <input type="text" readonly class="form-control @error('Code') is-invalid @enderror" name="code" id="code" value="{{ isset($claimsManager) ? $claimsManager->code : $code }}" placeholder="Saisir le code du gestionnaire" required autocomplete="code" autofocus>
 
                 </div>
                 @error('Code')
@@ -30,7 +30,7 @@
                     <strong> @</strong>
                 </div>
                 </div>
-                <input type="text" {{ isset($claimsManager) ? 'readonly' : '' }} class="form-control @error('username') is-invalid @enderror" name="username" id="username" value="{{ isset($claimsManager) ? $claimsManager->username : '' }}" placeholder="Saisir le login du gestionnaire" required autocomplete="username" autofocus>
+                <input type="text" readonly class="form-control @error('username') is-invalid @enderror" name="username" id="username" value="{{ isset($claimsManager) ? $claimsManager->username : $new_manager }}" placeholder="Saisir le login du gestionnaire" required autocomplete="username" autofocus>
 
             </div>
             @error('username')
@@ -47,7 +47,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control @error('Nom') is-invalid @enderror" name="lastname" id="lastname" value="{{ isset($claimsManager) ? $claimsManager->lastname : '' }}" placeholder="Saisir le nom du gestionnaire" required autocomplete="lastname" autofocus>
+                <input type="text" class="form-control @error('Nom') is-invalid @enderror" maxlength="30" name="lastname" id="lastname" value="{{ isset($claimsManager) ? $claimsManager->lastname : '' }}" placeholder="Saisir le nom du gestionnaire" required autocomplete="lastname" autofocus>
 
             </div>
             @error('Nom')
@@ -68,7 +68,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control @error('firstname') is-invalid @enderror" name="firstname" id="firstname" value="{{ isset($claimsManager) ? $claimsManager->firstname : '' }}" placeholder="Saisir le(s) prenom(s) du gestionnaire" required autocomplete="firstname" >
+                <input type="text" class="form-control @error('firstname') is-invalid @enderror" maxlength="50" name="firstname" id="firstname" value="{{ isset($claimsManager) ? $claimsManager->firstname : '' }}" placeholder="Saisir le(s) prenom(s) du gestionnaire" required autocomplete="firstname" >
 
             </div>
             @error('Prenoms')
@@ -87,7 +87,7 @@
                     <span class="fas fa-envelope"></span>
                 </div>
                 </div>
-                <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ isset($claimsManager) ? $claimsManager->user->email : '' }}" placeholder="Saisir le l'email du gestionnaire" autocomplete="email" >
+                <input type="email" class="form-control @error('email') is-invalid @enderror" maxlength="45" name="email" id="email" value="{{ isset($claimsManager) ? $claimsManager->user->email : '' }}" placeholder="Saisir le l'email du gestionnaire" autocomplete="email" >
 
             </div>
             @error('email')
@@ -124,5 +124,5 @@
         </div>
 
     </div>
-    <button type="submit" class="btn btn-primary">ENREGISTRER</button>
+    <button type="submit" class="btn btn-warning text-white" ><b>ENREGISTRER </b></button>
 </form>

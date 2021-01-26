@@ -11,8 +11,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-sm-12">
-                <div class="card card-primary  shadow-sm ">
-                    <div class="card-header p-0 pt-1" style="background-color:#120d74; ">
+                <div class="card card-warning  shadow-sm ">
+                    <div class="card-header p-0 pt-1">
                         <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
 
                         <li class="nav-item">
@@ -48,7 +48,7 @@
 
 
 
-    $(function () { 
+    $(function () {
         var rate = "{{$usr->partner->rate}}";
 
         calculRate = function() {
@@ -61,7 +61,7 @@
           }  else if($("#formula2").is(":checked")){
             console.log($("#formula2").val());
             rate = "{{$usr->partner->rate}}"
-          } 
+          }
           $("#output").text($("#price").val()* rate / 100);
 
         }

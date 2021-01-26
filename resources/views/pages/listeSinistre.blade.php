@@ -12,8 +12,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-sm-12">
-                <div class="card card-primary  shadow-sm ">
-                    <div class="card-header p-0 pt-1" style="background-color:#120d74; ">
+                <div class="card card-warning  shadow-sm ">
+                    <div class="card-header p-0 pt-1" >
                         <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="true">SINISTRES</a>

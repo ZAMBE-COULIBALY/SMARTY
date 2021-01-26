@@ -121,7 +121,7 @@ class AgencyController extends Controller
             }
 
         $partners = Agency::all();
-       //dd($pass);
+       dd($pass);
       Mail::to($agency->email,$parameters['firstnameM'].' '.$parameters['lastnameM'])
 
       ->send(new newAgency($agency,$agencyChief,$pass))  ;

@@ -127,30 +127,30 @@
     <script>
     $(function() {
         function getMaxValueForRequest(requester,currentItemAmount) {
-            
+
             requester.prop('max', currentItemAmount.val());
-            
+
         }
-          
+
           function getMinValueForRequest(requester,currentItemAmount) {
-            
+
             requester.prop('min', currentItemAmount.val());
-           
+
           }
-          
+
           // init once to set
           getMinValueForRequest($("#rate"),$("#rate2"))
           getMinValueForRequest($("#rate3"),$("#rate"))
           getMaxValueForRequest($("#rate"),$("#rate"))
           getMaxValueForRequest($("#rate2"),$("#rate3"))
 
-          
+
           // listen for changes
           $("#rate2").change(function() {
             getMinValueForRequest($("#rate"),$(this))
 
-          
-           // getMinValueForRequest($("#rate3"),$("#rate2")) 
+
+           // getMinValueForRequest($("#rate3"),$("#rate2"))
 
           })
 
@@ -166,6 +166,31 @@
           })
 
     })
-        
+    {{--  Multi-formules  --}}
+
+    $('input[name="formula"]').on('change', function(e) {
+        console.log('change');
+
+        var manageradiorel = e.target.value;
+        console.log(manageradiorel);
+        switch(manageradiorel){
+            case "1":
+            $('#form').attr();
+            console.log('case 1')
+                break;
+            case "2":
+            $('#form').attr("action", "https://secure.cinetpay.com");
+            console.log('case 2')
+
+                break;
+
+            default:
+            console.log('case def')
+
+                break;
+
+        }
+
+    });
     </script>
 @endsection

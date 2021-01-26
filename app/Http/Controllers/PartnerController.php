@@ -57,11 +57,11 @@ class PartnerController extends Controller
         $parameters = $request->except("_token");
 
         $parametersvalid = $request->validate([
-            'code' => 'required|unique:partners|max:255',
-            'label' => 'required|unique:partners|max:255',
-            'lastnameM' => 'required|max:255',
-            'firstnameM' => 'required|max:255',
-            'email' => 'required|email',
+            'code' => 'required|unique:partners|max:8',
+            'label' => 'required|unique:partners|max:40',
+            'lastnameM' => 'required|max:30',
+            'firstnameM' => 'required|max:50',
+            'email' => 'required|email|max:40',
             'rate' => 'required|numeric',
             'rate2' => 'numeric',
             'rate3' => 'numeric',
@@ -75,7 +75,10 @@ class PartnerController extends Controller
             $logo = "logo-".$parametersvalid['code']."-". time() . '.' . $request->file('logo')->getClientOriginalExtension();
             $request->file('logo')->storeAs('public/logo/'.$parametersvalid['code'].'/', $logo);
 
+        }else{
+            $logo =null;
         }
+
         $partner = new Partner();
         $partner->code = $parametersvalid['code'];
         $partner->label = Str::upper(Str::lower(Str::upper($parametersvalid['label']))) ;
@@ -125,7 +128,7 @@ class PartnerController extends Controller
             $partnerManagerUser->roles()->attach(Role::where('slug',$role)->first());
         endforeach;
         $partners = Partner::all();
-        //dd($pass);
+        dd($pass);
       Mail::to($partner->email,$parameters['firstnameM'].' '.$parameters['lastnameM'])
 
       ->send(new newPartner($partner,$partnerManager,$pass))  ;

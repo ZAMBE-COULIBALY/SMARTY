@@ -10,8 +10,8 @@ menu-open active
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 col-sm-12">
-                    <div class="card card-primary  shadow-sm ">
-                        <div class="card-header p-0 pt-1 " style="background-color:#120d74; ">
+                    <div class="card card-warning  shadow-sm ">
+                        <div class="card-header p-0 pt-1 " >
                             <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="true">NOUVELLE SOUSCRIPTION</a>
@@ -42,12 +42,17 @@ menu-open active
                                                     <td style="text-align: center">
                                                         <p>Moyen de paiement</p>
                                                         @switch($connectedagent->partner->paymode)
-                                                            @case(1)
+                                                            @case(2)
                                                             <input class="form-check-input" type="radio" value="2" checked id="paymenttype" name="paymenttype">Mobile<br>
 
                                                                 @break
-                                                            @case(2)
+                                                            @case(1)
                                                             <input class="form-check-input" type="radio" value="1" checked id="paymenttype" name="paymenttype">Caisse<br>
+
+                                                                @break
+                                                                @case(3)
+                                                                <input class="form-check-input" type="radio" value="1" checked id="paymenttype" name="paymenttype">Caisse<br>
+                                                                <input class="form-check-input" type="radio" value="2" checked id="paymenttype" name="paymenttype">Mobile<br>
 
                                                                 @break
                                                             @default
@@ -132,6 +137,9 @@ menu-open active
                 }
 
         });
+
+
+
 
         </script>
 @endsection

@@ -27,7 +27,9 @@ class ClaimsManagerController extends Controller
     {
         //
         $claimsManagers = ClaimsManager::all();
-        return view("pages.claimsManagers",compact("claimsManagers"));
+        $code = ClaimsManager::max('id')+1;
+        $new_manager= "claims_manager@agent_".$code;
+        return view("pages.claimsManagers",compact("claimsManagers","code","new_manager"));
     }
 
     /**
@@ -73,7 +75,7 @@ class ClaimsManagerController extends Controller
                 $claimsManager->contact = $parameters['contact'] ;
                 $claimsManager->state = isset($parameters['state']) ? 1 : 0 ;
                 $claimsManager->slug = Str::slug($claimsManager->username.$date->format('dmYhis'));
-               
+
                 Log::info('ok claimsmanager : '.json_encode($claimsManager));
 
 
@@ -99,7 +101,7 @@ class ClaimsManagerController extends Controller
            } catch (\Throwable $th) {
                throw $th;
            }
-               
+
 
                 Session::Put('success',"le gestionnaire a été correctement créé");
 
@@ -169,12 +171,12 @@ class ClaimsManagerController extends Controller
             $claimsManager->save();
             Session::Put('success',"Le gestionnaire a été correctement modifié");
 
-          
+
 
         } catch (\Throwable $th) {
             throw $th;
             Log::info("Erreur lors de la modiication du gestionnaire. gestionnaire: ". json_encode($claimsManager). " | ".now());
-            Session::Put("error","Erreur lors de la modiication du gestionnaire");        
+            Session::Put("error","Erreur lors de la modiication du gestionnaire");
         }
 
 

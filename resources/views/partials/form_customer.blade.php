@@ -44,7 +44,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control " name="name" id="name" value="{{ old('name') }}" placeholder="Saisir le nom du client" required autocomplete="name" autofocus>
+                <input type="text" class="form-control " maxlength="30" name="name" id="name" value="{{ old('name') }}" placeholder="Saisir le nom du client" required autocomplete="name" autofocus>
 
             </div>
         </div>
@@ -57,7 +57,7 @@
                         <span class="fas fa-user"></span>
                     </div>
                 </div>
-                <input type="text" class="form-control " name="first_name" id="first_name" value="{{ old('first_name') }}" placeholder="Saisir le libelle du client" required autocomplete="first_name" >
+                <input type="text" class="form-control " maxlength="50" name="first_name" id="first_name" value="{{ old('first_name') }}" placeholder="Saisir le libelle du client" required autocomplete="first_name" >
 
             </div>
         </div>
@@ -106,7 +106,7 @@
                             <span class="fas fa-home"></span>
                         </div>
                     </div>
-                    <input type="text" class="form-control " value="{{ old('place_residence') }}"  name="place_residence" id="place_residence" value="" placeholder="Saisir le lieu de résidence du client" required autocomplete="home" >
+                    <input type="text" class="form-control " maxlength="50" value="{{ old('place_residence') }}"  name="place_residence" id="place_residence" value="" placeholder="Saisir le lieu de résidence du client" required autocomplete="home" >
 
                     </div>
             </div>
@@ -132,7 +132,7 @@
                     <span class="fas fa-envelope"></span>
                 </div>
             </div>
-            <input type="email" class="form-control " value="{{ old('mail') }}" name="mail" id="mail" value="" placeholder="Saisir l'adresse email du client" autocomplete="email" >
+            <input type="email" class="form-control " maxlength="40" value="{{ old('mail') }}" name="mail" id="mail" value="" placeholder="Saisir l'adresse email du client" autocomplete="email" >
 
         </div>
     </div>
@@ -165,6 +165,6 @@
 
             <P style="margin-left:90%">
                 <hr>
-                <button type="submit" class="btn btn-primary" >SUIVANT</button>
+                <button type="submit" class="btn btn-warning text-white" ><b>SUIVANT </b></button>
             </P>
 </form>
