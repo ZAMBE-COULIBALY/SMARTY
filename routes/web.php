@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts/layout');
-})->middleware('auth');;
+Route::get('/', [
+    'as'=> 'accueil',
+    'uses' => 'HomeController@index'
+    ])->middleware('auth');
 
 Auth::routes();
 
@@ -108,7 +109,7 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
         ]);
 
         Route::any('users/{id}', function ($id) {
-            
+
         });
         Route::any('/statment', [
             'as'=> 'sinister.statment',
@@ -202,6 +203,11 @@ Route::group(['prefix' => '/statistics', 'middleware' => ["auth","roles"],], fun
             Route::get('/demands', [
                 'as'=> 'demandlist',
                 'uses' => 'SinisterController@manageDemandList'
+            ]);
+
+            Route::get('/forward/{sinister}', [
+                'as'=> 'forward',
+                'uses' => 'SinisterController@forward'
             ]);
 
             Route::get('/show/{sinister}', [
@@ -339,9 +345,15 @@ Route::group(['prefix' => '/Agent','middleware' => ['auth','roles']], function (
     );
 });
 //Liens Subscritpion
-Route::group(['prefix' => '/subscription', 'middleware' => ["auth","roles"],], function () {
+Route::group(['prefix' => '/Subscription', 'middleware' => ["auth","roles"],], function () {
 
-    Route::get('/getcustomers', [
+
+    Route::get('/', [
+        'as'=> 'subscription.list',
+        'uses' => 'SubscriptionController@index'
+        ]);
+
+    Route::get('/new', [
         'as'=> 'subscription.customer',
         'uses' => 'SubscriptionController@getcustomers'
         ]);
@@ -361,7 +373,7 @@ Route::group(['prefix' => '/subscription', 'middleware' => ["auth","roles"],], f
                 'uses' => 'SubscriptionController@postequipment'
                 ]);
 
-                Route::get('/recapitulatif', [
+                Route::get('/recapitulatif/{demand}', [
                     'as'=> 'subscription.recapitulatif',
                     'uses' => 'SubscriptionController@getrecapitulatif'
                     ]);
@@ -395,10 +407,7 @@ Route::group(['prefix' => '/subscription', 'middleware' => ["auth","roles"],], f
 
 
 
-    Route::get('/new', [
-        'as'=> 'subscription.create',
-        'uses' => 'SubscriptionController@create'
-        ]);
+
 
     Route::post('/add', [
         'as'=> 'subscription.add',

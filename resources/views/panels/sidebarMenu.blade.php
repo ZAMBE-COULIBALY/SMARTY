@@ -4,7 +4,7 @@
   <ul class="nav nav-pills nav-sidebar text-sm flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
     <!-- Add icons to the links using the .nav-icon class
          with font-awesome or any other icon font library -->
-    
+
        {{--  @if (Auth::user()->hasAnyRole(['administrator','super_administrator']))  --}}
 
          <li class="nav-item has-treeview @yield('dashboardM')">
@@ -64,7 +64,7 @@
                     </a>
                     </li>
                 @endif
-              
+
                 @if (Auth::user()->hasAnyRole(['agent_chief']))
                     <li class="nav-item">
                     <a href="{{ route('agents.list') }}" class="nav-link @yield('agent')">
@@ -118,13 +118,13 @@
             <ul class="nav nav-treeview">
                 @if (Auth::user()->hasAnyRole(['agent','agent_chief']))
                     <li class="nav-item">
-                    <a href="{{ route('subscription.customer') }}" class="nav-link @yield('subscription')">
+                    <a href="{{ route('subscription.list') }}" class="nav-link @yield('subscription')">
                         <i class="far fa-circle nav-icon"></i>
                         <p class="up">Souscription</p>
                     </a>
                     </li>
                 @endif
-               
+
 
 
             </ul>
@@ -193,7 +193,7 @@
         </p>
       </a>
       <ul class="nav nav-treeview">
-       
+
         </ul>
 
     @endif  --}}
@@ -214,7 +214,7 @@
                 </a>
             </li>
           </ul>
-          
+
     </li>
 @endif
   </ul>

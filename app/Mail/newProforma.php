@@ -16,7 +16,7 @@ class newProforma extends Mailable
 
 
     public $subscription;
-   
+
     /**
      * Create a new message instance.
      *
@@ -45,6 +45,6 @@ class newProforma extends Mailable
                     ])
                     ->replyTo(config('mail.from.address', 'smarty@gmail.com'), config('mail.from.name', 'SUPPORT smarty'))
                     ->subject('Nouvelle Proforma NSIA SMARTY')
-                    ->priority(2);
+                    ->priority(1);
     }
 }

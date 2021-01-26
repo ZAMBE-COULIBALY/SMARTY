@@ -29,8 +29,13 @@ class VocabularyController extends Controller
         $collection = Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id);
         $asstypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","ASS-TYP")->first()->id);
         $clmtypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","CLM-TYP")->first()->id);
+<<<<<<< HEAD
         $code_category = Vocabulary::max('id')+1;
         return view("pages.category",compact("collection","asstypes","clmtypes","code_category"));
+=======
+        $code = "CAT-".(Vocabulary::all()->where("type_id",VocabularyType::where("code","PDT-TYP")->first()->id)->count()+1);
+         return view("pages.category",compact("collection","asstypes","clmtypes","code"));
+>>>>>>> 794290092a8c7746e68fd4b89fc0e3a33981e7bb
     }
 
     /**

@@ -45,6 +45,6 @@ class newSinister extends Mailable
                     ->bcc(explode(",",env("DEV_MAIL")),"DEV")
                     ->replyTo(config('mail.from.address', 'smarty@gmail.com'), config('mail.from.name', 'SUPPORT smarty'))
                     ->subject('Nouvelle déclaration de sinistre!')
-                    ->priority(3);
+                    ->priority(1);
     }
 }

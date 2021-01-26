@@ -98,16 +98,24 @@
                         </span>
                     @enderror
                 </div>
-                <div class="form-group offset-md-2 col-md-3">
-                    <label for="state" >ACTIF</label>
-                    <div class="input-group">
-                        <input type="checkbox" name="state" id="state" {{ isset($partner) ? (($partner->state) ? 'checked' : '') : 'checked'}} data-bootstrap-switch data-off-color="danger" data-on-color="success">
+                <div class="form-group row offset-md-2 col-md-3 align-items-end align-items-middle">
+                    <div class="col custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" {{ isset($partner) ? (($partner->state) ? 'checked' : '') : 'checked'}} name="state" id="state">
+                        <label class="custom-control-label" for="state">ACTIF</label>
                     </div>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="formula" >MULTI FORMULE</label>
+                    {{--  <label for="state" >ACTIF</label>
                     <div class="input-group">
-                        <input type="checkbox" name="formula" id="formula" {{ isset($partner) ? (($partner->formula) ? 'checked' : '') : 'checked'}} data-bootstrap-switch data-off-color="danger" data-on-color="success">
+                        <input type="checkbox" name="state" id="state" {{ isset($partner) ? (($partner->state) ? 'checked' : '') : 'checked'}}>
+                    </div>  --}}
+                </div>
+                <div class="form-group row col-md-3 align-items-end align-items-middle">
+                    {{--  <label for="formula" >MULTI FORMULE</label>
+                    <div class="input-group">
+                        <input type="checkbox" name="formula" id="formula" {{ isset($partner) ? (($partner->formula) ? 'checked' : '') : 'checked'}} >
+                    </div>  --}}
+                    <div class="col custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" name="formula" id="formula" {{ isset($partner) ? (($partner->formula) ? 'checked' : '') : 'checked'}}>
+                        <label class="custom-control-label" for="formula" >MULTI FORMULE</label>
                     </div>
                 </div>
             </div>
@@ -123,12 +131,19 @@
                         <div class="input-group">
                             <label>MODE DE PAIEMENT</label>
                             <select name="paymode" id="paymode" class="form-control form-control-sm  @error('paymode') is-invalid @enderror select2bs4NE" style="width: 100%;">
+<<<<<<< HEAD
 
                                 <option value=1 {{ (isset($partner) && $partner->paymode == 1)? 'selected' : '' }}>CAISSE</option>
                                 <option value=2 {{ (isset($partner) && $partner->paymode == 2)? 'selected' : '' }}>MOBILE BANKING</option>
                                 <option value=3 {{ (isset($partner) && $partner->paymode == 3)? 'selected' : '' }}>MIXTE</option>
+=======
+                                <option value=3 {{ (isset($partner) && $partner->paymode == 3)? 'selected' : '' }}>MIXTE</option>
+                                <option value=1 {{ (isset($partner) && $partner->paymode == 1)? 'selected' : '' }}>MOBILE BANKING</option>
+                                <option value=2 {{ (isset($partner) && $partner->paymode == 2)? 'selected' : '' }}>CAISSE</option>
+>>>>>>> 794290092a8c7746e68fd4b89fc0e3a33981e7bb
                             </select>
-                            @error('asstyp')
+
+                            @error('paymode')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

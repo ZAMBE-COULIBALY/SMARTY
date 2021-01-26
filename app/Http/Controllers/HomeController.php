@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessMailSending;
+use App\Mail\newPartner;
+use App\Partner;
 use App\Subscription;
 use App\User;
 use Carbon\Carbon;
@@ -31,6 +34,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $partner = Partner::all()->first();
         return view('layouts/layout');
     }
     public function error()
@@ -48,6 +52,9 @@ class HomeController extends Controller
         Log::info('appel fonction à '.now());
         Log::debug('appel fonction à '.now());
         # code...
+        $partner = Partner::all()->first();
+        // dispatch(new ProcessMailSending(["armandpersie@gmail.com","Gilles Armand"],new newPartner($partner,$partner->managers->first(),"test")));   $partner = Partner::all()->first();
+        // dispatch(new ProcessMailSending(["armandpersie@gmail.com"],new newPartner($partner,$partner->managers->first(),"test")));
         return view('layouts.layout');
     }
 
@@ -119,7 +126,7 @@ class HomeController extends Controller
                     $subscription100 = $subscription100 + $subscription->currentValue();
 
                     break;
-            
+
                 case 2:
                     # code...
                     $subscription70 = $subscription70 + $subscription->currentValue();
@@ -133,7 +140,7 @@ class HomeController extends Controller
                     case 1:
                         # code...
                         $subscription100 = $subscription100 + $subscription->currentValue();
-    
+
                         break;
                 default:
                     # code...
@@ -152,27 +159,27 @@ class HomeController extends Controller
             $subscriptionLost = $subscriptionLost + $subscription->currentValue();
 
         }
-      
+
 
         $subscriptionFull = $subscription100  + $subscription70 + $subscription50 + $subscription25;
 
         $subscriptionWin = $subscriptions->where("state","<>",0)->where("subscription_enddate","<",now()->floorday())->sum("premium");
 
         $data = [
-            "general" => [ 
+            "general" => [
                 "subscriptionFull" => round($subscriptionFull) ,
                 "subscription100" =>  round($subscription100),
                 "subscription70" =>  round($subscription70),
-                "subscription50" =>  round($subscription50), 
-                "subscription25" =>  round($subscription25), 
-                "subscriptionWin" => round( $subscriptionWin), 
-                "subscriptionLost" =>  round($subscriptionLost), 
-                "subscriptionCurPrime" => round( $subscriptionCurPrime), 
+                "subscription50" =>  round($subscription50),
+                "subscription25" =>  round($subscription25),
+                "subscriptionWin" => round( $subscriptionWin),
+                "subscriptionLost" =>  round($subscriptionLost),
+                "subscriptionCurPrime" => round( $subscriptionCurPrime),
                 ]
-           
+
         ];
 
-       
+
         $subscriptions = Subscription::whereBetween("date_subscription",[now()->copy()->firstOfYear()->floorDay(),now()->copy()->addDay(1)->floorDay()->addSecond(-1)])->select(DB::raw('count(id) as `data`'),DB::raw("DATE_FORMAT(date_subscription, '%m') new_date"))
         ->groupBy('new_date')->get();
 

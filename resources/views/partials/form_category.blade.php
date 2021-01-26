@@ -11,7 +11,11 @@
                             <span class="fas fa-user"></span>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <input type="text" readonly class="form-control @error('code') is-invalid @enderror" name="code" id="code" value="{{ isset($category) ? $category->code : $code_category }}"  required autocomplete="code" autofocus>
+=======
+                    <input type="text" readonly class="form-control @error('code') is-invalid @enderror" name="code" id="code" value="{{ isset($category) ? $category->code : ([] != $errors->all()) ? old('code') : $code}}" placeholder="Saisir le code de la categorie" required autocomplete="code" autofocus>
+>>>>>>> 794290092a8c7746e68fd4b89fc0e3a33981e7bb
                     @error('code')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -63,10 +67,18 @@
         </div>
         <div class="form-group col-md-5">
             <div class="input-group">
+<<<<<<< HEAD
                 <label>TYPE DE DEGATS</label>
                 <select name="clmtyp[]" id="clmtyp[]" multiple data-placeholder="Selectionnez un type de dégat" class="form-control  @error('clmtyp') is-invalid @enderror select2bs4NE" style="width: 100%;" >
 
                   @foreach ($clmtypes as $item)
+=======
+                <label>TYPE DE DEGATS </label> <span>. (Cliquez dans la zone pour sélectionner)</span>
+                <select name="clmtyp[]" id="clmtyp[]" required placeholder="Sélectionner les dégâts" multiple class="form-control form-control-sm  @error('clmtyp') is-invalid @enderror select2bs4NE" style="width: 100%;">
+                    <option disabled>Sélectionner les dégâts</option>
+
+                    @foreach ($clmtypes as $item)
+>>>>>>> 794290092a8c7746e68fd4b89fc0e3a33981e7bb
                     <option value="{{$item->code}}" {{ (isset($category) && $category->hasAttribute($item->code,"CLM-TYP"))? 'selected' : '' }}>{{$item->label}}</option>
                   @endforeach
                 </select>

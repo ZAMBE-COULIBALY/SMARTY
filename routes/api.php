@@ -23,6 +23,18 @@ Route::post('/paiementmobile', [
     'uses' => 'SubscriptionController@paiementmobile'
     ]);
 
+    Route::get('/subscription/demand/{demand}/validate', [
+        'as'=> 'subscription.demand.validate',
+        'uses' => 'DemandController@validated'
+        ]);
+
+        Route::get('/subscription/demand/{demand}/cancel', [
+            'as'=> 'subscription.demand.cancel',
+            'uses' => 'DemandController@canceled'
+            ]);
+
+
+
     Route::post('/documentmobilepayment', [
         'as'=> 'documentmobilepayment',
         'uses' => 'SubscriptionController@documentmobilepayment'

@@ -1,0 +1,17 @@
+
+$nsia-gold: goldenrod;
+$nsia-blue: #000066;
+
+
+$theme-colors: (
+    "nsia-blue": #000066,
+    "nsia-gold": goldenrod
+    );
+
+    @function theme-color($key: "nsia-blue") {
+      @return map-get($theme-colors, $key);
+    }
+
+    @function theme-color($key: "nsia-gold") {
+      @return map-get($theme-colors, $key);
+    }

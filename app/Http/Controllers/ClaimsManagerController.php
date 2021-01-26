@@ -54,23 +54,24 @@ class ClaimsManagerController extends Controller
         //
         $parameters = $request->except("_token");
         $parametersv = $request->validate([
-            'code' =>
-                ['required', 'unique:claimsmanagers,code',
-                'max:255'
-                ],
-                'username' => ['required',
-                'max:255', Rule::notIn(User::all()->pluck("username"))
-                        ],
+            // 'code' =>
+            //     ['required', 'unique:claimsmanagers,code',
+            //     'max:255'
+            //     ],
+                // 'username' => ['required',
+                // 'max:255', Rule::notIn(User::all()->pluck("username"))
+                //         ],
                 'email' => 'required|email',
             ]);
         try {
             //code...
                     $claimsManager = new ClaimsManager();
                 $date = new Carbon();
-                $claimsManager->code = $parameters['code'];
+                $claimsManager->code = "CLM". Str::padLeft(ClaimsManager::all()->count()+1,4,"0") ;
+
                 $claimsManager->firstname = $parameters['firstname'];
                 $claimsManager->lastname = $parameters['lastname'];
-                $claimsManager->username = $parameters['username'];
+                $claimsManager->username =  "claimsmanager_".(ClaimsManager::all()->count()+1)."@nsiasmarty";
 
                 $claimsManager->contact = $parameters['contact'] ;
                 $claimsManager->state = isset($parameters['state']) ? 1 : 0 ;
@@ -96,7 +97,7 @@ class ClaimsManagerController extends Controller
                //code...
                 Mail::to($claimsManageruser->email,"claimsManager ".$claimsManager->lastname." ".$claimsManager->firstname)
 
-                ->send(new newClaimsManager($claimsManager,$claimsManageruser,$pass))  ;
+                ->queue(new newClaimsManager($claimsManager,$claimsManageruser,$pass))  ;
                 Log::info('ok mail claimsmanager');
            } catch (\Throwable $th) {
                throw $th;

@@ -42,6 +42,7 @@ menu-open active
                                                     <td style="text-align: center">
                                                         <p>Moyen de paiement</p>
                                                         @switch($connectedagent->partner->paymode)
+<<<<<<< HEAD
                                                             @case(2)
                                                             <input class="form-check-input" type="radio" value="2" checked id="paymenttype" name="paymenttype">Mobile<br>
 
@@ -56,6 +57,42 @@ menu-open active
 
                                                                 @break
                                                             @default
+=======
+                                                        @case(1)
+                                                        <div class=" col-md-8 col-sm-8 offset-md-2 offset-sm-2 col-xs-12">
+                                                            <input class="form-control-sm" type="radio" value="2" checked id="paymenttype" name="paymenttype">
+                                                            <label for="paymenttype"> Mobile Money</label>
+                                                        </div>
+
+                                                        @break
+                                                        @case(2)
+                                                        <div class=" col-md-8 col-sm-8 offset-md-2 offset-sm-2 col-xs-12">
+                                                            <input class="form-control-sm" type="radio" value="1" checked id="paymenttype" name="paymenttype">
+                                                            <label for="paymenttype"> Caisse</label>
+                                                        </div>
+
+
+                                                        @break
+                                                        @case(3)
+                                                        <div class=" col-md-8 col-sm-8 offset-md-2 offset-sm-2 col-xs-12">
+
+
+                                                              <div class="custom-control custom-radio">
+                                                                <input type="radio" value="1" checked id="paymenttype1" name="paymenttype" class="custom-control-input">
+                                                                <label class="custom-control-label" for="paymenttype1">
+                                                                    Caisse
+                                                                </label>
+                                                              </div>
+                                                              <div class="custom-control custom-radio">
+                                                                <input type="radio" value="2" id="paymenttype2" name="paymenttype" class="custom-control-input">
+                                                                <label class="custom-control-label" for="paymenttype2">
+                                                                    Mobile Money
+                                                                </label>
+                                                              </div>
+                                                        </div>
+
+                                                        @break
+>>>>>>> 794290092a8c7746e68fd4b89fc0e3a33981e7bb
 
                                                         @endswitch
                                                     </td>

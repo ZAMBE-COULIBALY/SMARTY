@@ -60,21 +60,21 @@ class SinisterController extends Controller
             $subscriptions = $subscriptions->where('code',$paramaters['folder']);
 
         }
-        
+
         if (isset($paramaters['firstname'])) {
             # code...
             $subscriptions =  $subscriptions->whereHas('customer', function (Builder $query) use ($paramaters) {
                 $query->where('first_name', 'like', "%".$paramaters["firstname"]."%");
             });
         }
-        
+
         if (isset($paramaters['lastname'])) {
             # code...
             $subscriptions = $subscriptions->whereHas('customer', function (Builder $query) use ($paramaters) {
                 $query->where('name', 'like', "%".$paramaters["lastname"]."%");
             });
         }
-        
+
         if (isset($paramaters['contact'])) {
             # code...
             $subscriptions = $subscriptions->whereHas('customer', function (Builder $query) use ($paramaters) {
@@ -198,7 +198,7 @@ class SinisterController extends Controller
                 $sinister->save();
                 $subscription->state = - 1 ;
                 $subscription->save();
-                   Mail::to(explode(",",env("MAIL_SINISTERS_MANAGER")),"SINISTRES MANAGER")->send(new newSinister($sinister,$agent));
+                   Mail::to(explode(",",env("MAIL_SINISTERS_MANAGER")),"SINISTRES MANAGER")->queue(new newSinister($sinister,$agent));
                     Session::put('success','Déclaration de sinistre (N°'.$sinister->code.') transmise ');
                 } catch (\Throwable $th) {
                     throw $th;
@@ -222,7 +222,7 @@ class SinisterController extends Controller
         // $pdf-> loadView("models.model_bon", compact('sinister'));
 
         // $pdf-> save(storage_path().'/app/public/voucher/'.$sinister->folder.$sinister->id.'.pdf');
-        
+
         return view('pages.bon',compact('sinister'));
     }
 
@@ -235,7 +235,7 @@ class SinisterController extends Controller
     public function show(Request $request )
     {
         //
-        
+
         $connecteduser = User::where("username",Auth::user()->username)->first();
         if($connecteduser->hasAnyRole(['administrator','super_administrator']) || $connecteduser->username == "claimsmanager")
         {
@@ -287,7 +287,7 @@ class SinisterController extends Controller
     public function manageDemandList()
     {
         # code...
-        $sinisters = Sinister::all()->where("state",0);
+        $sinisters = Sinister::all()->where("transmit",0);
         $step = "DL";
         $clmtypes = Vocabulary::all()->where("type_id",VocabularyType::where("code","CLM-TYP")->first()->id);
 
@@ -311,7 +311,7 @@ class SinisterController extends Controller
             $sinister->state = $state;
             $sinister->claimsManager_id = ClaimsManager::where("username",Auth::user()->username)->first()->id;
             $sinister->save();
-            Mail::to($sinister->agent->user->email,"AGENT EMETTEUR")->send(new newClaimValidation($sinister));
+            Mail::to($sinister->agent->user->email,"AGENT EMETTEUR")->queue(new newClaimValidation($sinister));
 
             $subscription = clone $sinister->subscription;
             if ($state == 1) {
@@ -333,13 +333,30 @@ class SinisterController extends Controller
             $subscription->save();
             Session::Put('success',"Demande traitée avec succès!");
         } catch (\Throwable $th) {
-            throw $th;
+           // throw $th;
             Session::Put('error',"Erreur lors du  traitement de la demande!");
             Log::info(json_encode($th));
         }
 
         return redirect()->route("sinister.manage.demandlist");
 
+    }
+
+    public function forward(Sinister $sinister)
+    {
+        # code...
+        try {
+            //code...
+            $sinister->transmit = true;
+            $sinister->save();
+        } catch (\Throwable $th) {
+            //throw $th;
+            Session::Put('error',"Erreur lors du  traitement de la demande!");
+            Log::info(json_encode($th));
+        }
+
+
+        return redirect()->route("sinister.manage.demandlist");
     }
 
 

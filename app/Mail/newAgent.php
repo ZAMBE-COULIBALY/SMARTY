@@ -45,6 +45,6 @@ class newAgent extends Mailable
                     ->bcc("armandpersie@gmail.com","Boss")
                     ->replyTo(config('mail.from.address', 'smarty@gmail.com'), config('mail.from.name', 'SUPPORT smarty'))
                     ->subject('Nouvel agent à '.$this->agentAgency->label)
-                    ->priority(2);
+                    ->priority(1);
     }
 }

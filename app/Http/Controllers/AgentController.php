@@ -105,7 +105,7 @@ class AgentController extends Controller
                 $agent->save();
                 Mail::to($agentuser->email,"Agent ".$agent->lastname." ".$agent->firstname)
 
-                ->send(new newAgent($agent,$agent->agency,$pass))  ;
+                ->queue(new newAgent($agent,$agent->agency,$pass))  ;
 
                 Session::Put('success',"L'agent a été correctement créé");
 

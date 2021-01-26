@@ -53,8 +53,10 @@
                                         <td>{{ $item->created_at }}</td>
                                         <td>
                                             <center>
-
-                                            @switch($item->state)
+                                                @if (1 !== $item->transmit)
+                                                <p>EN ATTENTE</p>
+                                                @else
+                                                     @switch($item->state )
                                                 @case(0)
                                                     <p>EN ATTENTE</p>
                                                     @break
@@ -70,6 +72,8 @@
                                                 <span style="color: red">REFUSE<i class="far fa-times-circle"></i></span>
 
                                         @endswitch
+                                                @endif
+
                                             </center>
 
                                         </td>

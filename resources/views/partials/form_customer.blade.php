@@ -111,7 +111,7 @@
                     </div>
             </div>
 
-        <div class="form-group col-md-3">
+        {{--  <div class="form-group col-md-3">
             <div class="form-group">
                 <label>Situation matrimoniale</label>
                 <select name="marital_status" class="form-control select2bs4" style="width: 100%;">
@@ -122,7 +122,7 @@
 
                 </select>
             </div>
-        </div>
+        </div>  --}}
 
         <div class="form-group col-md-6">
         <label for="mail">Email</label>

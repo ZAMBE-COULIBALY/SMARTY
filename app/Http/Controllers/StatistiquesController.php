@@ -29,7 +29,7 @@ class StatistiquesController extends Controller
             $agencies = Agency::all()->where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id);
 
 
-        } 
+        }
 
         return view("pages.etat", compact('agencies'));
     }
@@ -40,7 +40,7 @@ class StatistiquesController extends Controller
         $parameters = $request->except("_token");
 
         $parametersvalid = $request->validate([
-            "agency" => "exists:agencies,id",
+            "agency" => "exists:agencies,id|required",
 
         ]);
 
@@ -60,7 +60,7 @@ class StatistiquesController extends Controller
             $agencies = Agency::all()->where("id",Agent::where("username","=",Auth()->user()->username)->first()->agency_id);
 
 
-        } 
+        }
 
         $collection = Subscription::all()->whereBetween("created_at",[$startdate,$enddate])
                 ->whereIn("agent_id",$agency->agents->pluck("id"));

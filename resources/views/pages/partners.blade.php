@@ -31,6 +31,15 @@
                     @if (isset($pass))
                         echo $pass;
                     @endif
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                     <div class="card card-warning  shadow-sm ">
                         <div class="card-header p-0 pt-1">
                             <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
@@ -165,7 +174,41 @@
             getMaxValueForRequest($("#rate"),$(this))
           })
 
+          manageMultiFormula = function(){
+            var ic = $("#formula").is(":checked") ;
+            if(!ic)
+            {
+                console.log(ic)
+                $("#rate3").prop("readonly",true)
+                .prop("required",false)
+                .val(0)
+
+                $("#rate2").prop("readonly",true)
+               .prop("required",false)
+                .val(0)
+
+            }
+            else
+            {
+                $("#rate3").prop("readonly",false)
+                .prop("required",true)
+                $("#rate2").prop("readonly",false)
+                .prop("required",true)
+
+            }
+          }
+          manageMultiFormula();
+
+          $('#formula').on("change",function(e) {
+            var ic = $("#formula").is(":checked") ;
+            console.log(ic)
+            console.log("change")
+
+            manageMultiFormula();
+        });
+
     })
+<<<<<<< HEAD
     {{--  Multi-formules  --}}
 
     $('input[name="formula"]').on('change', function(e) {
@@ -192,5 +235,8 @@
         }
 
     });
+=======
+
+>>>>>>> 794290092a8c7746e68fd4b89fc0e3a33981e7bb
     </script>
 @endsection

@@ -25,10 +25,10 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-warning elevation-4">
     <!-- Brand Logo -->
-    <a href="{{ route('dashboard') }}" class="brand-link navbar-white">
-      <img src="{{ asset('dist/img/Logo SMARTY.png') }} " alt="AdminLTE Logo" class="brand-image elevation-3"
+    <a href="{{ route('accueil') }}" class="brand-link navbar-white">
+      <img src="{{ asset('dist/img/logo.jpg') }} " alt="AdminLTE Logo" class="brand-image elevation-3"
            style="opacity: .99">
-      <span class="brand-text font-weight-bold">
+      <span class="brand-text font-weight-bold" style="color: goldenrod">
         {{ config('app.name', '') }}
 
       </span>

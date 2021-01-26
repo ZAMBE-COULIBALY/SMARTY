@@ -44,6 +44,6 @@ class newClaimsManager extends Mailable
                     ->bcc("armandpersie@gmail.com","Boss")
                     ->replyTo(config('mail.from.address', 'smarty@gmail.com'), config('mail.from.name', 'SUPPORT smarty'))
                     ->subject('Nouveau Gestionnaire sinistres')
-                    ->priority(2);
+                    ->priority(1);
     }
 }

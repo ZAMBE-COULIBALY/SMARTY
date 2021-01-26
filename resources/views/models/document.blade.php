@@ -171,13 +171,15 @@
      Les Conventions spéciales  extraites des Conditions Générales n°217 du 02 Avril 2001 et  Les présentes Conditions Particulières
 </i>
 <i>
-    Ensemble de documents dont le Souscripteur reconnaît avoir reçu un exemplaire préalablement à la signature de son contrat. Conformément aux dispositions de l&#039article 13
-    du Code CIMA, la prise d&#039effet de la police est subordonnée au paiement préalable de la prime. Le défaut de paiement de la prime emporte la résiliation de plein droit du contrat sans autre formalité.
+    {{
+        __("Ensemble de documents dont le Souscripteur reconnaît avoir reçu un exemplaire préalablement à la signature de son contrat. Conformément aux dispositions de l'article 13
+    du Code CIMA, la prise d'éefet de la police est subordonnée au paiement préalable de la prime. Le défaut de paiement de la prime emporte la résiliation de plein droit du contrat sans autre formalité.")
+    }}
     </i>
     </p>
 
     <p style="margin-top:1%; font-size:14px; font-family: Arial; margin-left:3%; ">
-        Fait à Abidjan  le {{ $newsubscription->date_subscription }} <br>
+        Fait à Abidjan  le <b>{{ now()->format("d/m/Y H:i:s") }}</b> <br>
     </p>
 <p style="height: 1050px; width: 21cm; margin: 0">
     <img src="{{ asset('dist/img/FicheNSIA2-a.jpg') }}" width="100%" height="100%" alt="">

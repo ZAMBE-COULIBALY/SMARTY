@@ -32,7 +32,8 @@ menu-open active
                                             </div>
 
                                             <div class="row col-md 4">
-
+                                              <p>  <a class="btn btn-success" href="{{ route('sinister.list') }}">TERMINER</a>
+                                              </p>
                                             </div>
                                     </div>
                                 </div>

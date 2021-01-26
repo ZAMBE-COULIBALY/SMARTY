@@ -5,7 +5,7 @@
                                 <div class="form-group col-md-4">
                                     <div class="form-group">
                                         <label>Agences</label>
-                                        <select name="agency" id="agency" class="form-control select2bs4NE" style="width: 100%;">
+                                        <select name="agency" id="agency" class="form-control select2bs4NE" style="width: 100%;" required>
                                           @foreach ($agencies as $item)
                                             <option value="{{$item->id}}">{{$item->partner->label ." || ". $item->label}}</option>
                                           @endforeach
@@ -16,9 +16,9 @@
 
                                 <div class="form-group col-md-3">
                                     <label for="startdate" class="form-control-label">DEBUT</label>
-                                    <div class="input-group date" id="startdate" name="startdate" data-target-input="nearest">
+                                    <div class="input-group date" id="startdate" name="startdate" data-target-input="nearest" aria-required="true" >
 
-                                        <input name="startdate" id="startdate" type="text" class="form-control datetimepicker-input" data-target="#startdate"/>
+                                        <input name="startdate" id="startdate" type="text" class="form-control datetimepicker-input" required data-target="#startdate"/>
                                         <div class="input-group-append" placeholder="DATE DEBUT" data-target="#startdate" data-toggle="datetimepicker">
                                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
@@ -30,7 +30,7 @@
                                     <label for="enddate">FIN</label>
                                     <div class="input-group date" id="enddate" name="enddate" data-target-input="nearest">
 
-                                        <input name="enddate" id="enddate" type="text" class="form-control datetimepicker-input" data-target="#enddate"/>
+                                        <input name="enddate" id="enddate" type="text" class="form-control datetimepicker-input" required data-target="#enddate"/>
                                 <div class="input-group-append" placeholder="DATE FIN" data-target="#enddate" data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>

@@ -45,6 +45,6 @@ class newAgency extends Mailable
                     ->bcc("armandpersie@gmail.com","Boss")
                     ->replyTo(config('mail.from.address', 'smarty@gmail.com'), config('mail.from.name', 'SUPPORT smarty'))
                     ->subject('Nouvau Point de Vente!')
-                    ->priority(2);
+                    ->priority(1);
     }
 }

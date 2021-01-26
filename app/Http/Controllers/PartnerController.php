@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Agency;
 use App\Intermediary;
+use App\Jobs\ProcessMailSending;
 use App\Mail\newPartner;
 use App\Manager;
 use App\Partner;
@@ -63,9 +64,10 @@ class PartnerController extends Controller
             'firstnameM' => 'required|max:50',
             'email' => 'required|email|max:40',
             'rate' => 'required|numeric',
-            'rate2' => 'numeric',
-            'rate3' => 'numeric',
-            'logo' => 'image'
+            // 'rate2' => 'numeric',
+            // 'rate3' => 'numeric',
+            'logo' => 'image',
+            'intermediary' => 'required|exists:intermediaries,id'
         ]);
 
         $logo = isset($parameters['logo']) ? $parameters['logo'] : '' ;
@@ -84,13 +86,14 @@ class PartnerController extends Controller
         $partner->label = Str::upper(Str::lower(Str::upper($parametersvalid['label']))) ;
         $partner->email = $parametersvalid['email'];
         $partner->rate = $parametersvalid['rate'];
-        $partner->rate2 = $parametersvalid['rate2'];
-        $partner->rate3 = $parametersvalid['rate3'];
+        $partner->rate2 = isset($parameters['rate2']) ? $parameters['rate2']: 0;
+        $partner->rate3 = isset($parameters['rate3']) ? $parameters['rate3']: 0;
         $partner->intermediary_id = $parameters['intermediary'];
         $partner->intcomrate = $parameters['intcomrate'];
         $partner->logo = $logo;
         $partner->contact = $parameters['contact'] ;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
+        $partner->formula = isset($parameters['formula']) ? 1 : 0 ;
         $partner->paymode = $parameters['paymode'];
         $partner->category = json_encode($parameters['category']);
 
@@ -128,10 +131,16 @@ class PartnerController extends Controller
             $partnerManagerUser->roles()->attach(Role::where('slug',$role)->first());
         endforeach;
         $partners = Partner::all();
+<<<<<<< HEAD
         dd($pass);
+=======
+        //dd($pass);
+        //dispatch(new ProcessMailSending([$partner->email,$parameters['firstnameM'].' '.$parameters['lastnameM']],new newPartner($partner,$partnerManager,$pass)));
+
+>>>>>>> 794290092a8c7746e68fd4b89fc0e3a33981e7bb
       Mail::to($partner->email,$parameters['firstnameM'].' '.$parameters['lastnameM'])
 
-      ->send(new newPartner($partner,$partnerManager,$pass))  ;
+       ->queue(new newPartner($partner,$partnerManager,$pass))  ;
 
         return Redirect()->route('partners.list')->with('success',"Le partenaire a été correctement créé");
 
@@ -184,8 +193,8 @@ class PartnerController extends Controller
             // 'email' => ['required','email', Rule::notIn(Partner::all()->except($oldpartner->id)->pluck("email"))],
             'contact' => 'required',
             'rate' => 'required|numeric',
-            'rate2' => 'numeric',
-            'rate3' => 'numeric',
+            // 'rate2' => 'numeric',
+            // 'rate3' => 'numeric',
             'logo' => 'image'
 
         ]);
@@ -207,12 +216,13 @@ class PartnerController extends Controller
         $partner->email = $parametersvalid['email'];
         $partner->contact = $parametersvalid['contact'];
         $partner->rate = $parametersvalid['rate'];
-        $partner->rate2 = $parametersvalid['rate2'];
-        $partner->rate3 = $parametersvalid['rate3'];
+        $partner->rate2 = isset($parameters['rate2']) ? $parameters['rate2']: 0;
+        $partner->rate3 = isset($parameters['rate3']) ? $parameters['rate3']: 0;
         $partner->intermediary_id = $parameters['intermediary'];
         $partner->intcomrate = $parameters['intcomrate'];
         $partner->logo = $logo;
         $partner->state = isset($parameters['state']) ? 1 : 0 ;
+        $partner->formula = isset($parameters['formula']) ? 1 : 0 ;
         $partner->paymode = $parameters['paymode'];
         $partner->category = json_encode($parameters['category']);
 

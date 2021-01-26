@@ -42,7 +42,7 @@ menu-open active
                                             <div class="row col-md 4">
                                                 <form method="POST" enctype="multipart/form-data" action="{{ route('sinister.store',['subscription' => $subscription->id]) }}" >
                                                     @csrf
-                                                    
+
 
                                                      <div class="collapse" id="collapseExample">
                                                          <div class="card card-body">
@@ -104,7 +104,7 @@ menu-open active
                                                                     </table>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <table  class="table table-striped">
+                                                                    <table  class="table table-sm table-striped">
 
                                                                         <tr>
                                                                             <td colspan="2" style="text-align: center">

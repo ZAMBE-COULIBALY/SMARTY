@@ -80,7 +80,7 @@ jQuery(document).ready(function(){
     step_array = current_url.split("step=");//on récupère la clé du numéro de létape courante
     step = step_array[1];//on récupère la valeur, donc le numéro
     //et on switche
-    switch(Number(step)) 
+    switch(Number(step))
     {
     case 1://si on est dans le premier cas, donc en réalité le deuxième formulaire car le ?step=1 concerne la deuxième page
     jQuery("#step1").css("display", "none");
@@ -325,8 +325,11 @@ jQuery(document).ready(function(){
             "responsive": true,
           "autoWidth": false,
         })
+        $('.list').DataTable({
+            "responsive": true,
+          "autoWidth": false,
+        })
 
-            
             $('#detailslist').DataTable({
 
         dom: 'Bfrtip',
@@ -344,5 +347,5 @@ jQuery(document).ready(function(){
         });
       })
 
-       
+
         </script>

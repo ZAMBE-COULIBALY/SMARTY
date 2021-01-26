@@ -3,7 +3,7 @@
 <form class="form" method="POST"  action="{{isset($claimsManager) ? route('sinister.claimsManager.update',$claimsManager->id)  : route('sinister.claimsManager.add') }}">
     @csrf
     <div class="row form-group">
-        <div class="form-group  col-md-6">
+        {{--  <div class="form-group  col-md-6">
             <div class="form-group">
                 <label for="code">Code</label>
                 <div class="input-group">
@@ -21,8 +21,8 @@
                 </span>
                 @enderror
             </div>
-        </div>
-        <div class="form-group col-md-6">
+        </div>  --}}
+        {{--  <div class="form-group col-md-6">
             <label for="username">Login</label>
             <div class="input-group">
                 <div class="input-group-append">
@@ -38,7 +38,7 @@
                 <strong>{{ $message }}</strong>
             </span>
             @enderror
-        </div>
+        </div>  --}}
         <div class="form-group col-md-4">
             <label for="lastname">Nom</label>
             <div class="input-group">

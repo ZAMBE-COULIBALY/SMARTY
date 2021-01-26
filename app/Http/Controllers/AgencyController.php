@@ -124,7 +124,7 @@ class AgencyController extends Controller
        dd($pass);
       Mail::to($agency->email,$parameters['firstnameM'].' '.$parameters['lastnameM'])
 
-      ->send(new newAgency($agency,$agencyChief,$pass))  ;
+      ->queue(new newAgency($agency,$agencyChief,$pass))  ;
 
         return Redirect()->route('agencies.list')->with('success',"Le PDV a été correctement créé");
     }

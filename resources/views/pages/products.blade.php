@@ -35,10 +35,10 @@ menu-open active
                         <div class="card-header p-0 pt-1">
                             <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link {{ isset($product) ? '' : 'active'}}" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="true">MAGASIN</a>
+                                <a class="nav-link {{ ((isset($product))||([] != $errors->all()))  ? '' : 'active'}}" id="custom-content-above-history-tab" data-toggle="pill" href="#custom-content-above-history" role="tab" aria-controls="custom-content-above-history" aria-selected="true">MAGASIN</a>
                             </li>
                                <li class="nav-item">
-                                    <a class="nav-link {{ isset($product) ? 'active' : ''}}" id="custom-content-above-other-tab" data-toggle="pill" href="#custom-content-above-other" role="tab" aria-controls="custom-content-above-other" aria-selected="false" disabled >{{ Str::contains(Route::current()->getName(), 'edit') ? 'MODIFIER' : 'NOUVEAU' }}  </a>
+                                    <a class="nav-link {{ ((isset($product))||([] != $errors->all())) ? 'active' : ''}}" id="custom-content-above-other-tab" data-toggle="pill" href="#custom-content-above-other" role="tab" aria-controls="custom-content-above-other" aria-selected="false" disabled >{{ Str::contains(Route::current()->getName(), 'edit') ? 'MODIFIER' : 'NOUVEAU' }}  </a>
                                 </li>
 
                             {{-- <li class="nav-item">
@@ -55,7 +55,7 @@ menu-open active
 
                             <div class="tab-content" id="custom-content-above-tabContent">
 
-                                <div class="tab-pane fade show {{ isset($product) ? '' : 'active'}}" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
+                                <div class="tab-pane fade show {{ ((isset($product))||([] != $errors->all())) ? '' : 'active'}}" id="custom-content-above-history" role="tabpanel" aria-labelledby="custom-content-above-history-tab">
                                     <div class="tab-custom-content">
                                         <p class="lead mb-0">Liste des produits</p>
                                         <hr>
@@ -96,7 +96,7 @@ menu-open active
                                     </table>
 
                                 </div>
-                                    <div class="tab-pane fade {{ isset($product) ? 'show active' : ''}}" id="custom-content-above-other" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
+                                    <div class="tab-pane fade {{  ((isset($product))||([] != $errors->all()))  ? 'show active' : ''}}" id="custom-content-above-other" role="tabpanel" aria-labelledby="custom-content-above-other-tab">
                                        @include('partials.form_product')
 
                                 </div>
